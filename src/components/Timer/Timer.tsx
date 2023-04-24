@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { View, FlatList, Text, NativeSyntheticEvent, NativeScrollEvent, Animated, SafeAreaView } from "react-native";
+import { View, FlatList, Text, Animated, SafeAreaView } from "react-native";
 import AnimatedNumber from "./AnimatedNumber";
 import { numberList } from "./numberList";
 import { timerStyle } from "./styles/timerStyle";
@@ -7,65 +7,104 @@ import { timerStyle } from "./styles/timerStyle";
 export default function Timer() {
 
     // 1 middle index
-    const animatedIndex = useRef({ animated: {scrollY: new Animated.Value(1)}, index: 1 }).current;
+    const listOne = useRef({ listData: numberList(24), animated: { scrollY: new Animated.Value(0) } }).current;
+    const listTwo = useRef({ listData: numberList(60), animated: { scrollY: new Animated.Value(0) } }).current;
+    const listTree = useRef({ listData: numberList(60), animated: { scrollY: new Animated.Value(0) } }).current;
 
-    function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>, positionIndex: number) {
-        let selectedItem = Math.round((event.nativeEvent.contentOffset.y + positionIndex) / positionIndex);
+    // 3 items showing
+    let heightItems = 0;
 
-
+    function snapArray(elementHeight: number) {
+        let array: number[] = [];
+        for (let i = 0; i < listOne.listData.length; i++) {
+            array.push(i * elementHeight);
+        }
+        return array;
     }
 
     return (
         <SafeAreaView>
             <View style={timerStyle.listsContainer}>
                 <Animated.FlatList
-                    data={numberList(9)}
+                    style={timerStyle.list}
+                    onLayout={(listScroll) => heightItems = listScroll.nativeEvent.layout.height / 3} //3 items showing
+                    data={listOne.listData}
                     renderItem={
                         ({ item }) =>
-                            <AnimatedNumber item={item} scrollY={animatedIndex.animated.scrollY}></AnimatedNumber>
+                            <AnimatedNumber item={item} scrollY={listOne.animated.scrollY} heightItem={heightItems} />
                     }
                     keyExtractor={(item) => item.key}
-                    // onScroll={(scroll) => {handleScroll(scroll, 80);}}
                     onScroll={Animated.event([{
                         nativeEvent:
-                            {
-                                contentOffset:
-                                    { y: animatedIndex.animated.scrollY },
-                            },
+                        {
+                            contentOffset:
+                                { y: listOne.animated.scrollY },
                         },
-                    ],{useNativeDriver:false})}
-                    style={timerStyle.list}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    decelerationRate={0.5}
-                    initialNumToRender={6}
+                    },
+                    ], { useNativeDriver: false })}
+                    snapToOffsets={snapArray(heightItems)}
+                    decelerationRate={"fast"}
+                    initialNumToRender={3}
+                    scrollEventThrottle={16}
                     bounces={false}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                 />
 
                 <View style={timerStyle.listLine}></View>
 
-                <FlatList
-                    data={numberList(59)}
-                    renderItem={({ item, index }) => <Text style={timerStyle.listItem}>{item.number < 10 ? "0" + item.number : item.number}</Text>}
+                <Animated.FlatList
                     style={timerStyle.list}
+                    onLayout={(listScroll) => heightItems = listScroll.nativeEvent.layout.height / 3} //3 items showing
+                    data={listTwo.listData}
+                    renderItem={
+                        ({ item }) =>
+                            <AnimatedNumber item={item} scrollY={listTwo.animated.scrollY} heightItem={heightItems} />
+                    }
+                    keyExtractor={(item) => item.key}
+                    onScroll={Animated.event([{
+                        nativeEvent:
+                        {
+                            contentOffset:
+                                { y: listTwo.animated.scrollY },
+                        },
+                    },
+                    ], { useNativeDriver: false })}
+                    snapToOffsets={snapArray(heightItems)}
+                    decelerationRate={"fast"}
+                    initialNumToRender={3}
+                    scrollEventThrottle={16}
+                    bounces={false}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    keyExtractor={item => item.key}
-                    initialNumToRender={3}
-                    decelerationRate={0.5}
                 />
 
                 <View style={timerStyle.listLine}></View>
 
-                <FlatList
-                    data={numberList(59)}
-                    renderItem={({ item }) => <Text style={timerStyle.listItem}>{item.number < 10 ? "0" + item.number : item.number}</Text>}
+                <Animated.FlatList
                     style={timerStyle.list}
+                    onLayout={(listScroll) => heightItems = listScroll.nativeEvent.layout.height / 3} //3 items showing
+                    data={listTree.listData}
+                    renderItem={
+                        ({ item }) =>
+                            <AnimatedNumber item={item} scrollY={listTree.animated.scrollY} heightItem={heightItems} />
+                    }
+                    keyExtractor={(item) => item.key}
+                    onScroll={Animated.event([{
+                        nativeEvent:
+                        {
+                            contentOffset:
+                                { y: listTree.animated.scrollY },
+                        },
+                    },
+                    ], { useNativeDriver: false })}
+                    snapToOffsets={snapArray(heightItems)}
+                    decelerationRate={"fast"}
+                    initialNumToRender={3}
+                    scrollEventThrottle={16}
+                    bounces={false}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    keyExtractor={item => item.key}
-                    initialNumToRender={3}
-                    decelerationRate={0.5}
                 />
             </View>
         </SafeAreaView>
