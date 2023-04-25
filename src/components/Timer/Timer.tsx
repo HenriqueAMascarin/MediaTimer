@@ -1,51 +1,58 @@
-import { useRef } from "react";
-import { View, FlatList, Text, Animated, SafeAreaView } from "react-native";
+import { useRef, useState } from "react";
+import { View, FlatList, Animated, SafeAreaView, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import AnimatedNumber from "./AnimatedNumber";
 import { numberList } from "./numberList";
-import { timerStyle } from "./styles/timerStyle";
+import { timerStyle, heightContainer } from "./styles/timerStyle";
 
 export default function Timer() {
 
-    // 1 middle index
-    const listOne = useRef({ listData: numberList(24), animated: { scrollY: new Animated.Value(0) } }).current;
-    const listTwo = useRef({ listData: numberList(60), animated: { scrollY: new Animated.Value(0) } }).current;
-    const listTree = useRef({ listData: numberList(60), animated: { scrollY: new Animated.Value(0) } }).current;
+    const [listOneState, changeListOne] = useState(numberList(23))
+    const listOneAnimated = useRef({ scrollY: new Animated.Value(0)}).current;
 
     // 3 items showing
-    let heightItems = 0;
+    let heightItems = heightContainer / 3; 
 
-    function snapArray(elementHeight: number) {
+    function snapArray(list: number[], elementHeight: number) {
         let array: number[] = [];
-        for (let i = 0; i < listOne.listData.length; i++) {
+        for (let i = 0; i < list.length; i++) {
             array.push(i * elementHeight);
         }
         return array;
     }
 
+    function addMoreItems(scroll:NativeSyntheticEvent<NativeScrollEvent>, changeState:React.Dispatch<React.SetStateAction<number[]>>){
+        console.log( )
+        const sizeContainer = scroll.nativeEvent.contentSize.height - scroll.nativeEvent.layoutMeasurement.height;// size of container that is only to end center
+        const radiusFinal = sizeContainer - 80; //container size - height that start event.
+
+        if(scroll.nativeEvent.contentOffset.y > radiusFinal) {
+            changeState((state) => [...state, ...state])
+        }
+    }
+
     return (
         <SafeAreaView>
             <View style={timerStyle.listsContainer}>
-                <Animated.FlatList
+                <FlatList
                     style={timerStyle.list}
-                    onLayout={(listScroll) => heightItems = listScroll.nativeEvent.layout.height / 3} //3 items showing
-                    data={listOne.listData}
+                    data={listOneState}
                     renderItem={
-                        ({ item }) =>
-                            <AnimatedNumber item={item} scrollY={listOne.animated.scrollY} heightItem={heightItems} />
+                        ({ item, index}) =>
+                            <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={listOneAnimated.scrollY} heightItem={heightItems} />
                     }
-                    keyExtractor={(item) => item.key}
+                    keyExtractor={() => Math.random().toString()}
+                    onMomentumScrollBegin={(scroll) => addMoreItems(scroll, changeListOne)}
                     onScroll={Animated.event([{
                         nativeEvent:
                         {
                             contentOffset:
-                                { y: listOne.animated.scrollY },
+                                { y: listOneAnimated.scrollY },
                         },
                     },
                     ], { useNativeDriver: false })}
-                    snapToOffsets={snapArray(heightItems)}
+                    snapToOffsets={snapArray(listOneState, heightItems)}
                     decelerationRate={"fast"}
-                    initialNumToRender={3}
-                    scrollEventThrottle={16}
+                    scrollEventThrottle={5}
                     bounces={false}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
@@ -53,59 +60,11 @@ export default function Timer() {
 
                 <View style={timerStyle.listLine}></View>
 
-                <Animated.FlatList
-                    style={timerStyle.list}
-                    onLayout={(listScroll) => heightItems = listScroll.nativeEvent.layout.height / 3} //3 items showing
-                    data={listTwo.listData}
-                    renderItem={
-                        ({ item }) =>
-                            <AnimatedNumber item={item} scrollY={listTwo.animated.scrollY} heightItem={heightItems} />
-                    }
-                    keyExtractor={(item) => item.key}
-                    onScroll={Animated.event([{
-                        nativeEvent:
-                        {
-                            contentOffset:
-                                { y: listTwo.animated.scrollY },
-                        },
-                    },
-                    ], { useNativeDriver: false })}
-                    snapToOffsets={snapArray(heightItems)}
-                    decelerationRate={"fast"}
-                    initialNumToRender={3}
-                    scrollEventThrottle={16}
-                    bounces={false}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                />
 
                 <View style={timerStyle.listLine}></View>
 
-                <Animated.FlatList
-                    style={timerStyle.list}
-                    onLayout={(listScroll) => heightItems = listScroll.nativeEvent.layout.height / 3} //3 items showing
-                    data={listTree.listData}
-                    renderItem={
-                        ({ item }) =>
-                            <AnimatedNumber item={item} scrollY={listTree.animated.scrollY} heightItem={heightItems} />
-                    }
-                    keyExtractor={(item) => item.key}
-                    onScroll={Animated.event([{
-                        nativeEvent:
-                        {
-                            contentOffset:
-                                { y: listTree.animated.scrollY },
-                        },
-                    },
-                    ], { useNativeDriver: false })}
-                    snapToOffsets={snapArray(heightItems)}
-                    decelerationRate={"fast"}
-                    initialNumToRender={3}
-                    scrollEventThrottle={16}
-                    bounces={false}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                />
+           
+
             </View>
         </SafeAreaView>
     )

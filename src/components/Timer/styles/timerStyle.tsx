@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { colorsStyle } from "./colorsStyle";
-const heightContainer = 240;
+export const heightContainer = 240;
 
 export const timerStyle = StyleSheet.create({
     

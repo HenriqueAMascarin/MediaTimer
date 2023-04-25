@@ -1,9 +1,11 @@
 export function numberList(maxValue: number){
-    let array: {number: number, key: string}[] = [];
+    let array: number[] = [];
     
-    for(var i = 0; i <= maxValue; i++){
-        array.push({number: i, key: Math.random().toString()});
+    for(let i = 0; i <= maxValue; i++){
+        array.push(i);
+        // if(i == maxValue) {
+        //     array.push(0);
+        // }
     }
-    
     return array;
 }
