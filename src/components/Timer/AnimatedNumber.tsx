@@ -1,5 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
-import { Animated } from "react-native";
+import { Animated, Easing } from "react-native";
 import { useEffect } from "react";
 
 type animatedNumber = {
@@ -23,7 +23,7 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY, heightI
     })
     numberTransform = scrollY.interpolate({
         inputRange,
-        outputRange: [0.8, 1, 0.8],
+        outputRange: [0.85, 1, 0.85],
         extrapolate: "clamp",
     })
 

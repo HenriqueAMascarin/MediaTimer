@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colorsStyle } from "./colorsStyle";
+import { colorsStyle } from "../../colorsStyle";
 export const heightContainer = 240;
 
 export const timerStyle = StyleSheet.create({
@@ -16,10 +16,6 @@ export const timerStyle = StyleSheet.create({
         maxHeight: heightContainer,
     },
     listItem:{
-        fontSize: 60,
-        color: colorsStyle.principal.gray,
-    },
-    listItemCenter:{
         fontSize: 60,
         color: colorsStyle.principal.black,
     },
