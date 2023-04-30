@@ -1,17 +1,19 @@
-import { useRef, useState } from "react";
-import { View, FlatList, Animated, SafeAreaView, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import { useRef } from "react";
+import { View, FlatList, Animated, SafeAreaView} from "react-native";
 import AnimatedNumber from "./AnimatedNumber";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
+import { useData } from "../Context/Context";
+
+// 3 items showing
+export const heightItems = heightContainer / 3;
 
 export default function Timer() {
 
+    let data = useData();
     const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
     const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
-
-    // 3 items showing
-    let heightItems = heightContainer / 3;
 
     function snapArray(list: number[], elementHeight: number) {
         let array: number[] = [];
@@ -20,6 +22,10 @@ export default function Timer() {
         }
         return array;
     }
+
+    listOne.animated.scrollY.addListener(({value}) => data.dataItem.numberOne = value);
+    listTwo.animated.scrollY.addListener(({value}) => data.dataItem.numberTwo = value);
+    listThree.animated.scrollY.addListener(({value}) => data.dataItem.numberThree = value);
 
     return (
         <SafeAreaView>
