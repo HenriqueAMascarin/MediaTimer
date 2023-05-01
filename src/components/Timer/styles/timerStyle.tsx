@@ -9,7 +9,14 @@ export const timerStyle = StyleSheet.create({
         gap: 0,
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: heightContainer,
+    },
+    animatedListsContainer:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 80,
     },
     list:{
         maxWidth: 70,

@@ -1,6 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
-import { Animated, Easing } from "react-native";
-import { useEffect } from "react";
+import { Animated } from "react-native";
 
 type animatedNumber = {
     itemIndex: number,
