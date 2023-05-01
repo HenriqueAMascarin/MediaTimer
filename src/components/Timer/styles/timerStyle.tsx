@@ -12,12 +12,6 @@ export const timerStyle = StyleSheet.create({
         alignItems: 'center',
         height: heightContainer,
     },
-    animatedListsContainer:{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 80,
-    },
     list:{
         maxWidth: 70,
         maxHeight: heightContainer,
