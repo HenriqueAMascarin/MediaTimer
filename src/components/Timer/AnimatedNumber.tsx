@@ -1,5 +1,6 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
+import { useData } from "../Context/Context";
 
 type animatedNumber = {
     itemIndex: number,

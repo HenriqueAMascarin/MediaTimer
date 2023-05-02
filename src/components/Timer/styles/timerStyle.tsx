@@ -6,15 +6,15 @@ export const timerStyle = StyleSheet.create({
     
     listsContainer:{
         marginTop: 100,
-        gap: 0,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: heightContainer,
+        height: heightContainer + 10,
+        position: "relative",
     },
     list:{
         maxWidth: 70,
-        maxHeight: heightContainer,
+        height: heightContainer,
     },
     listItem:{
         fontSize: 60,
