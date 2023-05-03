@@ -11,6 +11,7 @@ export const timerStyle = StyleSheet.create({
         alignItems: 'center',
         height: heightContainer + 10,
         position: "relative",
+        gap: 10,
     },
     list:{
         maxWidth: 70,
@@ -23,7 +24,6 @@ export const timerStyle = StyleSheet.create({
     listLine:{
         width: 3,
         height: heightContainer + 10,
-        marginHorizontal: 20,
         backgroundColor: colorsStyle.principal.gray,
     },
 })

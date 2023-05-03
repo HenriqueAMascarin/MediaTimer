@@ -2,6 +2,7 @@ import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
 import { timerStyle } from "./styles/timerStyle";
 import { useData } from "../Context/Context";
+import { useState } from "react";
 
 type listTimer ={
     dataArray: {
@@ -10,11 +11,10 @@ type listTimer ={
             scrollY: Animated.Value;
     }},
     heightItems: number,
+    opacityAnimated: Animated.Value
 }
 
-export default function ListTimer({dataArray, heightItems}:listTimer) {
-
-    let data = useData();
+export default function ListTimer({dataArray, heightItems, opacityAnimated}:listTimer) {
 
     function snapArray(list: number[], elementHeight: number) {
         let array: number[] = [];
@@ -26,7 +26,7 @@ export default function ListTimer({dataArray, heightItems}:listTimer) {
 
     return (
         <Animated.ScrollView
-            style={[timerStyle.list]}
+            style={[timerStyle.list, {opacity: opacityAnimated}]}
             onScroll={Animated.event([{
                 nativeEvent:
                 {

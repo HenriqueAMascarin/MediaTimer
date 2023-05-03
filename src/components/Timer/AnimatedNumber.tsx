@@ -10,6 +10,7 @@ type animatedNumber = {
 }
 
 export default function AnimatedNumber({ itemIndex, itemNumber, scrollY, heightItem }: animatedNumber) {
+    let data = useData();
 
     let numberOpacity: Animated.AnimatedInterpolation<string | number> | number = 0.5;
     let numberTransform: Animated.AnimatedInterpolation<string | number> | number = 0.8;
