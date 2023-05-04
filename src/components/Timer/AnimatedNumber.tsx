@@ -1,6 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
-import { useData } from "../Context/Context";
 
 type animatedNumber = {
     itemIndex: number,
@@ -10,10 +9,9 @@ type animatedNumber = {
 }
 
 export default function AnimatedNumber({ itemIndex, itemNumber, scrollY, heightItem }: animatedNumber) {
-    let data = useData();
 
-    let numberOpacity: Animated.AnimatedInterpolation<string | number> | number = 0.5;
-    let numberTransform: Animated.AnimatedInterpolation<string | number> | number = 0.8;
+    let numberOpacity: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.5);
+    let numberTransform: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.8);
 
     const inputRange = [(itemIndex - 2) * heightItem, (itemIndex - 1) * heightItem, (itemIndex) * heightItem]
 

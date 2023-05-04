@@ -10,20 +10,35 @@ export const timerStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: heightContainer + 10,
-        position: "relative",
         gap: 10,
     },
-    list:{
+    listContainer:{
+        position: "relative",
         maxWidth: 70,
         height: heightContainer,
+        justifyContent: "center",
     },
     listItem:{
         fontSize: 60,
         color: colorsStyle.principal.black,
+    },
+    listLineContainer:{
+        position: "relative",
+        height: heightContainer + 10,
+        alignItems: "center",
+        justifyContent: "center",
     },
     listLine:{
         width: 3,
         height: heightContainer + 10,
         backgroundColor: colorsStyle.principal.gray,
     },
+    listLinePoints:{
+        fontSize: 40,
+        position: "absolute",
+        left: -4,
+        width: 10,
+        fontWeight: "bold",
+        opacity: 0,
+    }
 })

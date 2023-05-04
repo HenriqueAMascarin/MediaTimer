@@ -13,7 +13,6 @@ export default function PlayButton(){
         const valueOne = data.dataItem.numberOne / heightItems;
         const valueTwo = data.dataItem.numberTwo / heightItems;
         const valueThree = data.dataItem.numberThree / heightItems;
-
         data.stateTimer.isPlay.setValue(1);
     }
 

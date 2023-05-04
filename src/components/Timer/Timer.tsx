@@ -1,9 +1,10 @@
-import { useRef, useState } from "react";
-import { View, Animated, SafeAreaView, Text } from "react-native";
+import { useRef } from "react";
+import { View, Animated, SafeAreaView } from "react-native";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
 import { useData } from "../Context/Context";
 import ListTimer from "./ListTimer";
+import TimerNumber from "./TimerNumber";
 
 // 3 items showing
 export const heightItems = heightContainer / 3;
@@ -16,81 +17,93 @@ export default function Timer() {
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
     const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
 
-    // listOne.animated.scrollY.addListener(({ value }) => data.dataItem.numberOne = value);
-    // listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.numberTwo = value);
-    // listThree.animated.scrollY.addListener(({ value }) => data.dataItem.numberThree = value);
+    listOne.animated.scrollY.addListener(({ value }) => data.dataItem.numberOne = value);
+    listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.numberTwo = value);
+    listThree.animated.scrollY.addListener(({ value }) => data.dataItem.numberThree = value);
 
-    let heightLine = new Animated.Value(heightContainer + 10);
+    let lineAnimated = ({heightLine: new Animated.Value(heightContainer + 10), opacityLine: new Animated.Value(1)});
     let gapList = new Animated.Value(10);
-    let numberCountAnimated = ({opacity: new Animated.Value(0), position: new Animated.Value(68.3)});
+    let numberCountOpacity = new Animated.Value(0);
+    let linePointsOpacity = new Animated.Value(0);
     let listOpacity = new Animated.Value(1);
 
-    function sequenceLine(){
+    function sequenceLine() {
         Animated.parallel([
-            Animated.timing(heightLine,{
+            Animated.timing(lineAnimated.heightLine, {
                 toValue: 80,
-                duration: 500,
+                duration: 400,
                 useNativeDriver: false,
             }),
-            Animated.timing(numberCountAnimated.opacity, {
+            Animated.timing(lineAnimated.opacityLine, {
+                toValue: 0,
+                duration: 100,
+                delay: 400,
+                useNativeDriver: false,
+            }),
+            Animated.timing(linePointsOpacity, {
+                toValue: 1,
+                duration: 300,
+                delay: 450,
+                useNativeDriver: false
+            }),
+            Animated.timing(numberCountOpacity, {
                 toValue: 1,
                 duration: 100,
                 useNativeDriver: false
             }),
             Animated.timing(listOpacity, {
                 toValue: 0,
-                duration: 500,
-                delay: 200,
+                duration: 400,
+                delay: 300,
                 useNativeDriver: false
             }),
             Animated.timing(gapList, {
                 toValue: 0,
-                duration: 500,
-                delay: 500,
-                useNativeDriver: false
-            }),
-            Animated.timing(numberCountAnimated.position, {
-                toValue: 80,
-                duration: 500,
+                duration: 400,
                 delay: 500,
                 useNativeDriver: false
             }),
         ]).start();
     }
 
-    
-    data.stateTimer.isPlay.addListener(({value}) => {
-        if(value == 1){
+    data.stateTimer.isPlay.addListener(({ value }) => {
+        if (value == 1) {
             sequenceLine();
         }
     })
 
     return (
         <SafeAreaView>
-            <Animated.View style={[timerStyle.listsContainer, {gap: gapList}]}>
-                
-                <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity}/>
+            <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
+                <View style={timerStyle.listContainer}>
+                    <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity} />
 
-                <Animated.Text 
-                style={[timerStyle.listItem, {position:"absolute", left: numberCountAnimated.position, opacity: numberCountAnimated.opacity}]}
-                >00</Animated.Text>
+                    <TimerNumber numberCountOpacity={numberCountOpacity}/>
+                </View>
 
-                <Animated.View style={[timerStyle.listLine, {height: heightLine}]}></Animated.View>
+                <View style={timerStyle.listLineContainer}>
+                    <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-                <ListTimer dataArray={listTwo} heightItems={heightItems} opacityAnimated={listOpacity}/>
+                    <Animated.Text style={[timerStyle.listLinePoints, {opacity: linePointsOpacity}]}>:</Animated.Text>
+                </View>
 
-                <Animated.Text 
-                style={[timerStyle.listItem, {position:"absolute", opacity: numberCountAnimated.opacity}]}
-                >00</Animated.Text>
+                <View style={timerStyle.listContainer}>
+                    <ListTimer dataArray={listTwo} heightItems={heightItems} opacityAnimated={listOpacity} />
 
-                <Animated.View style={[timerStyle.listLine, {height: heightLine}]}></Animated.View>
+                    <TimerNumber numberCountOpacity={numberCountOpacity}/>
+                </View>
 
-                <ListTimer dataArray={listThree} heightItems={heightItems} opacityAnimated={listOpacity}/>
+                <View style={timerStyle.listLineContainer}>
+                    <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-                <Animated.Text 
-                style={[timerStyle.listItem, {position:"absolute", right: numberCountAnimated.position, opacity: numberCountAnimated.opacity}]}
-                >00</Animated.Text>
+                    <Animated.Text style={[timerStyle.listLinePoints, {opacity: linePointsOpacity}]}>:</Animated.Text>
+                </View>
 
+                <View style={timerStyle.listContainer}>
+                    <ListTimer dataArray={listThree} heightItems={heightItems} opacityAnimated={listOpacity} />
+
+                    <TimerNumber numberCountOpacity={numberCountOpacity}/>
+                </View>
             </Animated.View>
         </SafeAreaView>
     )

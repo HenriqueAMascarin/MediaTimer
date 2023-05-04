@@ -1,8 +1,5 @@
 import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
-import { timerStyle } from "./styles/timerStyle";
-import { useData } from "../Context/Context";
-import { useState } from "react";
 
 type listTimer ={
     dataArray: {
@@ -26,7 +23,7 @@ export default function ListTimer({dataArray, heightItems, opacityAnimated}:list
 
     return (
         <Animated.ScrollView
-            style={[timerStyle.list, {opacity: opacityAnimated}]}
+            style={{opacity: opacityAnimated}}
             onScroll={Animated.event([{
                 nativeEvent:
                 {
