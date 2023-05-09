@@ -1,30 +1,35 @@
-import { createContext, useRef, useContext } from 'react';
+import { createContext, useRef, useContext, useState } from 'react';
 import { Animated } from 'react-native';
-type data = {
+export type dataType = {
     dataItem: {
-        numberOne: number;
-        numberTwo: number;
-        numberThree: number;
+        scrollOne: number;
+        scrollTwo: number;
+        scrollThree: number;
     },
-    stateTimer: {
-        isPlay: Animated.Value;
-        isPaused: Animated.Value;
-    }
+    stateTimer: {state: {
+        isPlay: boolean;
+        isPaused: boolean;
+    }, changeState: React.Dispatch<React.SetStateAction<{
+        isPlay: boolean;
+        isPaused: boolean;
+    }>>}
+    timeStamp: {state: number, changeState: React.Dispatch<React.SetStateAction<number>>}
 };
 
 type items = {
     children?: JSX.Element | JSX.Element[];
 };
 
-const DataContext = createContext<data>({dataItem:{numberOne: 0, numberTwo: 0, numberThree: 0}, stateTimer: {isPlay: new Animated.Value(0), isPaused: new Animated.Value(0)}});
 
+const DataContext = createContext<dataType>({dataItem:{scrollOne: 0, scrollTwo: 0, scrollThree: 0}, stateTimer: {state: {isPlay: false, isPaused: false}, changeState: useState}, timeStamp: {state: 0, changeState: useState}});
 
 export default function Context({ children }: items) {
-    const dataNumbers = useRef({ numberOne: 0, numberTwo: 0, numberThree: 0 }).current;
-    const stateTimer = useRef({isPlay: new Animated.Value(0), isPaused: new Animated.Value(0)}).current;
+    const dataNumbers = useRef({ scrollOne: 0, scrollTwo: 0, scrollThree: 0 }).current;
+    const [stateTimer, changeStateTimer] = useState({isPlay: false, isPaused: false});
+    let [timestampState, changeTimestamp] = useState(0);
 
     return (
-        <DataContext.Provider value={{ dataItem: dataNumbers, stateTimer: stateTimer}}>
+        <DataContext.Provider value={{ dataItem: dataNumbers, stateTimer: {state: stateTimer, changeState: changeStateTimer}, timeStamp: {state: timestampState, changeState: changeTimestamp} }}>
             {children}
         </DataContext.Provider>
     )
