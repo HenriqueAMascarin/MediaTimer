@@ -3,7 +3,7 @@ import { Animated } from "react-native"
 
 type timerNumber = {
     numberCountOpacity: Animated.Value,
-    number:  number
+    number: string
 }
 
 export default function TimerNumber({numberCountOpacity, number}: timerNumber) {

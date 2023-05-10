@@ -26,7 +26,7 @@ const DataContext = createContext<dataType>({dataItem:{scrollOne: 0, scrollTwo: 
 export default function Context({ children }: items) {
     const dataNumbers = useRef({ scrollOne: 0, scrollTwo: 0, scrollThree: 0 }).current;
     const [stateTimer, changeStateTimer] = useState({isPlay: false, isPaused: false});
-    let [timestampState, changeTimestamp] = useState(0);
+    const [timestampState, changeTimestamp] = useState(0);
 
     return (
         <DataContext.Provider value={{ dataItem: dataNumbers, stateTimer: {state: stateTimer, changeState: changeStateTimer}, timeStamp: {state: timestampState, changeState: changeTimestamp} }}>

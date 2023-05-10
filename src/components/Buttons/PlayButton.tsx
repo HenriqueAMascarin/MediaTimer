@@ -8,7 +8,6 @@ export default function PlayButton() {
 
     let data = useData();
 
-
     function timerStart() {
         if (data.dataItem.scrollOne != 0 || data.dataItem.scrollTwo != 0 || data.dataItem.scrollThree != 0) {
             data.stateTimer.changeState({isPlay: true, isPaused: false})
@@ -16,16 +15,16 @@ export default function PlayButton() {
             const numberMinutes = (data.dataItem.scrollTwo / heightItems) * 60;
             const numberSeconds = (data.dataItem.scrollThree / heightItems);
 
-            let timeStampValue = (numberHours + numberMinutes + numberSeconds)
-            data.timeStamp.changeState(timeStampValue)
+            let timeStampValue = (numberHours + numberMinutes + numberSeconds);
+            data.timeStamp.changeState(timeStampValue);
 
-            setInterval(() =>{
-                if(data.timeStamp.state > 0){
-                    data.timeStamp.changeState((state) => state - 1)
-                }else{
-                    return;
-                }
-            }, 1000)
+            setTimeout(() => {
+                setInterval(() =>{
+                    data.timeStamp.changeState((state) => state -= 1);
+                }, 1000)
+            }, 800);
+            
+            
         }
     }
 

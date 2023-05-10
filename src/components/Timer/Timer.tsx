@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { View, Animated, SafeAreaView } from "react-native";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
@@ -24,8 +24,6 @@ export default function Timer() {
     let listOpacity = new Animated.Value(1);
     let gapList = new Animated.Value(10);
 
-    let num = 0;
-
     useEffect(() =>{
         listOne.animated.scrollY.addListener(({ value }) => data.dataItem.scrollOne = value);
         listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.scrollTwo = value);
@@ -34,7 +32,6 @@ export default function Timer() {
         if (data.stateTimer.state.isPlay) {
             sequenceTimer({lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList});
         }
-
     }, [data.stateTimer.state])
 
     return (
@@ -43,7 +40,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={num}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={(data.timeStamp.state / 3600).toFixed(0).padStart(2, "0")}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -55,7 +52,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listTwo} heightItems={heightItems} opacityAnimated={listOpacity} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={num}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={((data.timeStamp.state % 3600) / 60).toFixed(0).padStart(2, "0")}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -66,8 +63,8 @@ export default function Timer() {
 
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listThree} heightItems={heightItems} opacityAnimated={listOpacity} />
-
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={num}/>
+                    
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={(data.timeStamp.state % 3600 % 60).toFixed(0).padStart(2, "0")}/>
                 </View>
             </Animated.View>
         </SafeAreaView>
