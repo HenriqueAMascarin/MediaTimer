@@ -1,7 +1,7 @@
 import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
 
-type listTimer ={
+interface listTimer{
     dataArray: {
         array: number[];
         animated: {

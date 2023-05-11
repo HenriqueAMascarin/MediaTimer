@@ -1,9 +1,9 @@
 import { timerStyle } from "./styles/timerStyle"
 import { Animated } from "react-native"
 
-type timerNumber = {
+interface timerNumber {
     numberCountOpacity: Animated.Value,
-    number: string
+    number: string,
 }
 
 export default function TimerNumber({numberCountOpacity, number}: timerNumber) {

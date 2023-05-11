@@ -1,6 +1,6 @@
 import { Animated } from "react-native";
 
-type sequenceTimerTypes = {
+interface sequenceTimerTypes{
     lineAnimated: {
         heightLine: Animated.Value;
         opacityLine: Animated.Value;

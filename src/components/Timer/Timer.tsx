@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { View, Animated, SafeAreaView } from "react-native";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
@@ -24,6 +24,12 @@ export default function Timer() {
     let listOpacity = new Animated.Value(1);
     let gapList = new Animated.Value(10);
 
+    const hours = Math.floor(data.timeStamp.state / 3600).toString().padStart(2, "0");
+    const minutes = Math.floor((data.timeStamp.state % 3600) / 60).toString().padStart(2, "0");
+    const seconds = Math.floor((data.timeStamp.state) % 3600 % 60).toString().padStart(2, "0");
+
+    let timerInterval: NodeJS.Timer | null = null;
+
     useEffect(() =>{
         listOne.animated.scrollY.addListener(({ value }) => data.dataItem.scrollOne = value);
         listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.scrollTwo = value);
@@ -31,16 +37,25 @@ export default function Timer() {
 
         if (data.stateTimer.state.isPlay) {
             sequenceTimer({lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList});
+
+            timerInterval = setInterval(() =>{
+                data.timeStamp.changeState((state) => state -= 1)
+            },1000)
         }
     }, [data.stateTimer.state])
+
+    useEffect(() =>{
+        
+    },[data.timeStamp.state])
 
     return (
         <SafeAreaView>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
+
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={(data.timeStamp.state / 3600).toFixed(0).padStart(2, "0")}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={hours}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -52,7 +67,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listTwo} heightItems={heightItems} opacityAnimated={listOpacity} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={((data.timeStamp.state % 3600) / 60).toFixed(0).padStart(2, "0")}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -64,7 +79,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listThree} heightItems={heightItems} opacityAnimated={listOpacity} />
                     
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={(data.timeStamp.state % 3600 % 60).toFixed(0).padStart(2, "0")}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds}/>
                 </View>
             </Animated.View>
         </SafeAreaView>

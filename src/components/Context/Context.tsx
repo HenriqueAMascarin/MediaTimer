@@ -1,6 +1,6 @@
-import { createContext, useRef, useContext, useState } from 'react';
-import { Animated } from 'react-native';
-export type dataType = {
+import { createContext, useRef, useContext, useState, useReducer } from 'react';
+
+interface dataType{
     dataItem: {
         scrollOne: number;
         scrollTwo: number;
@@ -16,20 +16,20 @@ export type dataType = {
     timeStamp: {state: number, changeState: React.Dispatch<React.SetStateAction<number>>}
 };
 
-type items = {
+interface items{
     children?: JSX.Element | JSX.Element[];
 };
-
 
 const DataContext = createContext<dataType>({dataItem:{scrollOne: 0, scrollTwo: 0, scrollThree: 0}, stateTimer: {state: {isPlay: false, isPaused: false}, changeState: useState}, timeStamp: {state: 0, changeState: useState}});
 
 export default function Context({ children }: items) {
     const dataNumbers = useRef({ scrollOne: 0, scrollTwo: 0, scrollThree: 0 }).current;
     const [stateTimer, changeStateTimer] = useState({isPlay: false, isPaused: false});
-    const [timestampState, changeTimestamp] = useState(0);
+
+    const [timestampState, changeTimeStamp] = useState(0);
 
     return (
-        <DataContext.Provider value={{ dataItem: dataNumbers, stateTimer: {state: stateTimer, changeState: changeStateTimer}, timeStamp: {state: timestampState, changeState: changeTimestamp} }}>
+        <DataContext.Provider value={{ dataItem: dataNumbers, stateTimer: {state: stateTimer, changeState: changeStateTimer}, timeStamp: {state: timestampState, changeState: changeTimeStamp} }}>
             {children}
         </DataContext.Provider>
     )

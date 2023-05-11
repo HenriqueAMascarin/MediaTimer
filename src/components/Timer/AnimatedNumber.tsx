@@ -1,7 +1,7 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
 
-type animatedNumber = {
+interface animatedNumber {
     itemIndex: number,
     itemNumber: number,
     scrollY: Animated.Value,
