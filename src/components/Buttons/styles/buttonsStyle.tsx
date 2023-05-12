@@ -5,6 +5,9 @@ export const buttonsStyle = StyleSheet.create({
     container: {
         marginBottom: "auto",
         marginTop: 130,
+        position: "relative",
+        alignItems:"center",
+        justifyContent: "center"
     },
     buttons: {
         backgroundColor: colorsStyle.principal.gray,
@@ -20,5 +23,10 @@ export const buttonsStyle = StyleSheet.create({
         shadowRadius: 8,
         elevation: 5,
     },
+    containerOthersButtons:{
+        position: "absolute",
+        flexDirection: "row",
+        gap: 70,
+    }   
 })
 

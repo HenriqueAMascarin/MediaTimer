@@ -1,4 +1,4 @@
-import { createContext, useRef, useContext, useState, useReducer } from 'react';
+import { createContext, useRef, useContext, useState } from 'react';
 
 interface dataType{
     dataItem: {

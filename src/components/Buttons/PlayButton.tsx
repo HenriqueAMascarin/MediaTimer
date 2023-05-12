@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native/";
 import PlaySvg from "../../assets/images/play.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
-import { useData } from "../Context/Context";
+import { useData } from "../Context/ContextTimer";
 import { heightItems } from "../Timer/Timer";
 
 export default function PlayButton() {

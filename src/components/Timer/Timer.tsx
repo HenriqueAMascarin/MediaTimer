@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { View, Animated, SafeAreaView } from "react-native";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
-import { useData } from "../Context/Context";
+import { useData } from "../Context/ContextTimer";
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
 import { sequenceTimer } from "./AnimatedSequences/AnimatedSequences";
@@ -28,7 +28,7 @@ export default function Timer() {
     const minutes = Math.floor((data.timeStamp.state % 3600) / 60).toString().padStart(2, "0");
     const seconds = Math.floor((data.timeStamp.state) % 3600 % 60).toString().padStart(2, "0");
 
-    let timerInterval: NodeJS.Timer | null = null;
+    let interval = useRef<NodeJS.Timer | null>(null);
 
     useEffect(() =>{
         listOne.animated.scrollY.addListener(({ value }) => data.dataItem.scrollOne = value);
@@ -38,18 +38,20 @@ export default function Timer() {
         if (data.stateTimer.state.isPlay) {
             sequenceTimer({lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList});
 
-            timerInterval = setInterval(() =>{
+            interval.current = setInterval(() => {
                 data.timeStamp.changeState((state) => state -= 1)
-            },1000)
+            }, 1000)
         }
     }, [data.stateTimer.state])
 
     useEffect(() =>{
-        
-    },[data.timeStamp.state])
+        if(data.timeStamp.state <= 0 && interval.current){
+            clearInterval(interval.current);
+        }
+    }, [data.timeStamp.state])
 
     return (
-        <SafeAreaView>
+        <View>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
 
                 <View style={timerStyle.listContainer}>
@@ -82,6 +84,6 @@ export default function Timer() {
                     <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds}/>
                 </View>
             </Animated.View>
-        </SafeAreaView>
+        </View>
     )
 }
