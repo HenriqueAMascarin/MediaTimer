@@ -1,8 +1,8 @@
 import { useRef, useEffect } from "react";
-import { View, Animated, SafeAreaView } from "react-native";
+import { View, Animated } from "react-native";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
-import { useData } from "../Context/ContextTimer";
+import { useData } from "../Utils/ContextTimer";
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
 import { sequenceTimer } from "./AnimatedSequences/AnimatedSequences";
@@ -12,7 +12,7 @@ export const heightItems = heightContainer / 3;
 
 export default function Timer() {
 
-    let data = useData();
+    const data = useData();
 
     const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
@@ -28,8 +28,6 @@ export default function Timer() {
     const minutes = Math.floor((data.timeStamp.state % 3600) / 60).toString().padStart(2, "0");
     const seconds = Math.floor((data.timeStamp.state) % 3600 % 60).toString().padStart(2, "0");
 
-    let interval = useRef<NodeJS.Timer | null>(null);
-
     useEffect(() =>{
         listOne.animated.scrollY.addListener(({ value }) => data.dataItem.scrollOne = value);
         listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.scrollTwo = value);
@@ -37,16 +35,12 @@ export default function Timer() {
 
         if (data.stateTimer.state.isPlay) {
             sequenceTimer({lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList});
-
-            interval.current = setInterval(() => {
-                data.timeStamp.changeState((state) => state -= 1)
-            }, 1000)
         }
     }, [data.stateTimer.state])
 
     useEffect(() =>{
-        if(data.timeStamp.state <= 0 && interval.current){
-            clearInterval(interval.current);
+        if(data.timeStamp.state <= 0 && data.interval.refValue.current){
+            clearInterval(data.interval.refValue.current);
         }
     }, [data.timeStamp.state])
 

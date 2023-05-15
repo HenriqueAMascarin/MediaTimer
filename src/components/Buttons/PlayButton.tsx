@@ -1,12 +1,13 @@
 import { TouchableOpacity } from "react-native/";
 import PlaySvg from "../../assets/images/play.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
-import { useData } from "../Context/ContextTimer";
+import { useData } from "../Utils/ContextTimer";
 import { heightItems } from "../Timer/Timer";
+import { playTimer } from "../Utils/valuesIntervalTimer";
 
 export default function PlayButton() {
 
-    let data = useData();
+    const data = useData();
 
     function timerStart() {
         if (data.dataItem.scrollOne != 0 || data.dataItem.scrollTwo != 0 || data.dataItem.scrollThree != 0) {
@@ -15,8 +16,10 @@ export default function PlayButton() {
             const numberSeconds = (data.dataItem.scrollThree / heightItems);
 
             let timeStampValue = (numberHours + numberMinutes + numberSeconds);
+
             data.stateTimer.changeState({isPlay: true, isPaused: false})
             data.timeStamp.changeState(timeStampValue);
+            playTimer(data);
         }
     }
 

@@ -1,7 +1,7 @@
 import { SafeAreaView, View } from 'react-native';
 import Buttons from './src/components/Buttons/Buttons';
 import Timer from './src/components/Timer/Timer';
-import Context from './src/components/Context/ContextTimer';
+import Context from './src/components/Utils/ContextTimer';
 
 export default function App() {
 

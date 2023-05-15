@@ -7,10 +7,10 @@ export default function Buttons(){
     return(
         <View style={buttonsStyle.container}>
             <PlayButton/>
-            <View style={buttonsStyle.containerOthersButtons}>
+            {/* <View style={buttonsStyle.containerOthersButtons}>
                 <PauseButton/>
 
-            </View>
+            </View> */}
         </View>
     )
 }
