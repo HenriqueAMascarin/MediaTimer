@@ -11,9 +11,8 @@ export const buttonsStyle = StyleSheet.create({
     },
     buttons: {
         backgroundColor: colorsStyle.principal.gray,
-        paddingLeft: 26,
-        paddingRight: 20,
-        paddingVertical: 18,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
         borderRadius: 50,
         justifyContent: 'flex-end'
     },
@@ -23,10 +22,13 @@ export const buttonsStyle = StyleSheet.create({
         shadowRadius: 8,
         elevation: 5,
     },
-    containerOthersButtons:{
+    containerPlayStateButtons:{
         position: "absolute",
         flexDirection: "row",
         gap: 70,
-    }   
+    },   
+    playStateButtons:{
+        backgroundColor: colorsStyle.principal.blue
+    }
 })
 

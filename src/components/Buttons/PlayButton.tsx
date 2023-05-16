@@ -1,9 +1,11 @@
 import { TouchableOpacity } from "react-native/";
-import PlaySvg from "../../assets/images/play.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { useData } from "../Utils/ContextTimer";
 import { heightItems } from "../Timer/Timer";
 import { playTimer } from "../Utils/valuesIntervalTimer";
+import { colorsStyle } from "../colorsStyle";
+
+import PlaySvg from "../../assets/images/play.svg";
 
 export default function PlayButton() {
 
@@ -17,15 +19,13 @@ export default function PlayButton() {
 
             let timeStampValue = (numberHours + numberMinutes + numberSeconds);
 
-            data.stateTimer.changeState({isPlay: true, isPaused: false})
-            data.timeStamp.changeState(timeStampValue);
-            playTimer(data);
+            playTimer(data, timeStampValue);
         }
     }
 
     return (
-        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton]} onPress={() => timerStart()}>
-            <PlaySvg width={26} height={32} />
+        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, {display: "none",}]} onPress={() => timerStart()}>
+            <PlaySvg width={26} height={32} fill={colorsStyle.principal.blue}/>
         </TouchableOpacity>
     )
 }

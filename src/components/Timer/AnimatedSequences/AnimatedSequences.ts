@@ -1,17 +1,25 @@
 import { Animated } from "react-native";
+import { heightContainer } from "../styles/timerStyle";
 
-interface sequenceTimerTypes{
-    lineAnimated: {
-        heightLine: Animated.Value;
-        opacityLine: Animated.Value;
-    }
-    linePointsOpacity: Animated.Value,
-    numberCountOpacity: Animated.Value,
-    listOpacity: Animated.Value,
-    gapList: Animated.Value,
-}
+// interface sequenceTimerTypes{
+//     lineAnimated: {
+//         heightLine: Animated.Value;
+//         opacityLine: Animated.Value;
+//     }
+//     linePointsOpacity: Animated.Value,
+//     numberCountOpacity: Animated.Value,
+//     listOpacity: Animated.Value,
+//     gapList: Animated.Value,
+// }
 
-export function sequenceTimer ({lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList}: sequenceTimerTypes){
+export let lineAnimated = ({heightLine: new Animated.Value(heightContainer + 10), opacityLine: new Animated.Value(1)});
+export let linePointsOpacity = new Animated.Value(0);
+export let numberCountOpacity = new Animated.Value(0);
+export let listOpacity = new Animated.Value(1);
+export let gapList = new Animated.Value(10);
+
+export function sequenceTimer (stateOption: boolean){
+
     Animated.parallel([
         Animated.timing(lineAnimated.heightLine, {
             toValue: 80,

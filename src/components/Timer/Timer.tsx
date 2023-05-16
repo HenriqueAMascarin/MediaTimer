@@ -6,6 +6,7 @@ import { useData } from "../Utils/ContextTimer";
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
 import { sequenceTimer } from "./AnimatedSequences/AnimatedSequences";
+import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList } from "./AnimatedSequences/AnimatedSequences";
 
 // 3 items showing
 export const heightItems = heightContainer / 3;
@@ -18,11 +19,7 @@ export default function Timer() {
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
     const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
 
-    let lineAnimated = ({heightLine: new Animated.Value(heightContainer + 10), opacityLine: new Animated.Value(1)});
-    let linePointsOpacity = new Animated.Value(0);
-    let numberCountOpacity = new Animated.Value(0);
-    let listOpacity = new Animated.Value(1);
-    let gapList = new Animated.Value(10);
+    
 
     const hours = Math.floor(data.timeStamp.state / 3600).toString().padStart(2, "0");
     const minutes = Math.floor((data.timeStamp.state % 3600) / 60).toString().padStart(2, "0");
@@ -34,13 +31,14 @@ export default function Timer() {
         listThree.animated.scrollY.addListener(({ value }) => data.dataItem.scrollThree = value);
 
         if (data.stateTimer.state.isPlay) {
-            sequenceTimer({lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList});
+            sequenceTimer(false);
         }
     }, [data.stateTimer.state])
 
     useEffect(() =>{
         if(data.timeStamp.state <= 0 && data.interval.refValue.current){
             clearInterval(data.interval.refValue.current);
+            data.stateTimer.changeState({isPlay: false, isPaused: false})
         }
     }, [data.timeStamp.state])
 
