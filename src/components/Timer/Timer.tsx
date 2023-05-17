@@ -29,10 +29,6 @@ export default function Timer() {
         listOne.animated.scrollY.addListener(({ value }) => data.dataItem.scrollOne = value);
         listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.scrollTwo = value);
         listThree.animated.scrollY.addListener(({ value }) => data.dataItem.scrollThree = value);
-
-        if (data.stateTimer.state.isPlay) {
-            sequenceTimer(false);
-        }
     }, [data.stateTimer.state])
 
     useEffect(() =>{

@@ -24,7 +24,7 @@ export default function PlayButton() {
     }
 
     return (
-        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, {display: "none",}]} onPress={() => timerStart()}>
+        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, {zIndex: 1}]} onPress={() => timerStart()}>
             <PlaySvg width={26} height={32} fill={colorsStyle.principal.blue}/>
         </TouchableOpacity>
     )

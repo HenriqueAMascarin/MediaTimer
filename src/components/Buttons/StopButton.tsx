@@ -8,12 +8,10 @@ import { buttonsStyle } from './styles/buttonsStyle';
 
 export default function StopButton() {
 
-    const data = useData()
+    const data = useData();
 
     function stopButton(){
-        stopTimer(data);
-        data.timeStamp.state = 0;
-        data.stateTimer.changeState({ isPlay: false, isPaused: false })
+        stopTimer(data)
     }
 
     return (
