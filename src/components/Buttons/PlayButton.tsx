@@ -1,25 +1,23 @@
 import { TouchableOpacity } from "react-native/";
 import { buttonsStyle } from "./styles/buttonsStyle";
-import { useData } from "../Utils/ContextTimer";
+import { DataType } from "../Utils/ContextTimer";
 import { heightItems } from "../Timer/Timer";
 import { playTimer } from "../Utils/valuesIntervalTimer";
-import { colorsStyle } from "../colorsStyle";
+import { colorsStyle } from "../Utils/colorsStyle";
 
 import PlaySvg from "../../assets/images/play.svg";
 
-export default function PlayButton() {
-
-    const data = useData();
+export default function PlayButton({dataInfo}: {dataInfo: DataType}) {
 
     function timerStart() {
-        if (data.dataItem.scrollOne != 0 || data.dataItem.scrollTwo != 0 || data.dataItem.scrollThree != 0) {
-            const numberHours = (data.dataItem.scrollOne / heightItems) * 3600;
-            const numberMinutes = (data.dataItem.scrollTwo / heightItems) * 60;
-            const numberSeconds = (data.dataItem.scrollThree / heightItems);
+        if (dataInfo.dataItem.scrollOne != 0 || dataInfo.dataItem.scrollTwo != 0 || dataInfo.dataItem.scrollThree != 0) {
+            const numberHours = (dataInfo.dataItem.scrollOne / heightItems) * 3600;
+            const numberMinutes = (dataInfo.dataItem.scrollTwo / heightItems) * 60;
+            const numberSeconds = (dataInfo.dataItem.scrollThree / heightItems);
 
             let timeStampValue = (numberHours + numberMinutes + numberSeconds);
 
-            playTimer(data, timeStampValue);
+            playTimer(dataInfo, timeStampValue);
         }
     }
 

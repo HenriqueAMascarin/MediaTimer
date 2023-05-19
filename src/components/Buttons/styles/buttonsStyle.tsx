@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colorsStyle } from "../../colorsStyle";
+import { colorsStyle } from "../../Utils/colorsStyle";
 
 export const buttonsStyle = StyleSheet.create({
     container: {
@@ -22,6 +22,12 @@ export const buttonsStyle = StyleSheet.create({
         shadowRadius: 8,
         elevation: 5,
     },
+    containerInitialButtons:{
+        position: "absolute",
+        flexDirection: "row",
+        gap: 70,
+        zIndex: 1,
+    },
     containerPlayStateButtons:{
         position: "absolute",
         flexDirection: "row",
@@ -29,6 +35,6 @@ export const buttonsStyle = StyleSheet.create({
     },   
     playStateButtons:{
         backgroundColor: colorsStyle.principal.blue
-    }
+    },
 })
 

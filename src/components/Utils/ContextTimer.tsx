@@ -1,6 +1,6 @@
 import { createContext, useRef, useContext, useState } from 'react';
 
-export interface dataType{
+export interface DataType{
     dataItem: {
         scrollOne: number;
         scrollTwo: number;
@@ -17,13 +17,13 @@ export interface dataType{
     interval: {refValue: React.MutableRefObject<NodeJS.Timer | null > | {current: null}}
 };
 
-interface items{
+interface Items{
     children?: JSX.Element | JSX.Element[];
 };
 
-const DataContext = createContext<dataType>({dataItem:{scrollOne: 0, scrollTwo: 0, scrollThree: 0}, stateTimer: {state: {isPlay: false, isPaused: false}, changeState: useState}, timeStamp: {state: 0, changeState: useState}, interval: {refValue: {current: null}}});
+const DataContext = createContext<DataType>({dataItem:{scrollOne: 0, scrollTwo: 0, scrollThree: 0}, stateTimer: {state: {isPlay: false, isPaused: false}, changeState: useState}, timeStamp: {state: 0, changeState: useState}, interval: {refValue: {current: null}}});
 
-export default function Context({ children }: items) {
+export default function Context({ children }: Items) {
 
     const dataNumbers = useRef({ scrollOne: 0, scrollTwo: 0, scrollThree: 0 }).current;
     

@@ -1,14 +1,14 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
 
-interface animatedNumber {
+interface AnimatedNumber {
     itemIndex: number,
     itemNumber: number,
     scrollY: Animated.Value,
     heightItem: number,
 }
 
-export default function AnimatedNumber({ itemIndex, itemNumber, scrollY, heightItem }: animatedNumber) {
+export default function AnimatedNumber({ itemIndex, itemNumber, scrollY, heightItem }: AnimatedNumber) {
 
     let numberOpacity: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.5);
     let numberTransform: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.8);

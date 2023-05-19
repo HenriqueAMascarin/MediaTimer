@@ -1,17 +1,19 @@
 import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
+import { DataType } from "../Utils/ContextTimer";
 
-interface listTimer{
+interface ListTimer{
     dataArray: {
         array: number[];
         animated: {
             scrollY: Animated.Value;
     }},
     heightItems: number,
-    opacityAnimated: Animated.Value
+    opacityAnimated: Animated.Value,
+    dataInfo: DataType,
 }
 
-export default function ListTimer({dataArray, heightItems, opacityAnimated}:listTimer) {
+export default function ListTimer({dataArray, heightItems, opacityAnimated, dataInfo}: ListTimer) {
 
     function snapArray(list: number[], elementHeight: number) {
         let array: number[] = [];
@@ -36,6 +38,7 @@ export default function ListTimer({dataArray, heightItems, opacityAnimated}:list
             snapToOffsets={snapArray(dataArray.array, heightItems)}
             scrollEventThrottle={0}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={dataInfo.stateTimer.state.isPlay ? false : true}
         >
             {dataArray.array.map((item, index) => {
             return(

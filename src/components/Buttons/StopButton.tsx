@@ -1,17 +1,14 @@
 import { TouchableOpacity } from 'react-native';
 import StopSvg from '../../assets/images/stop.svg';
-import { colorsStyle } from '../colorsStyle';
-import { useData } from '../Utils/ContextTimer';
+import { colorsStyle } from '../Utils/colorsStyle';
 import { stopTimer } from '../Utils/valuesIntervalTimer';
 import { buttonsStyle } from './styles/buttonsStyle';
+import { DataType } from '../Utils/ContextTimer';
 
-
-export default function StopButton() {
-
-    const data = useData();
+export default function StopButton({dataInfo}: {dataInfo: DataType}) {
 
     function stopButton(){
-        stopTimer(data)
+        stopTimer(dataInfo);
     }
 
     return (
