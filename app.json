@@ -1,26 +1,39 @@
 {
   "expo": {
     "name": "MediaTimer",
-    "slug": "MediaTimer",
+    "slug": "media-timer",
+    "description": "This is an timer music app",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#149CFF"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "userInterfaceStyle": "automatic",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
+      "supportsTablet": true,
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptativeIcon.png",
         "backgroundColor": "#ffffff"
       }
     },
-    "web": {
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptativeIcon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.luckthegamers.mediatimer"
+    },
+    "web": {},
+    "extra": {
+      "eas": {
+        "projectId": "e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
+      }
     }
   }
 }

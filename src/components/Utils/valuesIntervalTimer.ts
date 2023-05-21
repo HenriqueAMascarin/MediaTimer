@@ -16,7 +16,6 @@ export function stopInterval(data: DataType) {
 }
 
 export function playTimer(data: DataType, timeStampValue: number) {
-    appersButtons(true);
     sequenceTimer(true);
 
     data.stateTimer.changeState({ isPlay: true, isPaused: false });
@@ -26,14 +25,13 @@ export function playTimer(data: DataType, timeStampValue: number) {
 
 export function pauseTimer(data: DataType) {
     data.stateTimer.changeState({ isPlay: data.stateTimer.state.isPlay, isPaused: !data.stateTimer.state.isPaused });
-
+    
     data.stateTimer.state.isPaused ? startInterval(data) : stopInterval(data);
 }
 
 export function stopTimer(data: DataType) {
-    appersButtons(false);
     sequenceTimer(false);
-    
+
     data.stateTimer.changeState({ isPlay: false, isPaused: false });
     stopInterval(data);
     data.timeStamp.state = 0;

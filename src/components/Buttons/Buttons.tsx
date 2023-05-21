@@ -4,26 +4,38 @@ import PauseButton from "./PauseButton";
 import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 import { buttonsStyle } from "./styles/buttonsStyle";
-import { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
-import { useState, useEffect } from "react";
+import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
+import { useEffect } from "react";
 
 export default function Buttons() {
 
     const data = useData();
 
+    useEffect(() =>{
+        if(data.stateTimer.state.isPlay){
+            appersButtons(true);
+        }else if(!data.stateTimer.state.isPlay){
+            appersButtons(false);
+        }
+    },[data.stateTimer.state.isPlay])
+
     return (
         <View style={buttonsStyle.container}>
-            <Animated.View style={[buttonsStyle.containerInitialButtons, 
-            {opacity: opacityInitialButtons, 
-            display: data.stateTimer.state.isPlay ? "none" : "flex"}]}>
-                <PlayButton dataInfo={data}/>
-            </Animated.View>
-            <Animated.View style={[buttonsStyle.containerPlayStateButtons, 
-            {opacity: opacityOtherButtons, 
-            display: data.stateTimer.state.isPlay ? "flex" : "none"}]}>
-                <StopButton dataInfo={data}/>
-                <PauseButton dataInfo={data}/>
-            </Animated.View>
+
+            {data.stateTimer.state.isPlay
+                ? <View />
+                : <Animated.View style={[buttonsStyle.containerInitialButtons, {opacity: opacityInitialButtons}]}>
+                    <PlayButton dataInfo={data} />
+                </Animated.View>
+            }
+
+            {data.stateTimer.state.isPlay
+                ? <Animated.View style={[buttonsStyle.containerPlayStateButtons, {opacity: opacityOtherButtons}]}>
+                    <StopButton dataInfo={data} />
+                    <PauseButton dataInfo={data} />
+                </Animated.View>
+                : <View />
+            }
         </View>
     )
 }

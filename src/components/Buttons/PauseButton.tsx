@@ -4,8 +4,8 @@ import { buttonsStyle } from "./styles/buttonsStyle";
 import { pauseTimer } from "../Utils/valuesIntervalTimer";
 import { colorsStyle } from "../Utils/colorsStyle";
 
-import PauseSvg from '../../assets/images/pause.svg';
-import PlaySvg from '../../assets/images/play.svg';
+import PauseSvg from '../../../assets/images/pause.svg';
+import PlaySvg from '../../../assets/images/play.svg';
 import { DataType } from "../Utils/ContextTimer";
 
 export default function PauseButton({dataInfo}: {dataInfo: DataType}) {

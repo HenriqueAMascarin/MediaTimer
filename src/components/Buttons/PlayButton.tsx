@@ -5,7 +5,7 @@ import { heightItems } from "../Timer/Timer";
 import { playTimer } from "../Utils/valuesIntervalTimer";
 import { colorsStyle } from "../Utils/colorsStyle";
 
-import PlaySvg from "../../assets/images/play.svg";
+import PlaySvg from "../../../assets/images/play.svg";
 
 export default function PlayButton({dataInfo}: {dataInfo: DataType}) {
 
@@ -16,13 +16,12 @@ export default function PlayButton({dataInfo}: {dataInfo: DataType}) {
             const numberSeconds = (dataInfo.dataItem.scrollThree / heightItems);
 
             let timeStampValue = (numberHours + numberMinutes + numberSeconds);
-
             playTimer(dataInfo, timeStampValue);
         }
     }
 
     return (
-        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, {zIndex: 1}]} onPress={() => timerStart()}>
+        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton]} onPress={() => timerStart()}>
             <PlaySvg width={26} height={32} fill={colorsStyle.principal.blue}/>
         </TouchableOpacity>
     )
