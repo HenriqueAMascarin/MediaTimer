@@ -17,7 +17,6 @@ export function sequenceTimer(stateOption: boolean) {
         initialListOpacity: 1,
         initialGapList: 10,
     }
-
     
         Animated.parallel([
             Animated.timing(lineAnimated.heightLine, {

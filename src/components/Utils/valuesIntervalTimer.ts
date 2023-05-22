@@ -1,5 +1,5 @@
 import { DataType } from "./ContextTimer";
-import { sequenceTimer } from "../Timer/TimerAnimations/TimerAnimations";
+import { sequenceTimer } from "../Timer/TimerAnimations/TimerSequence";
 import appersButtons from "../Buttons/ButtonsAnimations/ButtonsAnimations";
 
 function startInterval(data: DataType) {

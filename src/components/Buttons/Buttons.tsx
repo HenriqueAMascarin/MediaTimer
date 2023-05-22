@@ -12,11 +12,9 @@ export default function Buttons() {
     const data = useData();
 
     useEffect(() =>{
-        if(data.stateTimer.state.isPlay){
-            appersButtons(true);
-        }else if(!data.stateTimer.state.isPlay){
-            appersButtons(false);
-        }
+
+        appersButtons(data.stateTimer.state.isPlay);
+        
     },[data.stateTimer.state.isPlay])
 
     return (

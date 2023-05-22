@@ -5,7 +5,7 @@ import { timerStyle, heightContainer } from "./styles/timerStyle";
 import { useData } from "../Utils/ContextTimer";
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
-import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList } from "./TimerAnimations/TimerAnimations";
+import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList } from "./TimerAnimations/TimerSequence";
 import { stopTimer } from "../Utils/valuesIntervalTimer";
 
 // 3 items showing
@@ -43,7 +43,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={hours}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={hours} dataInfo={data}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -55,7 +55,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listTwo} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes} dataInfo={data}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -67,7 +67,7 @@ export default function Timer() {
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listThree} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
                     
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds} dataInfo={data}/>
                 </View>
             </Animated.View>
         </View>
