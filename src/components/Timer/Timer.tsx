@@ -28,13 +28,13 @@ export default function Timer() {
         listOne.animated.scrollY.addListener(({ value }) => data.dataItem.scrollOne = value);
         listTwo.animated.scrollY.addListener(({ value }) => data.dataItem.scrollTwo = value);
         listThree.animated.scrollY.addListener(({ value }) => data.dataItem.scrollThree = value);
-    }, [data.stateTimer.state])
+    }, [data.stateTimer.state]);
 
     useEffect(() =>{
         if(data.timeStamp.state <= 0 && data.interval.refValue.current){
             stopTimer(data);
         }
-    }, [data.timeStamp.state])
+    }, [data.timeStamp.state]);
 
     return (
         <View>
