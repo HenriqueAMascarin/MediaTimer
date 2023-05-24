@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { View, Animated } from "react-native";
+import { View, Animated, SafeAreaView } from "react-native";
 import { numberList } from "./numberList";
 import { timerStyle, heightContainer } from "./styles/timerStyle";
 import { useData } from "../Utils/ContextTimer";
@@ -9,7 +9,7 @@ import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapLi
 import { stopTimer } from "../Utils/valuesIntervalTimer";
 
 // 3 items showing
-export const heightItems = heightContainer / 3;
+export const heightItems = Math.round(heightContainer / 3);
 
 export default function Timer() {
 
@@ -18,7 +18,6 @@ export default function Timer() {
     const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
     const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
-
     
     const hours = Math.floor(data.timeStamp.state / 3600).toString().padStart(2, "0");
     const minutes = Math.floor((data.timeStamp.state % 3600) / 60).toString().padStart(2, "0");
@@ -40,11 +39,11 @@ export default function Timer() {
         <View>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
 
-                <View style={timerStyle.listContainer}>
+                <SafeAreaView style={timerStyle.listContainer}>
                     <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
 
                     <TimerNumber numberCountOpacity={numberCountOpacity} number={hours} dataInfo={data}/>
-                </View>
+                </SafeAreaView>
 
                 <View style={timerStyle.listLineContainer}>
                     <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>

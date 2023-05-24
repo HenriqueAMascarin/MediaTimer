@@ -27,7 +27,7 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY, heightI
     })
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }] }]} >
+        <Animated.Text style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }] }]}>
             {itemNumber < 10 ? "0" + itemNumber : itemNumber}
         </Animated.Text>
     )

@@ -4,8 +4,8 @@ import { DataType } from "../Utils/ContextTimer";
 import { heightItems } from "../Timer/Timer";
 import { playTimer } from "../Utils/valuesIntervalTimer";
 import { colorsStyle } from "../Utils/colorsStyle";
-
 import PlaySvg from "../../../assets/images/play.svg";
+import { fontScaleMobile } from "../Timer/styles/timerStyle";
 
 export default function PlayButton({dataInfo}: {dataInfo: DataType}) {
 
@@ -22,7 +22,7 @@ export default function PlayButton({dataInfo}: {dataInfo: DataType}) {
 
     return (
         <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton]} onPress={() => timerStart()}>
-            <PlaySvg width={26} height={32} fill={colorsStyle.principal.blue}/>
+            <PlaySvg width={26 * fontScaleMobile} height={32 * fontScaleMobile} fill={colorsStyle.principal.blue}/>
         </TouchableOpacity>
     )
 }

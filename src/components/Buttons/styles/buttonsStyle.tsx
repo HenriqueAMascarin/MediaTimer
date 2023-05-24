@@ -34,7 +34,7 @@ export const buttonsStyle = StyleSheet.create({
         gap: 70,
     },   
     playStateButtons:{
-        backgroundColor: colorsStyle.principal.blue
+        backgroundColor: colorsStyle.principal.blue,
     },
 })
 

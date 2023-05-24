@@ -27,7 +27,8 @@ export default function TimerNumber({numberCountOpacity, number, dataInfo}: Time
     })
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: colorAnimated}]}
-        >{number}</Animated.Text>
+        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: colorAnimated}]}>
+            {number}
+        </Animated.Text>
     )
 }
