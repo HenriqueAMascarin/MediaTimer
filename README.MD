@@ -10,6 +10,7 @@ Aplicativo de timer de tempo com API de músicas ( em progresso ).
   - [O que busco no futuro?](#O-que-busco-no-futuro?)
   - [Links](#links)
   - [Tecnologias usadas](#Tecnologias-usadas)
+  - [Futuras tecnologias](#Futuras-tecnologias)
 
 ## Sobre
 
@@ -35,4 +36,17 @@ Aplicativo de timer de tempo com API de músicas ( em progresso ).
 
 ### Tecnologias usadas
 
- ( Área que irei escrever quando terminar o projeto )
+- React Native
+- Expo
+- React Native Animated 
+- React Pixel Ratio para criar uma responsividade com o tamanho de fonte do celular
+- React Context API
+- React SVG + SVG Transformer
+- Typescript
+
+### Futuras tecnologias
+
+- Redux
+- GraphQL
+- API de músicas
+- Jest para testes

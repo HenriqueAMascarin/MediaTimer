@@ -2,7 +2,7 @@ import { PixelRatio, StyleSheet } from "react-native";
 import { colorsStyle } from "../../Utils/colorsStyle";
 
 export const fontScaleMobile = PixelRatio.getFontScale();
-export const heightContainer = 240 * fontScaleMobile;
+export let heightContainer = 240 * fontScaleMobile;
 
 export const timerStyle = StyleSheet.create({
     
@@ -16,7 +16,7 @@ export const timerStyle = StyleSheet.create({
     },
     listContainer:{
         position: "relative",
-        height: heightContainer,
+        height: "100%",
         justifyContent: "center",
     },
     listItem:{
@@ -25,13 +25,13 @@ export const timerStyle = StyleSheet.create({
     },
     listLineContainer:{
         position: "relative",
-        height: heightContainer + 10,
+        height: "100%",
         alignItems: "center",
         justifyContent: "center",
     },
     listLine:{
         width: 3 * fontScaleMobile,
-        height: heightContainer + 10,
+        height: "100%",
         backgroundColor: colorsStyle.principal.gray,
     },
     listLinePoints:{

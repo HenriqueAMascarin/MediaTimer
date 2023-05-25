@@ -8,18 +8,19 @@ interface ListTimer{
         animated: {
             scrollY: Animated.Value;
     }},
-    heightItems: number,
     opacityAnimated: Animated.Value,
     dataInfo: DataType,
 }
 
-export default function ListTimer({dataArray, heightItems, opacityAnimated, dataInfo}: ListTimer) {
+export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTimer) {
 
     function snapArray(list: number[], elementHeight: number) {
         let array: number[] = [];
-        for (let i = 0; i < list.length; i++) {
+
+        for (let i = 0; i < list.length - 1; i++) {
             array.push(i * elementHeight);
         }
+
         return array;
     }
 
@@ -35,14 +36,15 @@ export default function ListTimer({dataArray, heightItems, opacityAnimated, data
             },
             ], { useNativeDriver: false })}
             decelerationRate={"fast"}
-            snapToOffsets={snapArray(dataArray.array, heightItems)}
+            snapToOffsets={snapArray(dataArray.array, dataInfo.heightItems.state.heightItem)}
             scrollEventThrottle={0}
+            bounces={false}
             showsVerticalScrollIndicator={false}
             scrollEnabled={dataInfo.stateTimer.state.isPlay ? false : true}
         >
             {dataArray.array.map((item, index) => {
             return(
-                <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={dataArray.animated.scrollY} heightItem={heightItems} key={index}/>
+                <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={dataArray.animated.scrollY} dataInfo={dataInfo} key={index}/>
             )
         })}
         </Animated.ScrollView>

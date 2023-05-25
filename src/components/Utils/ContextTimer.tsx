@@ -1,40 +1,65 @@
 import { createContext, useRef, useContext, useState } from 'react';
+import { heightContainer } from '../Timer/styles/timerStyle';
 
-export interface DataType{
+export interface DataType {
     dataItem: {
         scrollOne: number;
         scrollTwo: number;
         scrollThree: number;
     },
-    stateTimer: {state: {
-        isPlay: boolean;
-        isPaused: boolean;
+    stateTimer: {
+        state: {
+            isPlay: boolean;
+            isPaused: boolean;
+        }, changeState: React.Dispatch<React.SetStateAction<{
+            isPlay: boolean;
+            isPaused: boolean;
+        }>>
+    }
+    timeStamp: { state: number, changeState: React.Dispatch<React.SetStateAction<number>> },
+    interval: { refValue: React.MutableRefObject<NodeJS.Timer | null> | { current: null } },
+    heightItems: {state: {
+        heightItem: number;
+        itemsShowing: number;
     }, changeState: React.Dispatch<React.SetStateAction<{
-        isPlay: boolean;
-        isPaused: boolean;
-    }>>}
-    timeStamp: {state: number, changeState: React.Dispatch<React.SetStateAction<number>>},
-    interval: {refValue: React.MutableRefObject<NodeJS.Timer | null > | {current: null}}
+        heightItem: number;
+        itemsShowing: number;
+    }>>},
 };
 
-interface Items{
+interface Items {
     children?: JSX.Element | JSX.Element[];
 };
 
-const DataContext = createContext<DataType>({dataItem:{scrollOne: 0, scrollTwo: 0, scrollThree: 0}, stateTimer: {state: {isPlay: false, isPaused: false}, changeState: useState}, timeStamp: {state: 0, changeState: useState}, interval: {refValue: {current: null}}});
+const itemsVisible = 3;
+
+const DataContext = createContext<DataType>({ dataItem: { scrollOne: 0, scrollTwo: 0, scrollThree: 0 },             
+    stateTimer: { state: { isPlay: false, isPaused: false },
+    changeState: useState },
+    timeStamp: { state: 0, changeState: useState },
+    interval: { refValue: { current: null } },
+    heightItems: {state: {heightItem: heightContainer / itemsVisible, itemsShowing: itemsVisible}, changeState: useState} // 3 items showing to get the value
+});
 
 export default function Context({ children }: Items) {
 
     const dataNumbers = useRef({ scrollOne: 0, scrollTwo: 0, scrollThree: 0 }).current;
-    
-    const [stateTimer, changeStateTimer] = useState({isPlay: false, isPaused: false});
+
+    const [stateTimer, changeStateTimer] = useState({ isPlay: false, isPaused: false });
 
     const [timestampState, changeTimestampState] = useState(0);
 
     let refInterval = useRef<NodeJS.Timer | null>(null);
 
+    const [heightItems, changeHeightItems] = useState({heightItem: heightContainer / itemsVisible, itemsShowing: itemsVisible}); 
+
     return (
-        <DataContext.Provider value={{ dataItem: dataNumbers, stateTimer: {state: stateTimer, changeState: changeStateTimer}, timeStamp: {state: timestampState, changeState: changeTimestampState}, interval: {refValue: refInterval} }}>
+        <DataContext.Provider value={{ dataItem: dataNumbers, 
+            stateTimer: { state: stateTimer, changeState: changeStateTimer },
+            timeStamp: { state: timestampState, changeState: changeTimestampState },
+            interval: { refValue: refInterval }, 
+            heightItems:{state: heightItems, changeState: changeHeightItems}
+            }}>
             {children}
         </DataContext.Provider>
     )

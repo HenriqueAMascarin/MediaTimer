@@ -1,19 +1,19 @@
 import { useRef, useEffect } from "react";
-import { View, Animated, SafeAreaView } from "react-native";
+import { View, Animated } from "react-native";
 import { numberList } from "./numberList";
-import { timerStyle, heightContainer } from "./styles/timerStyle";
+import { timerStyle } from "./styles/timerStyle";
 import { useData } from "../Utils/ContextTimer";
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
 import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList } from "./TimerAnimations/TimerSequence";
 import { stopTimer } from "../Utils/valuesIntervalTimer";
 
-// 3 items showing
-export const heightItems = Math.round(heightContainer / 3);
-
 export default function Timer() {
 
     const data = useData();
+
+    // 3 items showing, to get the full size of container
+    const heightSizeContainer = data.heightItems.state.heightItem * data.heightItems.state.itemsShowing; 
 
     const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
@@ -38,12 +38,12 @@ export default function Timer() {
     return (
         <View>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
-
-                <SafeAreaView style={timerStyle.listContainer}>
-                    <ListTimer dataArray={listOne} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
+                <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}> 
+                
+                    <ListTimer dataArray={listOne} opacityAnimated={listOpacity} dataInfo={data} />
 
                     <TimerNumber numberCountOpacity={numberCountOpacity} number={hours} dataInfo={data}/>
-                </SafeAreaView>
+                </View>
 
                 <View style={timerStyle.listLineContainer}>
                     <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
@@ -51,8 +51,8 @@ export default function Timer() {
                     <Animated.Text style={[timerStyle.listLinePoints, {opacity: linePointsOpacity}]}>:</Animated.Text>
                 </View>
 
-                <View style={timerStyle.listContainer}>
-                    <ListTimer dataArray={listTwo} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
+                <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}>
+                    <ListTimer dataArray={listTwo} opacityAnimated={listOpacity} dataInfo={data} />
 
                     <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes} dataInfo={data}/>
                 </View>
@@ -63,8 +63,8 @@ export default function Timer() {
                     <Animated.Text style={[timerStyle.listLinePoints, {opacity: linePointsOpacity}]}>:</Animated.Text>
                 </View>
 
-                <View style={timerStyle.listContainer}>
-                    <ListTimer dataArray={listThree} heightItems={heightItems} opacityAnimated={listOpacity} dataInfo={data} />
+                <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}>
+                    <ListTimer dataArray={listThree} opacityAnimated={listOpacity} dataInfo={data} />
                     
                     <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds} dataInfo={data}/>
                 </View>
