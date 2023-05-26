@@ -39,7 +39,6 @@ export default function Timer() {
         <View>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
                 <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}> 
-                
                     <ListTimer dataArray={listOne} opacityAnimated={listOpacity} dataInfo={data} />
 
                     <TimerNumber numberCountOpacity={numberCountOpacity} number={hours} dataInfo={data}/>

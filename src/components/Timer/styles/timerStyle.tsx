@@ -31,14 +31,13 @@ export const timerStyle = StyleSheet.create({
     },
     listLine:{
         width: 3 * fontScaleMobile,
+        position: "absolute",
         height: "100%",
         backgroundColor: colorsStyle.principal.gray,
     },
     listLinePoints:{
         fontSize: 40,
-        position: "absolute",
-        left: -4,
-        width: 10 * fontScaleMobile,
+        position: "relative",
         fontWeight: "bold",
         opacity: 0,
     }

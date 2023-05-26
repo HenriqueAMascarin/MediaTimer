@@ -50,7 +50,7 @@ export function sequenceTimer(stateOption: boolean) {
                 useNativeDriver: false
             }),
             Animated.timing(gapList, {
-                toValue: stateOption ? 0 : initialValues.initialGapList,
+                toValue: stateOption ? 3 : initialValues.initialGapList,
                 duration: 400,
                 delay: 200,
                 useNativeDriver: false
