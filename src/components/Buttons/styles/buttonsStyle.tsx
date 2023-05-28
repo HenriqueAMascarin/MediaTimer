@@ -2,7 +2,12 @@ import { StyleSheet } from "react-native";
 import { colorsStyle } from "../../Utils/colorsStyle";
 
 export const buttonsStyle = StyleSheet.create({
-    container: {
+    container:{
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    buttonsContainer: {
         marginBottom: "auto",
         marginTop: 130,
         position: "relative",

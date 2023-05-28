@@ -18,7 +18,7 @@ export default function Buttons() {
     },[data.stateTimer.state.isPlay])
 
     return (
-        <View style={buttonsStyle.container}>
+        <View style={buttonsStyle.buttonsContainer}>
 
             {data.stateTimer.state.isPlay
                 ? <View />

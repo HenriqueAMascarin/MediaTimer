@@ -1,10 +1,12 @@
 import { DataType } from "./ContextTimer";
 import { sequenceTimer } from "../Timer/TimerAnimations/TimerSequence";
+import { timerPauseText } from "../Timer/TimerAnimations/TimerPauseText";
+import { numberColorTimer } from "../Timer/TimerAnimations/TimerNumbers";
 
 function startInterval(data: DataType) {
     stopInterval(data);
     data.interval.refValue.current = setInterval(() => {
-        data.timeStamp.changeState((state) => state -= 1);
+        data.runningValue.changeState((state) => state -= 1);
     }, 1000);
 
 }
@@ -21,7 +23,8 @@ export function playTimer(data: DataType, timeStampValue: number) {
     sequenceTimer(true);
 
     data.stateTimer.changeState({ isPlay: true, isPaused: false });
-    data.timeStamp.changeState(timeStampValue);
+    data.runningValue.changeState(timeStampValue);
+    data.totalValue.changeState(timeStampValue);
 
     setTimeout(() => {
         startInterval(data);
@@ -31,13 +34,20 @@ export function playTimer(data: DataType, timeStampValue: number) {
 export function pauseTimer(data: DataType) {
     data.stateTimer.changeState({ isPlay: data.stateTimer.state.isPlay, isPaused: !data.stateTimer.state.isPaused });
 
-    data.stateTimer.state.isPaused ? startInterval(data) : stopInterval(data);
+    const isPaused = !data.stateTimer.state.isPaused; // the state dont get the real value, because that we need to put ! to get real value
+    
+    numberColorTimer(isPaused);
+    timerPauseText(isPaused);
+    isPaused ? stopInterval(data) : startInterval(data);
+
 }
 
 export function stopTimer(data: DataType) {
     sequenceTimer(false);
+    timerPauseText(false);
 
     data.stateTimer.changeState({ isPlay: false, isPaused: false });
     stopInterval(data);
-    data.timeStamp.state = 0;
+    data.runningValue.state = 0;
+    data.totalValue.state = 0;
 }

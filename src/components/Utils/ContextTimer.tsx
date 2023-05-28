@@ -16,7 +16,8 @@ export interface DataType {
             isPaused: boolean;
         }>>
     }
-    timeStamp: { state: number, changeState: React.Dispatch<React.SetStateAction<number>> },
+    totalValue: {state: number, changeState: React.Dispatch<React.SetStateAction<number>>},
+    runningValue: { state: number, changeState: React.Dispatch<React.SetStateAction<number>>},
     interval: { refValue: React.MutableRefObject<NodeJS.Timer | null> | { current: null } },
     heightItems: {state: {
         heightItem: number;
@@ -36,7 +37,8 @@ const itemsVisible = 3;
 const DataContext = createContext<DataType>({ dataItem: { scrollOne: 0, scrollTwo: 0, scrollThree: 0 },             
     stateTimer: { state: { isPlay: false, isPaused: false },
     changeState: useState },
-    timeStamp: { state: 0, changeState: useState },
+    totalValue: {state: 0, changeState: useState},
+    runningValue: { state: 0, changeState: useState },
     interval: { refValue: { current: null } },
     heightItems: {state: {heightItem: heightContainer / itemsVisible, itemsShowing: itemsVisible}, changeState: useState} // 3 items showing to get the value
 });
@@ -47,7 +49,9 @@ export default function Context({ children }: Items) {
 
     const [stateTimer, changeStateTimer] = useState({ isPlay: false, isPaused: false });
 
-    const [timestampState, changeTimestampState] = useState(0);
+    const [totalValue, changeTotalValue] = useState(0);
+
+    const [runningValue, changeRunningValue] = useState(0);
 
     let refInterval = useRef<NodeJS.Timer | null>(null);
 
@@ -56,7 +60,8 @@ export default function Context({ children }: Items) {
     return (
         <DataContext.Provider value={{ dataItem: dataNumbers, 
             stateTimer: { state: stateTimer, changeState: changeStateTimer },
-            timeStamp: { state: timestampState, changeState: changeTimestampState },
+            totalValue: {state: totalValue, changeState: changeTotalValue},
+            runningValue: {state: runningValue, changeState: changeRunningValue},
             interval: { refValue: refInterval }, 
             heightItems:{state: heightItems, changeState: changeHeightItems}
             }}>

@@ -16,11 +16,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptativeIcon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +30,12 @@
       "eas": {
         "projectId": "e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
     }
   }
 }
