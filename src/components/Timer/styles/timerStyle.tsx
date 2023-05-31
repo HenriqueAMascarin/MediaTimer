@@ -47,14 +47,14 @@ export const timerStyle = StyleSheet.create({
     },
     pauseText:{
         fontSize: 30,
-        top: "22%",
+        top: 50,
         color: colorsStyle.principal.blackGray,
         position: "absolute",
         opacity: 0,
     },
     totalTimeText:{
         fontSize: 24,
-        bottom: "22%",
+        bottom: 40,
         color: colorsStyle.principal.blackGray,
         position: "absolute",
         opacity: 0,
