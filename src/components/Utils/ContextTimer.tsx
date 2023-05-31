@@ -19,13 +19,6 @@ export interface DataType {
     totalValue: {state: number, changeState: React.Dispatch<React.SetStateAction<number>>},
     runningValue: { state: number, changeState: React.Dispatch<React.SetStateAction<number>>},
     interval: { refValue: React.MutableRefObject<NodeJS.Timer | null> | { current: null } },
-    heightItems: {state: {
-        heightItem: number;
-        itemsShowing: number;
-    }, changeState: React.Dispatch<React.SetStateAction<{
-        heightItem: number;
-        itemsShowing: number;
-    }>>},
 };
 
 interface Items {
@@ -40,7 +33,6 @@ const DataContext = createContext<DataType>({ dataItem: { scrollOne: 0, scrollTw
     totalValue: {state: 0, changeState: useState},
     runningValue: { state: 0, changeState: useState },
     interval: { refValue: { current: null } },
-    heightItems: {state: {heightItem: heightContainer / itemsVisible, itemsShowing: itemsVisible}, changeState: useState} // 3 items showing to get the value
 });
 
 export default function Context({ children }: Items) {
@@ -55,15 +47,12 @@ export default function Context({ children }: Items) {
 
     let refInterval = useRef<NodeJS.Timer | null>(null);
 
-    const [heightItems, changeHeightItems] = useState({heightItem: heightContainer / itemsVisible, itemsShowing: itemsVisible}); 
-
     return (
         <DataContext.Provider value={{ dataItem: dataNumbers, 
             stateTimer: { state: stateTimer, changeState: changeStateTimer },
             totalValue: {state: totalValue, changeState: changeTotalValue},
             runningValue: {state: runningValue, changeState: changeRunningValue},
             interval: { refValue: refInterval }, 
-            heightItems:{state: heightItems, changeState: changeHeightItems}
             }}>
             {children}
         </DataContext.Provider>

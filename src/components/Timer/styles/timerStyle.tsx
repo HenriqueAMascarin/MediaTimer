@@ -1,8 +1,11 @@
-import { PixelRatio, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { colorsStyle } from "../../Utils/colorsStyle";
 
-export const fontScaleMobile = PixelRatio.getFontScale();
-export let heightContainer = 240 * fontScaleMobile;
+export let heightItem = 70;
+export let heightContainer = heightItem * 3;
+
+let fontSizeItem = heightItem - 10;
+
 
 export const timerStyle = StyleSheet.create({
     
@@ -16,11 +19,12 @@ export const timerStyle = StyleSheet.create({
     },
     listContainer:{
         position: "relative",
-        height: "100%",
+        height: heightContainer, //height is only heightContainer because if you put + 10 they not gonna be in the center with the number tables.
         justifyContent: "center",
     },
     listItem:{
-        fontSize: 60,
+        fontSize: fontSizeItem,
+        height: heightItem, 
         color: colorsStyle.principal.black,
     },
     listLineContainer:{
@@ -30,7 +34,7 @@ export const timerStyle = StyleSheet.create({
         justifyContent: "center",
     },
     listLine:{
-        width: 3 * fontScaleMobile,
+        width: 3,
         position: "absolute",
         height: "100%",
         backgroundColor: colorsStyle.principal.gray,
@@ -43,14 +47,14 @@ export const timerStyle = StyleSheet.create({
     },
     pauseText:{
         fontSize: 30,
-        top: "25%",
+        top: "22%",
         color: colorsStyle.principal.blackGray,
         position: "absolute",
         opacity: 0,
     },
     totalTimeText:{
         fontSize: 24,
-        bottom: "25%",
+        bottom: "22%",
         color: colorsStyle.principal.blackGray,
         position: "absolute",
         opacity: 0,

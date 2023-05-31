@@ -10,6 +10,6 @@ interface PauseText{
 export default function PauseText({dataInfo}: PauseText){
 
     return(
-        <Animated.Text style={[timerStyle.pauseText, {opacity: textOpacity}]}>Pausado</Animated.Text>
+        <Animated.Text style={[timerStyle.pauseText, {opacity: textOpacity}]} allowFontScaling={false}>Pausado</Animated.Text>
     )
 }

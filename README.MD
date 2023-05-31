@@ -29,10 +29,11 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 
 ### O que falta no projeto?
 
-- Algumas tecnologias.
-- Funcionalidade de músicas (API).
-- Tema branco e preto igual ao design.
-- Melhorias.
+- Algumas tecnologias
+- Funcionalidade de músicas (API)
+- Tema branco e preto igual ao design
+- Botão pra trocar o tamanho da interface do aplicativo
+- Melhorias
 
 ### Links
 
@@ -47,7 +48,6 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 - React Native
 - Expo
 - React Native Animated 
-- React Pixel Ratio para criar uma responsividade com o tamanho de fonte do celular
 - React Context API
 - React SVG + SVG Transformer
 - Typescript

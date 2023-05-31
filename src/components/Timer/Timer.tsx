@@ -14,8 +14,6 @@ export default function Timer() {
 
     const data = useData();
 
-    const heightSizeContainer = data.heightItems.state.heightItem * data.heightItems.state.itemsShowing; 
-
     const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
     const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
     const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
@@ -41,10 +39,10 @@ export default function Timer() {
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
                 <PauseText dataInfo={data}/>
 
-                <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}> 
+                <View style={timerStyle.listContainer}> 
                     <ListTimer dataArray={listOne} opacityAnimated={listOpacity} dataInfo={data} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={hours} dataInfo={data}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={hours}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -53,10 +51,10 @@ export default function Timer() {
                     <Animated.Text style={[timerStyle.listLinePoints, {opacity: linePointsOpacity}]}>:</Animated.Text>
                 </View>
 
-                <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}>
+                <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listTwo} opacityAnimated={listOpacity} dataInfo={data} />
 
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes} dataInfo={data}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes}/>
                 </View>
 
                 <View style={timerStyle.listLineContainer}>
@@ -65,10 +63,10 @@ export default function Timer() {
                     <Animated.Text style={[timerStyle.listLinePoints, {opacity: linePointsOpacity}]}>:</Animated.Text>
                 </View>
 
-                <View style={[timerStyle.listContainer, {height: heightSizeContainer}]}>
+                <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listThree} opacityAnimated={listOpacity} dataInfo={data} />
                     
-                    <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds} dataInfo={data}/>
+                    <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds}/>
                 </View>
 
                 <TotalTimeText dataInfo={data}/>

@@ -1,17 +1,14 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
-import { DataType } from "../Utils/ContextTimer";
-import { useEffect } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
-import { colorNumber, numberColorTimer  } from "./TimerAnimations/TimerNumbers";
+import { colorNumber  } from "./TimerAnimations/TimerNumbers";
 
 interface TimerNumber {
     numberCountOpacity: Animated.Value,
     number: string,
-    dataInfo: DataType
 }
 
-export default function TimerNumber({numberCountOpacity, number, dataInfo}: TimerNumber) {
+export default function TimerNumber({numberCountOpacity, number}: TimerNumber) {
 
     let colorAnimated = colorNumber.interpolate({
         inputRange: [0, 1],
@@ -20,7 +17,7 @@ export default function TimerNumber({numberCountOpacity, number, dataInfo}: Time
     })
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: colorAnimated}]}>
+        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: colorAnimated}]} allowFontScaling={false}>
             {number}
         </Animated.Text>
     )

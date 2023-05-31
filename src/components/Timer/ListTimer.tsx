@@ -1,6 +1,7 @@
 import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
 import { DataType } from "../Utils/ContextTimer";
+import { heightItem } from "./styles/timerStyle";
 
 interface ListTimer{
     dataArray: {
@@ -36,7 +37,7 @@ export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTi
             },
             ], { useNativeDriver: false })}
             decelerationRate={"fast"}
-            snapToOffsets={snapArray(dataArray.array, dataInfo.heightItems.state.heightItem)}
+            snapToOffsets={snapArray(dataArray.array, heightItem)}
             scrollEventThrottle={0}
             bounces={false}
             showsVerticalScrollIndicator={false}
@@ -44,7 +45,7 @@ export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTi
         >
             {dataArray.array.map((item, index) => {
             return(
-                <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={dataArray.animated.scrollY} dataInfo={dataInfo} key={index}/>
+                <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={dataArray.animated.scrollY} key={index}/>
             )
         })}
         </Animated.ScrollView>
