@@ -9,6 +9,7 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
   - [O que aprendi?](#O-que-aprendi?)
   - [O que busco no futuro?](#O-que-busco-no-futuro?)
   - [O que falta no projeto?](#O-que-falta-no-projeto?)
+  - [Demonstração](#demonstração)
   - [Links](#links)
   - [Tecnologias usadas](#Tecnologias-usadas)
   - [Futuras tecnologias](#Futuras-tecnologias)
@@ -35,9 +36,18 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 - Botão pra trocar o tamanho da interface do aplicativo
 - Melhorias
 
-### Links
+### Demonstração 
 
 - Baixar demonstração atual: [clique aqui]().
+
+Passo a passo
+1 - Entre no link 
+2 - Clique em install e fazer o download do arquivo
+3 - Clique em abrir e instalar
+4 - Caso aparecer app de risco bloqueado, clique em mais detalhes e instalar assim mesmo.
+5 - Por fim abra o aplicativo!
+
+### Links
 
 - Design no Figma: [clique aqui](https://www.figma.com/file/XTRDCbSVe8lHtwkXK1Z5T7/Media-Timer?type=design&node-id=0%3A1&t=I2CeKk7yJGLngWCy-1).
 

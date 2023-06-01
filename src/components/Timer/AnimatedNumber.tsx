@@ -1,7 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
-import { DataType } from "../Utils/ContextTimer";
-import { LayoutChangeEvent } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 
 interface AnimatedNumber {

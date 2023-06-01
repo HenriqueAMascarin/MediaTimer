@@ -37,7 +37,7 @@ export default function Timer() {
     return (
         <View>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
-                <PauseText dataInfo={data}/>
+                <PauseText />
 
                 <View style={timerStyle.listContainer}> 
                     <ListTimer dataArray={listOne} opacityAnimated={listOpacity} dataInfo={data} />

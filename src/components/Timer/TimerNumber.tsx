@@ -1,7 +1,7 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
 import { colorsStyle } from "../Utils/colorsStyle";
-import { colorNumber  } from "./TimerAnimations/TimerNumbers";
+import { colorNumber } from "./TimerAnimations/TimerPause";
 
 interface TimerNumber {
     numberCountOpacity: Animated.Value,
