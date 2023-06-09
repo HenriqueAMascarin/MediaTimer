@@ -1,5 +1,4 @@
 import { createContext, useRef, useContext, useState } from 'react';
-import { heightContainer } from '../Timer/styles/timerStyle';
 
 export interface DataType {
     dataItem: {
@@ -24,8 +23,6 @@ export interface DataType {
 interface Items {
     children?: JSX.Element | JSX.Element[];
 };
-
-const itemsVisible = 3;
 
 const DataContext = createContext<DataType>({ dataItem: { scrollOne: 0, scrollTwo: 0, scrollThree: 0 },             
     stateTimer: { state: { isPlay: false, isPaused: false },
