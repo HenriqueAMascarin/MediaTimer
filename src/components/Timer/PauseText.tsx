@@ -1,5 +1,4 @@
 import { Animated } from "react-native";
-import { DataType } from "../Utils/ContextTimer";
 import { timerStyle } from "./styles/timerStyle";
 import { textOpacity } from "./TimerAnimations/TimerPause";
 

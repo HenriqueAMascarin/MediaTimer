@@ -1,24 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-    scrollOne: 0, 
-    scrollTwo: 0, 
+    scrollOne: 0,
+    scrollTwo: 0,
     scrollThree: 0,
 }
-
-type payloadScroll = typeof initialState;
 
 export const dataNumbersSlice = createSlice({
     name: "dataNumbers",
     initialState,
     reducers: {
-        changeScrollValues: (state, action: PayloadAction<payloadScroll>) => {
-            state.scrollOne = action.payload.scrollOne;
-            state.scrollTwo = action.payload.scrollTwo;
-            state.scrollThree = action.payload.scrollThree;
+        changeScrollOne: (state, action: PayloadAction<number>) => {
+            state.scrollOne = action.payload;
         },
+        changeScrollTwo: (state, action: PayloadAction<number>) => {
+            state.scrollTwo = action.payload;
+        },
+        changeScrollThree: (state, action: PayloadAction<number>) => {
+            state.scrollThree = action.payload;
+        }
     }
 })
 
-export const {changeScrollValues} = dataNumbersSlice.actions;
+export const { changeScrollOne, changeScrollTwo, changeScrollThree} = dataNumbersSlice.actions;
 export const dataNumbersReducer = dataNumbersSlice.reducer;

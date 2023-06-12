@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: NodeJS.Timer | null = null;
+type initialType = NodeJS.Timer;
 
-type initialType = typeof initialState;
+const initialState: initialType = setTimeout(() =>{});
+
 
 export const timerIntervalSlice = createSlice({
     name: "timerInterval",
@@ -13,3 +14,6 @@ export const timerIntervalSlice = createSlice({
         }
     }
 })
+
+export const { changeTimerInterval } = timerIntervalSlice.actions;
+export const timerIntervalReducer = timerIntervalSlice.reducer;

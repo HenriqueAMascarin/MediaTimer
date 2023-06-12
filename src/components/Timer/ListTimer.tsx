@@ -1,7 +1,7 @@
 import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
-import { DataType } from "../Utils/ContextTimer";
 import { heightItem } from "./styles/timerStyle";
+import { RootState } from "../Utils/Redux/store";
 
 interface ListTimer{
     dataArray: {
@@ -10,7 +10,7 @@ interface ListTimer{
             scrollY: Animated.Value;
     }},
     opacityAnimated: Animated.Value,
-    dataInfo: DataType,
+    dataInfo: RootState,
 }
 
 export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTimer) {
@@ -41,7 +41,7 @@ export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTi
             scrollEventThrottle={0}
             bounces={false}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={dataInfo.stateTimer.state.isPlay ? false : true}
+            scrollEnabled={dataInfo.stateTimer.isPlay ? false : true}
         >
             {dataArray.array.map((item, index) => {
             return(

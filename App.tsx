@@ -1,11 +1,12 @@
 import Components from './src/components/Components';
-import Context from './src/components/Utils/ContextTimer';
+import { store } from './src/components/Utils/Redux/store';
+import { Provider } from 'react-redux/';
 
 export default function App() {
 
   return (
-    <Context>
+    <Provider store={store}>
       <Components/>
-    </Context>
+    </Provider>
   );
 }

@@ -6,13 +6,14 @@ import { colorsStyle } from "../Utils/colorsStyle";
 
 import PauseSvg from '../../../assets/images/pause.svg';
 import PlaySvg from '../../../assets/images/play.svg';
-import { DataType } from "../Utils/ContextTimer";
 
-export default function PauseButton({dataInfo}: {dataInfo: DataType}) {
+import { buttonInterface } from "./Buttons";
+
+export default function PauseButton({dataInfo, dispatch}: buttonInterface) {
 
     return (
-        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => pauseTimer(dataInfo)}>
-            {dataInfo.stateTimer.state.isPaused ?
+        <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => pauseTimer({dataInfo: dataInfo, dispatch: dispatch})}>
+            {dataInfo.stateTimer.isPaused ?
                 <PlaySvg width={26} height={32} fill={colorsStyle.principal.white} />
                 :
                 <PauseSvg width={26} height={32} fill={colorsStyle.principal.white} />
