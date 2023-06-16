@@ -1,9 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { View, Animated, Text } from "react-native";
 
 import { timerStyle } from "./styles/timerStyle";
-
-import { stopTimer } from "../Utils/valuesIntervalTimer";
 
 import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList } from "./TimerAnimations/TimerSequence";
 
@@ -15,8 +13,7 @@ import TotalTimeText from "./TotalTimeText";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useDispatch } from "react-redux";
-import { changeScrollOne, changeScrollTwo, changeScrollThree } from "../Utils/Redux/features/dataNumbers-slice";
-import StateManagement from "../Utils/StateManagement";
+import StateManagement from "./StateManagement";
 
 export default function Timer() {
 
@@ -36,7 +33,6 @@ export default function Timer() {
             <StateManagement dataInfo={data} dispatch={dispatch} animatedListValues={{scrollOne: listOne.animated.scrollY, scrollTwo: listTwo.animated.scrollY, scrollThree: listThree.animated.scrollY}}/>
             <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
                 <PauseText />
-
                 <View style={timerStyle.listContainer}>
                     <ListTimer dataArray={listOne} opacityAnimated={listOpacity} dataInfo={data} />
 

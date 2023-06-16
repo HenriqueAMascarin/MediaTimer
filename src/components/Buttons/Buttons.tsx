@@ -1,21 +1,15 @@
 import { Animated, View } from "react-native";
+import { useEffect } from "react";
+
 import PauseButton from "./PauseButton";
 import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
+
 import { buttonsStyle } from "./styles/buttonsStyle";
 import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
-import { useEffect } from "react";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useDispatch } from "react-redux";
-
-import { RootState } from "../Utils/Redux/store";
-import { AnyAction, Dispatch } from "redux";
-
-export interface buttonInterface {
-    dataInfo: RootState,
-    dispatch: Dispatch<AnyAction>
-}
 
 export default function Buttons() {
 

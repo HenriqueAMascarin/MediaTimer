@@ -10,17 +10,13 @@ export const dataNumbersSlice = createSlice({
     name: "dataNumbers",
     initialState,
     reducers: {
-        changeScrollOne: (state, action: PayloadAction<number>) => {
-            state.scrollOne = action.payload;
+        changeScrollValues: (state, action: PayloadAction<typeof initialState>) => {
+            state.scrollOne = action.payload.scrollOne;
+            state.scrollTwo = action.payload.scrollTwo;
+            state.scrollThree = action.payload.scrollThree;
         },
-        changeScrollTwo: (state, action: PayloadAction<number>) => {
-            state.scrollTwo = action.payload;
-        },
-        changeScrollThree: (state, action: PayloadAction<number>) => {
-            state.scrollThree = action.payload;
-        }
     }
 })
 
-export const { changeScrollOne, changeScrollTwo, changeScrollThree} = dataNumbersSlice.actions;
+export const { changeScrollValues } = dataNumbersSlice.actions;
 export const dataNumbersReducer = dataNumbersSlice.reducer;
