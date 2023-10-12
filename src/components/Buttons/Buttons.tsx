@@ -2,6 +2,8 @@ import { Animated, View } from "react-native";
 import { useEffect } from "react";
 
 import PauseButton from "./PauseButton";
+import MusicButton from "./MusicButton";
+import HistoryButton from "./HistoryButton";
 import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 
@@ -14,7 +16,6 @@ import { useDispatch } from "react-redux";
 export default function Buttons() {
 
     const data = useAppSelector((state) => state);
-    const dispatch = useDispatch();
 
     useEffect(() =>{
 
@@ -28,14 +29,16 @@ export default function Buttons() {
             {data.stateTimer.isPlay
                 ? <View />
                 : <Animated.View style={[buttonsStyle.containerInitialButtons, {opacity: opacityInitialButtons}]}>
-                    <PlayButton dataInfo={data} dispatch={dispatch}/>
+                    <MusicButton dataInfo={data}/>
+                    <PlayButton/>
+                    <HistoryButton/>
                 </Animated.View>
             }
 
             {data.stateTimer.isPlay
                 ? <Animated.View style={[buttonsStyle.containerPlayStateButtons, {opacity: opacityOtherButtons}]}>
-                    <StopButton dataInfo={data} dispatch={dispatch}/>
-                    <PauseButton dataInfo={data} dispatch={dispatch}/>
+                    <StopButton/>
+                    <PauseButton dataInfo={data}/>
                 </Animated.View>
                 : <View />
             }

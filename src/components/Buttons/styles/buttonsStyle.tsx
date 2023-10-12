@@ -2,43 +2,49 @@ import { StyleSheet } from "react-native";
 import { colorsStyle } from "../../Utils/colorsStyle";
 
 export const buttonsStyle = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
+        marginTop: 70,
     },
     buttonsContainer: {
         marginBottom: "auto",
-        marginTop: 130,
+        marginTop: 60,
         position: "relative",
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "center"
     },
     buttons: {
         backgroundColor: colorsStyle.principal.gray,
-        paddingHorizontal: 20,
-        paddingVertical: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
         borderRadius: 50,
-        justifyContent: 'flex-end'
+        width: 60,
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     principalButton: {
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 8,
         elevation: 5,
+        width: 68,
+        height: 68,
     },
-    containerInitialButtons:{
+    containerInitialButtons: {
         position: "absolute",
         flexDirection: "row",
-        gap: 70,
+        gap: 50,
         zIndex: 1,
     },
-    containerPlayStateButtons:{
+    containerPlayStateButtons: {
         position: "absolute",
         flexDirection: "row",
         gap: 70,
-    },   
-    playStateButtons:{
+    },
+    playStateButtons: {
         backgroundColor: colorsStyle.principal.blue,
     },
 })

@@ -6,7 +6,6 @@ export let heightContainer = heightItem * 3;
 
 let fontSizeItem = heightItem - 10;
 
-
 export const timerStyle = StyleSheet.create({
     
     listsContainer:{

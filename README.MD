@@ -67,6 +67,4 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 
 ### Futuras tecnologias
 
-- GraphQL
 - API de músicas
-- Jest para testes

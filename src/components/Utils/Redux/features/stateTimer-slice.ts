@@ -7,8 +7,6 @@ const initialState = {
     isInterval: false,
 }
 
-type initialType = typeof initialState;
-
 export const stateTimerSlice = createSlice({
     name: "stateTimer",
     initialState,
