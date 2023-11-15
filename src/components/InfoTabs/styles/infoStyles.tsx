@@ -5,17 +5,15 @@ export const infoStyles = StyleSheet.create({
   container: {
     height: 80,
     alignSelf: 'stretch',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    gap: 20
   },
   buttonsInfo: {
-    backgroundColor: 'red',
     display: "flex",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 50,
-    width: 90,
-    height: 200,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    minWidth: 80,
+    paddingHorizontal: 10,
+    paddingVertical: 5
   }
 });

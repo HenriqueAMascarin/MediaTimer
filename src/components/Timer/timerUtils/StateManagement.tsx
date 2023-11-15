@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { heightItem } from "../styles/timerStyle";
 import { Animated, Vibration } from "react-native";
+import { Audio } from 'expo-av'
 
 import { pauseTimer, playTimer, stopTimer } from "./valuesIntervalTimer";
 import { changeScrollValues } from "../../Utils/Redux/features/dataNumbers-slice";
@@ -17,7 +18,7 @@ interface StateManagement {
 }
 
 export default function StateManagement(values: StateManagement) {
-  const [intervalState, changeIntervalState] = useState(setTimeout(() => {}, 0));
+  const [intervalState, changeIntervalState] = useState(setTimeout(() => { }, 0));
   const [havePlayed, changeHavePlayed] = useState(false);
 
   const dataInfo = useAppSelector((state) => state);
@@ -28,19 +29,19 @@ export default function StateManagement(values: StateManagement) {
   }
 
   useEffect(() => {
-      if (dataInfo.stateTimer.isPickingValue && !dataInfo.stateTimer.isPlay) {
-        const hours = Number(JSON.stringify(values.listOneValue));
-        const minutes = Number(JSON.stringify(values.listTwoValue));
-        const seconds = Number(JSON.stringify(values.listThreeValue));
-  
-        if (hours != 0 || minutes != 0 || seconds != 0) {
-          changeHavePlayed(true);
-          dispatch(changeScrollValues({ scrollOne: hours, scrollTwo: minutes, scrollThree: seconds }));
-          dispatch(changeIsPlay(true));
-        } else {
-          dispatch(changeIsPickingValue(false));
-        }
+    if (dataInfo.stateTimer.isPickingValue && !dataInfo.stateTimer.isPlay) {
+      const hours = Number(JSON.stringify(values.listOneValue));
+      const minutes = Number(JSON.stringify(values.listTwoValue));
+      const seconds = Number(JSON.stringify(values.listThreeValue));
+
+      if (hours != 0 || minutes != 0 || seconds != 0) {
+        changeHavePlayed(true);
+        dispatch(changeScrollValues({ scrollOne: hours, scrollTwo: minutes, scrollThree: seconds }));
+        dispatch(changeIsPlay(true));
+      } else {
+        dispatch(changeIsPickingValue(false));
       }
+    }
   }, [dataInfo.stateTimer.isPickingValue]);
 
   useEffect(() => {
@@ -49,9 +50,9 @@ export default function StateManagement(values: StateManagement) {
         let valueRunning = dataInfo.timerValues.runningValue;
 
         changeIntervalState(setInterval(() => {
-            valueRunning--;
-            return dispatch(changeRunningValue(valueRunning));
-          }, 1000))
+          valueRunning--;
+          return dispatch(changeRunningValue(valueRunning));
+        }, 1000))
 
       } else {
         stopTimerInterval();
@@ -62,7 +63,19 @@ export default function StateManagement(values: StateManagement) {
   useEffect(() => {
     if (havePlayed) {
       if (dataInfo.stateTimer.isPlay) {
-        playTimer(dataInfo , heightItem);
+        playTimer(dataInfo, heightItem);
+
+        if (dataInfo.stateMusic.musicLink) {
+          const playSound = async () => {
+            const { sound } = await Audio.Sound.createAsync(
+              { uri:  '../../../../assets/sounds/nature.wav'},
+              { shouldPlay: true }
+            )
+
+            console.log(dataInfo.stateMusic.musicLink)
+          }
+          playSound();
+        }
       } else {
         stopTimerInterval();
         stopTimer();
