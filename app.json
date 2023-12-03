@@ -16,7 +16,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "UIBackgroundModes": [
+        "audio"
+      ],
+      "bundleIdentifier": "com.luckthegamers.mediatimer"
     },
     "android": {
       "adaptiveIcon": {

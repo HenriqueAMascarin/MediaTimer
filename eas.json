@@ -10,8 +10,7 @@
     "preview": {
       "android": {
         "buildType": "apk"
-      },
-      "distribution": "internal"
+      }
     },
     "preview2": {
       "android": {

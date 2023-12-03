@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AVPlaybackSource } from "expo-av";
 
 type initialType = {
     isSelection: boolean,
@@ -9,7 +10,7 @@ type initialType = {
         fire: boolean,
         youtube: boolean
     },
-    musicLink: string,
+    musicLink: AVPlaybackSource | null,
 }
 
 const initialState: initialType = {
@@ -20,7 +21,7 @@ const initialState: initialType = {
         fire: false,
         youtube: false
     },
-    musicLink: ''
+    musicLink: null
 }
 
 export const stateMusicSlice = createSlice({
