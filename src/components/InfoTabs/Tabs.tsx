@@ -26,12 +26,12 @@ export default function Tabs() {
   function changeMusic(changeBtn: {}, musicLink: AVPlaybackSource) {
 
     let newBtnsObj = data.stateMusic.pressBtn;
-
-    Object.keys(newBtnsObj).forEach((key) => {
+    
+    for (let key in newBtnsObj) {
       newBtnsObj[key] = false;
-    })
-    newBtnsObj = { ...newBtnsObj, ...changeBtn }
-    dispatch(changePressBtn(newBtnsObj));
+    }
+
+    dispatch(changePressBtn({...newBtnsObj, ...changeBtn}));
 
     musicLink ? dispatch(changeMusicLink(musicLink)) : null;
   }

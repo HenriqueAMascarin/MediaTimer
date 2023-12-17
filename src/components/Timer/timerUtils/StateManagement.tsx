@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 
 import { Audio, AVPlaybackSource } from 'expo-av';
+import { changeSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -66,6 +67,8 @@ export default function StateManagement(values: StateManagement) {
   useEffect(() => {
     if (havePlayed) {
       if (dataInfo.stateTimer.isPlay) {
+        dispatch(changeSelection(false));
+
         (async function playSound() {
           if (dataInfo.stateMusic.musicLink) {
             const { sound } = await Audio.Sound.createAsync(dataInfo.stateMusic.musicLink);
