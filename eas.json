@@ -5,10 +5,12 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "buildType": "apk"
     },
     "preview": {
       "distribution": "internal",
+      "buildType": "apk",
       "android": {
         "buildType": "apk"
       }
@@ -20,6 +22,9 @@
     },
     "preview3": {
       "developmentClient": true
+    },
+    "preview4": {
+      "distribution": "internal"
     },
     "production": {}
   },
