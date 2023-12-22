@@ -12,7 +12,7 @@ export default function HistoryButton() {
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons]} onPress={() => dispatch(changeIsPickingValue(true))}>
+    <TouchableOpacity style={[buttonsStyle.buttons]} onPressIn={() => dispatch(changeIsPickingValue(true))}>
       <HistorySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.black} />
     </TouchableOpacity>
   );

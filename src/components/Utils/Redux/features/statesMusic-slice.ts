@@ -4,7 +4,7 @@ import { AVPlaybackSource } from "expo-av";
 type initialType = {
     isSelection: boolean,
     pressBtn: {
-        [key: string]: boolean,
+        [key: string | number]: boolean,
         forest: boolean,
         waves: boolean,
         fire: boolean,

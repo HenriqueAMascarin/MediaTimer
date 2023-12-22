@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { heightItem } from "../styles/timerStyle";
 import { Animated, Vibration } from "react-native";
@@ -10,7 +10,7 @@ import { changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/s
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 
-import { Audio, AVPlaybackSource } from 'expo-av';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import { changeSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 interface StateManagement {
@@ -23,7 +23,8 @@ export default function StateManagement(values: StateManagement) {
   const [intervalState, changeIntervalState] = useState(setTimeout(() => { }, 0));
   const [havePlayed, changeHavePlayed] = useState(false);
 
-  const [sound, setSound] = useState<Audio.Sound>();
+  const soundRef = useRef(new Audio.Sound());
+  soundRef.current.setIsLoopingAsync(true);
 
   const dataInfo = useAppSelector((state) => state);
   const dispatch = useDispatch();
@@ -66,22 +67,25 @@ export default function StateManagement(values: StateManagement) {
 
   useEffect(() => {
     if (havePlayed) {
-      if (dataInfo.stateTimer.isPlay) {
-        dispatch(changeSelection(false));
 
-        (async function playSound() {
+      if (dataInfo.stateTimer.isPlay) {
+        (async function play() {
+          dispatch(changeSelection(false));
+
           if (dataInfo.stateMusic.musicLink) {
             const { sound } = await Audio.Sound.createAsync(dataInfo.stateMusic.musicLink);
-            setSound(sound);
-
-            await sound.playAsync();
+            soundRef.current = sound
+            soundRef.current.playAsync();
           }
-        })();
 
-        playTimer(dataInfo, heightItem);
+          playTimer(dataInfo, heightItem);
+        })();
       } else {
         stopTimerInterval();
-        (async () => await sound?.stopAsync())();
+        if (soundRef.current) {
+          soundRef.current.stopAsync();
+          soundRef.current = new Audio.Sound();
+        }
         stopTimer();
         Vibration.vibrate(400);
       }
@@ -91,16 +95,14 @@ export default function StateManagement(values: StateManagement) {
   useEffect(() => {
     if (dataInfo.stateTimer.isPlay) {
       pauseTimer(dataInfo);
-      if (dataInfo.stateTimer.isPaused) {
-        (async () => await sound?.pauseAsync())();
-
+      if (dataInfo.stateTimer.isPaused && soundRef.current) {
+        soundRef.current.pauseAsync();
       } else {
-        (async () => {
-          if (dataInfo.stateMusic.musicLink) {
-            await sound?.loadAsync(dataInfo.stateMusic.musicLink);
-          }
-        })();
-   
+
+        if (dataInfo.stateMusic.musicLink && soundRef.current) {
+          soundRef.current.playAsync();
+        }
+
       }
     }
   }, [dataInfo.stateTimer.isPaused]);
@@ -112,6 +114,24 @@ export default function StateManagement(values: StateManagement) {
       }
     }
   }, [dataInfo.timerValues.runningValue]);
+
+  // const checkStatusAudio = (playbackStatus: AVPlaybackStatus) => {
+  //   if (soundRef.current) {
+  //     if (!playbackStatus.isLoaded) {
+
+  //     } else {
+  //       if (dataInfo.stateTimer.isPlay && !dataInfo.stateTimer.isPaused && playbackStatus.didJustFinish) {
+  //         // soundRef.current.replayAsync();
+  //       }
+  //     }
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (soundRef.current) {
+  //     soundRef.current.setOnPlaybackStatusUpdate(checkStatusAudio);
+  //   }
+  // }, [soundRef.current])
 
   return <></>;
 }

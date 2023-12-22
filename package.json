@@ -10,6 +10,9 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "expo": "~48.0.21",
+    "expo-av": "~13.2.1",
+    "expo-dev-client": "~2.2.1",
+    "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
     "react": "18.2.0",
@@ -17,10 +20,7 @@
     "react-native-svg": "13.4.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-redux": "^8.0.7",
-    "redux": "^4.2.1",
-    "expo-av": "~13.2.1",
-    "expo-dev-client": "~2.2.1",
-    "expo-splash-screen": "~0.18.2"
+    "redux": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
