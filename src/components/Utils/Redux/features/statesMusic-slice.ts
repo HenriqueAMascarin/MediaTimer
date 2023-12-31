@@ -28,8 +28,11 @@ export const stateMusicSlice = createSlice({
     name: "stateMusic",
     initialState,
     reducers: {
-        changeSelection: (state, action: PayloadAction<boolean>) => {
+        changeIsSelection: (state, action: PayloadAction<boolean>) => {
             state.isSelection = action.payload;
+        },
+        changeYoutube: (state, action: PayloadAction<boolean>) => {
+            state.pressBtn.youtube = action.payload;
         },
         changePressBtn: (state, action: PayloadAction<typeof initialState.pressBtn>) => {
             state.pressBtn = action.payload;
@@ -40,5 +43,5 @@ export const stateMusicSlice = createSlice({
     }
 })
 
-export const { changeSelection, changePressBtn, changeMusicLink } = stateMusicSlice.actions;
+export const { changeIsSelection, changeYoutube ,changePressBtn, changeMusicLink } = stateMusicSlice.actions;
 export const stateMusicReducer = stateMusicSlice.reducer;

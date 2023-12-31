@@ -11,36 +11,31 @@ import { buttonsStyle } from "./styles/buttonsStyle";
 import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { useDispatch } from "react-redux";
 
 export default function Buttons() {
 
     const data = useAppSelector((state) => state);
 
-    useEffect(() =>{
+    useEffect(() => {
 
         appersButtons(data.stateTimer.isPlay);
-        
-    },[data.stateTimer.isPlay])
+
+    }, [data.stateTimer.isPlay])
 
     return (
         <View style={buttonsStyle.buttonsContainer}>
-
-            {data.stateTimer.isPlay
-                ? <View />
-                : <Animated.View style={[buttonsStyle.containerInitialButtons, {opacity: opacityInitialButtons}]}>
-                    <MusicButton dataInfo={data}/>
-                    <PlayButton/>
-                    <HistoryButton/>
+            {!data.stateTimer.isPlay
+                ?
+                <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
+                    <MusicButton dataInfo={data} />
+                    <PlayButton />
+                    <HistoryButton />
                 </Animated.View>
-            }
-
-            {data.stateTimer.isPlay
-                ? <Animated.View style={[buttonsStyle.containerPlayStateButtons, {opacity: opacityOtherButtons}]}>
-                    <StopButton/>
-                    <PauseButton dataInfo={data}/>
+                :
+                <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>
+                    <StopButton />
+                    <PauseButton dataInfo={data} />
                 </Animated.View>
-                : <View />
             }
         </View>
     )

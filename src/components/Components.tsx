@@ -1,17 +1,24 @@
-import { View, SafeAreaView,} from "react-native";
+import { View, SafeAreaView, } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import Timer from "./Timer/Timer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
-import Tabs from "./InfoTabs/Tabs";
+import ButtonTabs from "./InfoTabs/ButtonTabs";
+import YoutubeTabs from "./InfoTabs/YoutubeTabs";
+import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 
 export default function Components() {
+    const data = useAppSelector((state) => state);
+
     return (
         <SafeAreaView>
             <Timer />
 
             <View style={buttonsStyle.container}>
-                <Tabs />
-                <Buttons />
+                <View style={{minHeight: 70}}>
+                    {data.stateMusic.pressBtn.youtube ? <YoutubeTabs /> : null}
+                    {data.stateMusic.isSelection ? <ButtonTabs /> : null}
+                </View>
+              <Buttons /> 
             </View>
         </SafeAreaView>
     )

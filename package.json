@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.6.3",
     "expo": "~48.0.21",
     "expo-av": "~13.2.1",
     "expo-dev-client": "~2.2.1",
+    "expo-file-system": "~15.2.2",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",

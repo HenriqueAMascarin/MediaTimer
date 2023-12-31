@@ -10,8 +10,8 @@ import { changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/s
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 
-import { Audio, AVPlaybackStatus } from 'expo-av';
-import { changeSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { Audio } from 'expo-av';
+import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -23,8 +23,7 @@ export default function StateManagement(values: StateManagement) {
   const [intervalState, changeIntervalState] = useState(setTimeout(() => { }, 0));
   const [havePlayed, changeHavePlayed] = useState(false);
 
-  const soundRef = useRef(new Audio.Sound());
-  soundRef.current.setIsLoopingAsync(true);
+  const soundRef = useRef<Audio.Sound>();
 
   const dataInfo = useAppSelector((state) => state);
   const dispatch = useDispatch();
@@ -38,7 +37,7 @@ export default function StateManagement(values: StateManagement) {
       const hours = Number(JSON.stringify(values.listOneValue));
       const minutes = Number(JSON.stringify(values.listTwoValue));
       const seconds = Number(JSON.stringify(values.listThreeValue));
-
+      
       if (hours != 0 || minutes != 0 || seconds != 0) {
         changeHavePlayed(true);
         dispatch(changeScrollValues({ scrollOne: hours, scrollTwo: minutes, scrollThree: seconds }));
@@ -70,12 +69,16 @@ export default function StateManagement(values: StateManagement) {
 
       if (dataInfo.stateTimer.isPlay) {
         (async function play() {
-          dispatch(changeSelection(false));
+          dispatch(changeIsSelection(false));
 
           if (dataInfo.stateMusic.musicLink) {
-            const { sound } = await Audio.Sound.createAsync(dataInfo.stateMusic.musicLink);
+            const { sound } = typeof dataInfo.stateMusic.musicLink == "string" ? await Audio.Sound.createAsync({uri: dataInfo.stateMusic.musicLink}) : await Audio.Sound.createAsync(dataInfo.stateMusic.musicLink);
             soundRef.current = sound
-            soundRef.current.playAsync();
+
+            if (soundRef.current) {
+              soundRef.current.setIsLoopingAsync(true);
+              soundRef.current.playAsync();
+            }
           }
 
           playTimer(dataInfo, heightItem);
@@ -114,24 +117,6 @@ export default function StateManagement(values: StateManagement) {
       }
     }
   }, [dataInfo.timerValues.runningValue]);
-
-  // const checkStatusAudio = (playbackStatus: AVPlaybackStatus) => {
-  //   if (soundRef.current) {
-  //     if (!playbackStatus.isLoaded) {
-
-  //     } else {
-  //       if (dataInfo.stateTimer.isPlay && !dataInfo.stateTimer.isPaused && playbackStatus.didJustFinish) {
-  //         // soundRef.current.replayAsync();
-  //       }
-  //     }
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (soundRef.current) {
-  //     soundRef.current.setOnPlaybackStatusUpdate(checkStatusAudio);
-  //   }
-  // }, [soundRef.current])
 
   return <></>;
 }
