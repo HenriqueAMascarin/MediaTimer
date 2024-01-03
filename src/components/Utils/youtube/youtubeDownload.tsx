@@ -1,8 +1,9 @@
 import axios from "axios";
-import { AVPlaybackSource } from "expo-av";
-import { downloadAsync, documentDirectory } from "expo-file-system";
+import { downloadAsync } from "expo-file-system";
+import { API_KEY } from '@env';
+import { directoryYoutube } from "../globalVars";
 
-export async function youtubeDownload(name: string): Promise<AVPlaybackSource | null> {
+export async function youtubeDownload(name: string): Promise<string | null> {
   const key = 'AIzaSyBx4fNjPu622u_lezynCUheurIszLPuB3k';
   let itemId = '';
   let uriItem = null;
@@ -11,25 +12,22 @@ export async function youtubeDownload(name: string): Promise<AVPlaybackSource | 
     .then((res) => itemId = res.data.items[0].id.videoId);
 
   if (itemId) {
+    
 
     const options = {
       method: 'GET',
       url: 'https://youtube-mp36.p.rapidapi.com/dl',
       params: { id: itemId },
       headers: {
-        'X-RapidAPI-Key': '380f0a120fmsh9db4624704953e3p16a058jsnfcd51260c4cf',
+        'X-RapidAPI-Key': API_KEY,
         'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
       }
     };
 
-    console.log('salve');
-
     await axios.request(options).then(
       async (res) => {
-        console.log(res.data.link)
         if (res) {
-          await downloadAsync(res.data.link, documentDirectory + `${res.data.title}.mp3`).then(({ uri }) => {
-            console.log(uri)
+          await downloadAsync(res.data.link, directoryYoutube + `${itemId}.mp3`).then(({ uri }) => {
             uriItem = uri;
           });
         }

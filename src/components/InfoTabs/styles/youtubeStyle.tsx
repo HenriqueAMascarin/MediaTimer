@@ -9,10 +9,19 @@ export const youtubeStyle = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 8,
         elevation: 5,
+        borderRadius: 14,
         paddingVertical: 6,
         paddingHorizontal: 10,
-        borderRadius: 14,
-        width: 260,
-        gap: 4
-    }
+        width: 280,
+        minHeight: 50,
+    }, 
+    searchItem: {
+        gap: 4,
+        position: "relative"
+    },
+    statusItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 14,
+    },
 })

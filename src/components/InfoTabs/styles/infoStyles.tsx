@@ -2,10 +2,9 @@ import { StyleSheet } from "react-native";
 
 export const infoStyles = StyleSheet.create({
   container: {
-    height: 80,
     alignSelf: 'stretch',
     flexDirection: 'row',
-    gap: 20
+    gap: 20,
   },
   buttonsInfo: {
     display: "flex",

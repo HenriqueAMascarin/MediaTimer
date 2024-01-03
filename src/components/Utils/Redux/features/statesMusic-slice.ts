@@ -9,8 +9,10 @@ type initialType = {
         waves: boolean,
         fire: boolean,
         youtube: boolean
+        reset: boolean
     },
-    musicLink: AVPlaybackSource | null,
+    isYoutubeSelection: boolean,
+    musicLink: AVPlaybackSource | string | null,
 }
 
 const initialState: initialType = {
@@ -19,8 +21,10 @@ const initialState: initialType = {
         forest: false,
         waves: false,
         fire: false,
-        youtube: false
+        youtube: false,
+        reset: false
     },
+    isYoutubeSelection: false,
     musicLink: null
 }
 
@@ -34,6 +38,9 @@ export const stateMusicSlice = createSlice({
         changeYoutube: (state, action: PayloadAction<boolean>) => {
             state.pressBtn.youtube = action.payload;
         },
+        changeIsSelectionYoutube: (state, action: PayloadAction<boolean>) => {
+            state.isYoutubeSelection = action.payload;
+        },
         changePressBtn: (state, action: PayloadAction<typeof initialState.pressBtn>) => {
             state.pressBtn = action.payload;
         },
@@ -43,5 +50,5 @@ export const stateMusicSlice = createSlice({
     }
 })
 
-export const { changeIsSelection, changeYoutube ,changePressBtn, changeMusicLink } = stateMusicSlice.actions;
+export const { changeIsSelection, changeYoutube , changePressBtn, changeMusicLink, changeIsSelectionYoutube } = stateMusicSlice.actions;
 export const stateMusicReducer = stateMusicSlice.reducer;

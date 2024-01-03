@@ -11,7 +11,7 @@ export default function StopButton() {
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPressIn={() => dispatch(changeIsPlay(false))}>
+    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPlay(false))}>
       <StopSvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />
     </TouchableOpacity>
   );

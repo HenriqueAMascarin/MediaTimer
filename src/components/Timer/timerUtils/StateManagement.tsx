@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 
 import { Audio } from 'expo-av';
-import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -37,7 +37,7 @@ export default function StateManagement(values: StateManagement) {
       const hours = Number(JSON.stringify(values.listOneValue));
       const minutes = Number(JSON.stringify(values.listTwoValue));
       const seconds = Number(JSON.stringify(values.listThreeValue));
-      
+
       if (hours != 0 || minutes != 0 || seconds != 0) {
         changeHavePlayed(true);
         dispatch(changeScrollValues({ scrollOne: hours, scrollTwo: minutes, scrollThree: seconds }));
@@ -72,7 +72,12 @@ export default function StateManagement(values: StateManagement) {
           dispatch(changeIsSelection(false));
 
           if (dataInfo.stateMusic.musicLink) {
-            const { sound } = typeof dataInfo.stateMusic.musicLink == "string" ? await Audio.Sound.createAsync({uri: dataInfo.stateMusic.musicLink}) : await Audio.Sound.createAsync(dataInfo.stateMusic.musicLink);
+            const { sound } = await Audio.Sound.createAsync(
+              typeof dataInfo.stateMusic.musicLink == 'string' ?
+                { uri: dataInfo.stateMusic.musicLink }
+                : dataInfo.stateMusic.musicLink
+            );
+
             soundRef.current = sound
 
             if (soundRef.current) {
@@ -80,7 +85,7 @@ export default function StateManagement(values: StateManagement) {
               soundRef.current.playAsync();
             }
           }
-
+          dispatch(changeIsSelectionYoutube(false));
           playTimer(dataInfo, heightItem);
         })();
       } else {

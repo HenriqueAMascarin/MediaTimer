@@ -24,13 +24,13 @@ export const buttonsStyle = StyleSheet.create({
         width: 60,
         height: 60,
         justifyContent: 'center',
-        alignItems: 'center'
-    },
-    principalButton: {
+        alignItems: 'center',
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 8,
         elevation: 5,
+    },
+    principalButton: {
         width: 68,
         height: 68,
     },

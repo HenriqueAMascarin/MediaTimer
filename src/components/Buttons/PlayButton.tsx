@@ -11,7 +11,7 @@ export default function PlayButton() {
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton]} onPressIn={() => dispatch(changeIsPickingValue(true))}>
+    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton]} onPress={() => dispatch(changeIsPickingValue(true))}>
       <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.blue} />
     </TouchableOpacity>
   );
