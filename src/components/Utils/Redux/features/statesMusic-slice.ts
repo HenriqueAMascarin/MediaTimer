@@ -22,7 +22,7 @@ const initialState: initialType = {
         waves: false,
         fire: false,
         youtube: false,
-        reset: false
+        reset: true
     },
     isYoutubeSelection: false,
     musicLink: null

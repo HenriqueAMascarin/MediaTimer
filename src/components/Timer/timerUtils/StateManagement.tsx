@@ -10,8 +10,11 @@ import { changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/s
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 
-import { Audio } from 'expo-av';
+import BackgroundService from 'react-native-background-actions';
+
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { colorsStyle } from "@src/components/Utils/colorsStyle";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -20,6 +23,7 @@ interface StateManagement {
 }
 
 export default function StateManagement(values: StateManagement) {
+
   const [intervalState, changeIntervalState] = useState(setTimeout(() => { }, 0));
   const [havePlayed, changeHavePlayed] = useState(false);
 
@@ -31,6 +35,37 @@ export default function StateManagement(values: StateManagement) {
   function stopTimerInterval() {
     clearInterval(intervalState);
   }
+
+  const sleep = (time: any) => new Promise((resolve: any) => setTimeout(() => resolve(), time));
+
+  const timerStart = async (taskDataArguments: any) => {
+
+    const { delay } = taskDataArguments;
+    await new Promise(async (resolve) => {
+      let valueRunning = dataInfo.timerValues.runningValue;
+      changeIntervalState(setInterval(() => {
+        valueRunning--;
+        return dispatch(changeRunningValue(valueRunning));
+      }, 1000))
+      await sleep(delay);
+
+    });
+  };
+
+  const backgroundOptions = {
+    taskName: 'Media timer',
+    taskTitle: 'Timer em execução',
+    taskDesc: 'Clique para retornar!',
+    taskIcon: {
+      name: 'ic_launcher',
+      type: 'mipmap',
+    },
+    color: colorsStyle.principal.blue,
+    linkingURI: 'media-timer://',
+    parameters: {
+      delay: 1000,
+    },
+  };
 
   useEffect(() => {
     if (dataInfo.stateTimer.isPickingValue && !dataInfo.stateTimer.isPlay) {
@@ -51,12 +86,9 @@ export default function StateManagement(values: StateManagement) {
   useEffect(() => {
     if (havePlayed) {
       if (dataInfo.stateTimer.isInterval) {
-        let valueRunning = dataInfo.timerValues.runningValue;
-
-        changeIntervalState(setInterval(() => {
-          valueRunning--;
-          return dispatch(changeRunningValue(valueRunning));
-        }, 1000))
+        (async () => {
+          await BackgroundService.start(timerStart, backgroundOptions);
+        })();
 
       } else {
         stopTimerInterval();
@@ -71,6 +103,8 @@ export default function StateManagement(values: StateManagement) {
         (async function play() {
           dispatch(changeIsSelection(false));
 
+          soundRef.current = undefined;
+
           if (dataInfo.stateMusic.musicLink) {
             const { sound } = await Audio.Sound.createAsync(
               typeof dataInfo.stateMusic.musicLink == 'string' ?
@@ -83,6 +117,17 @@ export default function StateManagement(values: StateManagement) {
             if (soundRef.current) {
               soundRef.current.setIsLoopingAsync(true);
               soundRef.current.playAsync();
+
+              await Audio.setAudioModeAsync({
+                allowsRecordingIOS: false,
+                staysActiveInBackground: true,
+                interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+                playsInSilentModeIOS: true,
+                shouldDuckAndroid: true,
+                interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+                playThroughEarpieceAndroid: false,
+              })
+
             }
           }
           dispatch(changeIsSelectionYoutube(false));
@@ -94,6 +139,7 @@ export default function StateManagement(values: StateManagement) {
           soundRef.current.stopAsync();
           soundRef.current = new Audio.Sound();
         }
+        (async () => await BackgroundService.stop())();
         stopTimer();
         Vibration.vibrate(400);
       }
@@ -105,6 +151,7 @@ export default function StateManagement(values: StateManagement) {
       pauseTimer(dataInfo);
       if (dataInfo.stateTimer.isPaused && soundRef.current) {
         soundRef.current.pauseAsync();
+
       } else {
 
         if (dataInfo.stateMusic.musicLink && soundRef.current) {
@@ -122,6 +169,8 @@ export default function StateManagement(values: StateManagement) {
       }
     }
   }, [dataInfo.timerValues.runningValue]);
+
+
 
   return <></>;
 }

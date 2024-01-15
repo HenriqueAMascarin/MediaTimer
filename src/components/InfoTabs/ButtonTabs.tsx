@@ -35,7 +35,7 @@ export default function ButtonTabs() {
   function changeForest() { changeMusic({ forest: true }, require('@assets/sounds/nature.wav')) };
 
   function resetAll() {
-    changeMusic({ reset: true }, '');
+    changeMusic({ reset: true }, null);
   }
 
   function changeMusic(changeBtn: {} | null, musicLink: AVPlaybackSource | string | null) {
@@ -50,7 +50,7 @@ export default function ButtonTabs() {
 
     dispatch(changePressBtn(newBtnsObj));
 
-    musicLink ? dispatch(changeMusicLink(musicLink)) : null;
+    dispatch(changeMusicLink(musicLink))
 
   }
 
@@ -58,8 +58,8 @@ export default function ButtonTabs() {
     <ScrollView horizontal>
       <View style={infoStyles.container}>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={resetAll}>
-          <NothingSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.nothing ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: data.stateMusic.pressBtn.nothing ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Nenhum</Text>
+          <NothingSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+          <Text style={{ color: data.stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Nenhum</Text>
         </TouchableOpacity>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeForest}>
           <ForestSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black} />
