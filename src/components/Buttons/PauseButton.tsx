@@ -7,14 +7,16 @@ import PlaySvg from "../../../assets/images/play.svg";
 
 import { useDispatch } from "react-redux";
 import { changeIsPaused } from "../Utils/Redux/features/stateTimer-slice";
-import { RootState } from "../Utils/Redux/store";
+import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
-export default function PauseButton({ dataInfo }: { dataInfo: RootState }) {
+
+export default function PauseButton() {
+  const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPaused(!dataInfo.stateTimer.isPaused))}>
-      {dataInfo.stateTimer.isPaused ? <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} /> : <PauseSvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />}
+    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPaused(!stateTimer.isPaused))}>
+      {stateTimer.isPaused ? <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} /> : <PauseSvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />}
     </TouchableOpacity>
   );
 }

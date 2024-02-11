@@ -10,6 +10,8 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 import expo.modules.ReactActivityDelegateWrapper;
 
+import io.invertase.notifee.NotifeeApiModule; 
+
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +21,6 @@ public class MainActivity extends ReactActivity {
     setTheme(R.style.AppTheme);
     super.onCreate(null);
   }
-
   /**
    * Returns the name of the main component registered from JavaScript.
    * This is used to schedule rendering of the component.
@@ -65,4 +66,5 @@ public class MainActivity extends ReactActivity {
     // because it's doing more than {@link Activity#moveTaskToBack} in fact.
     super.invokeDefaultOnBackPressed();
   }
+
 }

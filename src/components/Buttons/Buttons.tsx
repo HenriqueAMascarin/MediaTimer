@@ -14,27 +14,27 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
 export default function Buttons() {
 
-    const data = useAppSelector((state) => state);
+    const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
 
     useEffect(() => {
 
-        appersButtons(data.stateTimer.isPlay);
+        appersButtons(stateTimer.isPlay);
 
-    }, [data.stateTimer.isPlay])
+    }, [stateTimer.isPlay])
 
     return (
         <View style={buttonsStyle.buttonsContainer}>
-            {!data.stateTimer.isPlay
+            {!stateTimer.isPlay
                 ?
                 <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
-                    <MusicButton dataInfo={data} />
+                    <MusicButton/>
                     <PlayButton />
                     <HistoryButton />
                 </Animated.View>
                 :
                 <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>
                     <StopButton />
-                    <PauseButton dataInfo={data} />
+                    <PauseButton/>
                 </Animated.View>
             }
         </View>

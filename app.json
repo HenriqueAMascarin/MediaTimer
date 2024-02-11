@@ -18,11 +18,12 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
       },
-      "UIBackgroundModes": [
-        "audio"
-      ],
       "bundleIdentifier": "com.luckthegamers.mediatimer"
     },
     "android": {

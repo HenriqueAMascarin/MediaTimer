@@ -9,12 +9,11 @@ import { changeRunningValue } from "../../Utils/Redux/features/timerValues-slice
 import { changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
-
-import BackgroundService from 'react-native-background-actions';
+import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import notifee, { AndroidColor, AndroidImportance } from '@notifee/react-native';
+import BackgroundTimer from 'react-native-background-timer';
 
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
-import { colorsStyle } from "@src/components/Utils/colorsStyle";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -24,7 +23,6 @@ interface StateManagement {
 
 export default function StateManagement(values: StateManagement) {
 
-  const [intervalState, changeIntervalState] = useState(setTimeout(() => { }, 0));
   const [havePlayed, changeHavePlayed] = useState(false);
 
   const soundRef = useRef<Audio.Sound>();
@@ -33,39 +31,43 @@ export default function StateManagement(values: StateManagement) {
   const dispatch = useDispatch();
 
   function stopTimerInterval() {
-    clearInterval(intervalState);
+    notifee.cancelAllNotifications();
+    BackgroundTimer.stopBackgroundTimer();
   }
 
-  const sleep = (time: any) => new Promise((resolve: any) => setTimeout(() => resolve(), time));
+  async function onDisplayNotification() {
+    await notifee.requestPermission()
 
-  const timerStart = async (taskDataArguments: any) => {
-
-    const { delay } = taskDataArguments;
-    await new Promise(async (resolve) => {
-      let valueRunning = dataInfo.timerValues.runningValue;
-      changeIntervalState(setInterval(() => {
-        valueRunning--;
-        return dispatch(changeRunningValue(valueRunning));
-      }, 1000))
-      await sleep(delay);
-
+    const channelId = await notifee.createChannel({
+      id: 'Timer',
+      name: 'Timer channel',
     });
-  };
 
-  const backgroundOptions = {
-    taskName: 'Media timer',
-    taskTitle: 'Timer em execução',
-    taskDesc: 'Clique para retornar!',
-    taskIcon: {
-      name: 'ic_launcher',
-      type: 'mipmap',
-    },
-    color: colorsStyle.principal.blue,
-    linkingURI: 'media-timer://',
-    parameters: {
-      delay: 1000,
-    },
-  };
+    let valueRunning = dataInfo.timerValues.runningValue;
+    BackgroundTimer.runBackgroundTimer(() => {
+      valueRunning--;
+      return dispatch(changeRunningValue(valueRunning));
+    }, 1000);
+
+    await notifee.displayNotification({
+      title: 'Timer em andamento',
+      body: 'Arraste para cancelar',
+      android: {
+        channelId,
+        color: AndroidColor.BLUE,
+        colorized: true,
+        autoCancel: false,
+        importance: AndroidImportance.HIGH,
+        pressAction: {
+          id: 'default',
+        },
+        showChronometer: true,
+        chronometerDirection: 'down',
+        timestamp: Date.now() + dataInfo.timerValues.runningValue * 1000,
+      },
+    });
+
+  }
 
   useEffect(() => {
     if (dataInfo.stateTimer.isPickingValue && !dataInfo.stateTimer.isPlay) {
@@ -86,10 +88,7 @@ export default function StateManagement(values: StateManagement) {
   useEffect(() => {
     if (havePlayed) {
       if (dataInfo.stateTimer.isInterval) {
-        (async () => {
-          await BackgroundService.start(timerStart, backgroundOptions);
-        })();
-
+        onDisplayNotification();
       } else {
         stopTimerInterval();
       }
@@ -134,12 +133,14 @@ export default function StateManagement(values: StateManagement) {
           playTimer(dataInfo, heightItem);
         })();
       } else {
+
         stopTimerInterval();
+
         if (soundRef.current) {
           soundRef.current.stopAsync();
           soundRef.current = new Audio.Sound();
         }
-        (async () => await BackgroundService.stop())();
+
         stopTimer();
         Vibration.vibrate(400);
       }
