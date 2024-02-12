@@ -1,8 +1,7 @@
 import AnimatedNumber from "./AnimatedNumber";
 import { Animated } from "react-native";
 import { heightItem } from "./styles/timerStyle";
-import { RootState } from "../Utils/Redux/store";
-
+import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 interface ListTimer{
     dataArray: {
         array: number[];
@@ -10,10 +9,12 @@ interface ListTimer{
             scrollY: Animated.Value;
     }},
     opacityAnimated: Animated.Value,
-    dataInfo: RootState,
 }
 
-export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTimer) {
+export default function ListTimer({dataArray, opacityAnimated}: ListTimer) {
+
+    const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
+
 
     function snapArray(list: number[], elementHeight: number) {
         let array: number[] = [];
@@ -41,7 +42,7 @@ export default function ListTimer({dataArray, opacityAnimated, dataInfo}: ListTi
             scrollEventThrottle={0}
             bounces={false}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={dataInfo.stateTimer.isPlay ? false : true}
+            scrollEnabled={stateTimer.isPlay ? false : true}
         >
             {dataArray.array.map((item, index) => {
             return(

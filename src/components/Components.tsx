@@ -13,7 +13,7 @@ import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-sl
 import notifee, { Event, EventType } from '@notifee/react-native';
 
 export default function Components() {
-    const data = useAppSelector((state) => state);
+    const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
     const dispatch = useDispatch();
 
     const eventNotifee = async ({ type, detail }: Event) => {
@@ -54,8 +54,8 @@ export default function Components() {
 
             <View style={buttonsStyle.container}>
                 <View style={{ minHeight: 90 }}>
-                    {data.stateMusic.isYoutubeSelection ? <YoutubeTabs /> : null}
-                    {data.stateMusic.isSelection ? <ButtonTabs /> : null}
+                    {stateMusic.isYoutubeSelection ? <YoutubeTabs /> : null}
+                    {stateMusic.isSelection ? <ButtonTabs /> : null}
                 </View>
                 <Buttons />
             </View>

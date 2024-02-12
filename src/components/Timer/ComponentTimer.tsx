@@ -5,7 +5,7 @@ import { timerStyle } from "./styles/timerStyle";
 
 import { lineAnimated, linePointsOpacity, numberCountOpacity, listOpacity, gapList } from "./TimerAnimations/TimerSequence";
 
-import { numberList } from "./numberList";
+import { numberList } from "./timerUtils/numberList";
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
 import PauseText from "./PauseText";
@@ -15,19 +15,19 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import StateManagement from "./timerUtils/StateManagement";
 
 export default function Timer() {
-  const data = useAppSelector((state) => state);
+  const timerValues = useAppSelector(({timerValues}) => timerValues);
 
   const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
   const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
   const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
 
-  const hours = Math.floor(data.timerValues.runningValue / 3600)
+  const hours = Math.floor(timerValues.runningValue / 3600)
     .toString()
     .padStart(2, "0");
-  const minutes = Math.floor((data.timerValues.runningValue % 3600) / 60)
+  const minutes = Math.floor((timerValues.runningValue % 3600) / 60)
     .toString()
     .padStart(2, "0");
-  const seconds = Math.floor((data.timerValues.runningValue % 3600) % 60)
+  const seconds = Math.floor((timerValues.runningValue % 3600) % 60)
     .toString()
     .padStart(2, "0");
 
@@ -37,7 +37,7 @@ export default function Timer() {
       <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
         <PauseText />
         <View style={timerStyle.listContainer}>
-          <ListTimer dataArray={listOne} opacityAnimated={listOpacity} dataInfo={data} />
+          <ListTimer dataArray={listOne} opacityAnimated={listOpacity}/>
 
           <TimerNumber numberCountOpacity={numberCountOpacity} number={hours} />
         </View>
@@ -49,7 +49,7 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listContainer}>
-          <ListTimer dataArray={listTwo} opacityAnimated={listOpacity} dataInfo={data} />
+          <ListTimer dataArray={listTwo} opacityAnimated={listOpacity}/>
 
           <TimerNumber numberCountOpacity={numberCountOpacity} number={minutes} />
         </View>
@@ -61,12 +61,12 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listContainer}>
-          <ListTimer dataArray={listThree} opacityAnimated={listOpacity} dataInfo={data} />
+          <ListTimer dataArray={listThree} opacityAnimated={listOpacity}/>
 
           <TimerNumber numberCountOpacity={numberCountOpacity} number={seconds} />
         </View>
 
-        <TotalTimeText dataInfo={data} />
+        <TotalTimeText/>
       </Animated.View>
     </View>
   );

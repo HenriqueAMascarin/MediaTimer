@@ -27,7 +27,10 @@ export default function StateManagement(values: StateManagement) {
 
   const soundRef = useRef<Audio.Sound>();
 
-  const dataInfo = useAppSelector((state) => state);
+  const dataNumbers  = useAppSelector(({dataNumbers}) => dataNumbers);
+  const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
+  const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
+  const timerValues = useAppSelector(({timerValues}) => timerValues);
   const dispatch = useDispatch();
 
   function stopTimerInterval() {
@@ -43,7 +46,7 @@ export default function StateManagement(values: StateManagement) {
       name: 'Timer channel',
     });
 
-    let valueRunning = dataInfo.timerValues.runningValue;
+    let valueRunning = timerValues.runningValue;
     BackgroundTimer.runBackgroundTimer(() => {
       valueRunning--;
       return dispatch(changeRunningValue(valueRunning));
@@ -63,14 +66,14 @@ export default function StateManagement(values: StateManagement) {
         },
         showChronometer: true,
         chronometerDirection: 'down',
-        timestamp: Date.now() + dataInfo.timerValues.runningValue * 1000,
+        timestamp: Date.now() + timerValues.totalValue * 1000,
       },
     });
 
   }
 
   useEffect(() => {
-    if (dataInfo.stateTimer.isPickingValue && !dataInfo.stateTimer.isPlay) {
+    if (stateTimer.isPickingValue && !stateTimer.isPlay) {
       const hours = Number(JSON.stringify(values.listOneValue));
       const minutes = Number(JSON.stringify(values.listTwoValue));
       const seconds = Number(JSON.stringify(values.listThreeValue));
@@ -83,32 +86,32 @@ export default function StateManagement(values: StateManagement) {
         dispatch(changeIsPickingValue(false));
       }
     }
-  }, [dataInfo.stateTimer.isPickingValue]);
+  }, [stateTimer.isPickingValue]);
 
   useEffect(() => {
     if (havePlayed) {
-      if (dataInfo.stateTimer.isInterval) {
+      if (stateTimer.isInterval) {
         onDisplayNotification();
       } else {
         stopTimerInterval();
       }
     }
-  }, [dataInfo.stateTimer.isInterval]);
+  }, [stateTimer.isInterval]);
 
   useEffect(() => {
     if (havePlayed) {
 
-      if (dataInfo.stateTimer.isPlay) {
+      if (stateTimer.isPlay) {
         (async function play() {
           dispatch(changeIsSelection(false));
 
           soundRef.current = undefined;
 
-          if (dataInfo.stateMusic.musicLink) {
+          if (stateMusic.musicLink) {
             const { sound } = await Audio.Sound.createAsync(
-              typeof dataInfo.stateMusic.musicLink == 'string' ?
-                { uri: dataInfo.stateMusic.musicLink }
-                : dataInfo.stateMusic.musicLink
+              typeof stateMusic.musicLink == 'string' ?
+                { uri: stateMusic.musicLink }
+                : stateMusic.musicLink
             );
 
             soundRef.current = sound
@@ -130,7 +133,7 @@ export default function StateManagement(values: StateManagement) {
             }
           }
           dispatch(changeIsSelectionYoutube(false));
-          playTimer(dataInfo, heightItem);
+          playTimer(dataNumbers, heightItem);
         })();
       } else {
 
@@ -145,31 +148,31 @@ export default function StateManagement(values: StateManagement) {
         Vibration.vibrate(400);
       }
     }
-  }, [dataInfo.stateTimer.isPlay]);
+  }, [stateTimer.isPlay]);
 
   useEffect(() => {
-    if (dataInfo.stateTimer.isPlay) {
-      pauseTimer(dataInfo);
-      if (dataInfo.stateTimer.isPaused && soundRef.current) {
+    if (stateTimer.isPlay) {
+      pauseTimer(stateTimer);
+      if (stateTimer.isPaused && soundRef.current) {
         soundRef.current.pauseAsync();
 
       } else {
 
-        if (dataInfo.stateMusic.musicLink && soundRef.current) {
+        if (stateMusic.musicLink && soundRef.current) {
           soundRef.current.playAsync();
         }
 
       }
     }
-  }, [dataInfo.stateTimer.isPaused]);
+  }, [stateTimer.isPaused]);
 
   useEffect(() => {
     if (havePlayed) {
-      if (dataInfo.timerValues.runningValue <= 0 || !dataInfo.stateTimer.isPlay) {
+      if (timerValues.runningValue <= 0 || !stateTimer.isPlay) {
         dispatch(changeIsPlay(false));
       }
     }
-  }, [dataInfo.timerValues.runningValue]);
+  }, [timerValues.runningValue]);
 
 
 
