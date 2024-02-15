@@ -33,6 +33,7 @@ export const buttonsStyle = StyleSheet.create({
     principalButton: {
         width: 68,
         height: 68,
+        backgroundColor: colorsStyle.principal.blue
     },
     containerInitialButtons: {
         position: "absolute",

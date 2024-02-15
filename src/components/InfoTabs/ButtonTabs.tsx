@@ -15,13 +15,13 @@ import { AVPlaybackSource } from "expo-av";
 export default function ButtonTabs() {
 
   const dispatch = useDispatch();
-  const data = useAppSelector((state) => state);
+  const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
 
   useEffect(() => {
-    if (data.stateMusic.pressBtn.youtube) {
+    if (stateMusic.pressBtn.youtube) {
       changeMusic({ youtube: true }, null);
     }
-  }, [data.stateMusic.pressBtn.youtube])
+  }, [stateMusic.pressBtn.youtube])
 
   function changeYoutube() {
     dispatch(changeIsSelection(false));
@@ -40,9 +40,9 @@ export default function ButtonTabs() {
 
   function changeMusic(changeBtn: {} | null, musicLink: AVPlaybackSource | string | null) {
 
-    let newBtnsObj = { ...data.stateMusic.pressBtn };
+    let newBtnsObj = { ...stateMusic.pressBtn };
 
-    for (let key in data.stateMusic.pressBtn) {
+    for (let key in stateMusic.pressBtn) {
       newBtnsObj[key] = false;
     }
 
@@ -58,27 +58,27 @@ export default function ButtonTabs() {
     <ScrollView horizontal>
       <View style={infoStyles.container}>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={resetAll}>
-          <NothingSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: data.stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Nenhum</Text>
+          <NothingSvg width="45px" height="45px" fill={stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+          <Text style={{ color: stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Nenhum</Text>
         </TouchableOpacity>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeForest}>
-          <ForestSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: data.stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Floresta</Text>
+          <ForestSvg width="45px" height="45px" fill={stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+          <Text style={{ color: stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Floresta</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeWaves}>
-          <WavesSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.waves ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: data.stateMusic.pressBtn.waves ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Ondas</Text>
+          <WavesSvg width="45px" height="45px" fill={stateMusic.pressBtn.waves ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+          <Text style={{ color: stateMusic.pressBtn.waves ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Ondas</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeFire}>
-          <FireSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.fire ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: data.stateMusic.pressBtn.fire ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Fogueira</Text>
+          <FireSvg width="45px" height="45px" fill={stateMusic.pressBtn.fire ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+          <Text style={{ color: stateMusic.pressBtn.fire ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Fogueira</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeYoutube}>
-          <YoutubeSvg width="45px" height="45px" fill={data.stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: data.stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Youtube</Text>
+          <YoutubeSvg width="45px" height="45px" fill={stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+          <Text style={{ color: stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Youtube</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

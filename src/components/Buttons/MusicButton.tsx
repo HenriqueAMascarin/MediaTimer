@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
 export default function MusicButton() {
-  const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
   const dispatch = useDispatch();
 
   function toggleTab() {
@@ -22,16 +22,16 @@ export default function MusicButton() {
     let status = false;
 
     for (let key in stateMusic.pressBtn) {
-      if(key != 'reset' && stateMusic.pressBtn[key] == true){
-       status = true
+      if (key != 'reset' && stateMusic.pressBtn[key] == true) {
+        status = true
       }
     }
     return status;
   }, [stateMusic.pressBtn])
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons]} onPress={() => toggleTab()}>
-      <MusicSvg width={"35px"} height={"35px"} fill={activeStatus ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: activeStatus ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => toggleTab()}>
+      <MusicSvg width={"35px"} height={"35px"} fill={activeStatus ? colorsStyle.principal.white : colorsStyle.principal.black} />
     </TouchableOpacity>
   );
 }

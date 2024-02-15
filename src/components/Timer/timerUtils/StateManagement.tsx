@@ -3,17 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import { heightItem } from "../styles/timerStyle";
 import { Animated, Vibration } from "react-native";
 
-import { pauseTimer, playTimer, stopTimer } from "./valuesIntervalTimer";
 import { changeScrollValues } from "../../Utils/Redux/features/dataNumbers-slice";
-import { changeRunningValue } from "../../Utils/Redux/features/timerValues-slice";
-import { changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
+import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
-import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 import notifee, { AndroidColor, AndroidImportance } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { changeRunningValue, changeTotalValue } from "@src/components/Utils/Redux/features/timerValues-slice";
+import { sequenceTimer } from "../TimerAnimations/TimerSequence";
+import { timerPause } from "../TimerAnimations/TimerPause";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -27,18 +28,46 @@ export default function StateManagement(values: StateManagement) {
 
   const soundRef = useRef<Audio.Sound>();
 
-  const dataNumbers  = useAppSelector(({dataNumbers}) => dataNumbers);
-  const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
-  const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
-  const timerValues = useAppSelector(({timerValues}) => timerValues);
+  const dataNumbers = useAppSelector(({ dataNumbers }) => dataNumbers);
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+  const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+  const timerValues = useAppSelector(({ timerValues }) => timerValues);
   const dispatch = useDispatch();
 
-  function stopTimerInterval() {
-    notifee.cancelAllNotifications();
-    BackgroundTimer.stopBackgroundTimer();
+  function playTimer(heightItem: number) {
+    const numberHours = Math.round(dataNumbers.scrollOne / heightItem) * 3600;
+    const numberMinutes = Math.round(dataNumbers.scrollTwo / heightItem) * 60;
+    const numberSeconds = Math.round(dataNumbers.scrollThree / heightItem);
+    const timeStampValue = numberHours + numberMinutes + numberSeconds;
+
+    dispatch(changeRunningValue(timeStampValue));
+    dispatch(changeTotalValue(timeStampValue));
+    sequenceTimer(true);
+
+    return timeStampValue;
   }
 
-  async function onDisplayNotification() {
+  function stopTimer() {
+    dispatch(changeIsPickingValue(false));
+    dispatch(changeIsPaused(false));
+    dispatch(changeRunningValue(0));
+    dispatch(changeTotalValue(0));
+
+    sequenceTimer(false);
+    timerPause(false);
+  }
+
+  function stopTimerInterval() {
+    BackgroundTimer.stopBackgroundTimer();
+    notifee.cancelAllNotifications();
+  }
+
+  function pauseTimerAnimation() {
+    const isPaused = stateTimer.isPaused;
+    timerPause(isPaused);
+  }
+
+  async function onDisplayNotification(newTotalValue: number) {
     await notifee.requestPermission()
 
     const channelId = await notifee.createChannel({
@@ -46,10 +75,11 @@ export default function StateManagement(values: StateManagement) {
       name: 'Timer channel',
     });
 
-    let valueRunning = timerValues.runningValue;
+
+    let newValue = newTotalValue;
     BackgroundTimer.runBackgroundTimer(() => {
-      valueRunning--;
-      return dispatch(changeRunningValue(valueRunning));
+      newValue--;
+      return dispatch(changeRunningValue(newValue));
     }, 1000);
 
     await notifee.displayNotification({
@@ -64,8 +94,7 @@ export default function StateManagement(values: StateManagement) {
         pressAction: {
           id: 'default',
         },
-        showChronometer: true,
-        chronometerDirection: 'down',
+        showTimestamp: true,
         timestamp: Date.now() + timerValues.totalValue * 1000,
       },
     });
@@ -87,16 +116,6 @@ export default function StateManagement(values: StateManagement) {
       }
     }
   }, [stateTimer.isPickingValue]);
-
-  useEffect(() => {
-    if (havePlayed) {
-      if (stateTimer.isInterval) {
-        onDisplayNotification();
-      } else {
-        stopTimerInterval();
-      }
-    }
-  }, [stateTimer.isInterval]);
 
   useEffect(() => {
     if (havePlayed) {
@@ -132,11 +151,12 @@ export default function StateManagement(values: StateManagement) {
 
             }
           }
-          dispatch(changeIsSelectionYoutube(false));
-          playTimer(dataNumbers, heightItem);
-        })();
-      } else {
 
+          const totalValue = playTimer(heightItem);
+          onDisplayNotification(totalValue);
+        })();
+
+      } else {
         stopTimerInterval();
 
         if (soundRef.current) {
@@ -151,18 +171,17 @@ export default function StateManagement(values: StateManagement) {
   }, [stateTimer.isPlay]);
 
   useEffect(() => {
-    if (stateTimer.isPlay) {
-      pauseTimer(stateTimer);
-      if (stateTimer.isPaused && soundRef.current) {
-        soundRef.current.pauseAsync();
+    if (stateTimer.isPlay && havePlayed) {
+      pauseTimerAnimation();
 
+      if (stateTimer.isPaused) {
+        soundRef.current?.pauseAsync();
+        stopTimerInterval();
       } else {
-
-        if (stateMusic.musicLink && soundRef.current) {
-          soundRef.current.playAsync();
-        }
-
+        onDisplayNotification(timerValues.runningValue);
+        soundRef.current?.playAsync();
       }
+
     }
   }, [stateTimer.isPaused]);
 

@@ -26,7 +26,7 @@
     "metro-react-native-babel-transformer": "^0.77.0",
     "react": "18.2.0",
     "react-native": "0.71.14",
-    "react-native-background-timer": "^2.4.1",
+    "react-native-background-timer": "github:Spltthetnk/react-native-background-timer",
     "react-native-dotenv": "^3.4.9",
     "react-native-svg": "13.4.0",
     "react-native-svg-transformer": "^1.3.0",

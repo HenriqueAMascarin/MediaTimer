@@ -12,7 +12,7 @@ export default function PlayButton() {
 
   return (
     <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton]} onPress={() => dispatch(changeIsPickingValue(true))}>
-      <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.blue} />
+      <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />
     </TouchableOpacity>
   );
 }

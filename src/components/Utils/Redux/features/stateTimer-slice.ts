@@ -4,7 +4,6 @@ const initialState = {
     isPlay: false, 
     isPaused: false,
     isPickingValue: false,
-    isInterval: false,
 }
 
 export const stateTimerSlice = createSlice({
@@ -20,11 +19,8 @@ export const stateTimerSlice = createSlice({
         changeIsPickingValue: (state, action: PayloadAction<boolean>) => {
             state.isPickingValue = action.payload;
         },
-        changeIsInterval: (state, action: PayloadAction<boolean>) => {
-            state.isInterval = action.payload;
-        }
     }
 })
 
-export const { changeIsPlay, changeIsPaused, changeIsPickingValue, changeIsInterval } = stateTimerSlice.actions;
+export const { changeIsPlay, changeIsPaused, changeIsPickingValue } = stateTimerSlice.actions;
 export const stateTimerReducer = stateTimerSlice.reducer;
