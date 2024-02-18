@@ -14,6 +14,7 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { changeRunningValue, changeTotalValue } from "@src/components/Utils/Redux/features/timerValues-slice";
 import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
+import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 
 interface StateManagement {
   listOneValue: Animated.Value;
@@ -128,6 +129,7 @@ export default function StateManagement(values: StateManagement) {
       if (stateTimer.isPlay) {
         (async function play() {
           dispatch(changeIsSelection(false));
+          dispatch(changeIsHistory(false));
 
           soundRef.current = undefined;
 

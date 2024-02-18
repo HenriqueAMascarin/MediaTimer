@@ -8,14 +8,16 @@ import { useDispatch } from "react-redux";
 import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
 import { useMemo } from "react";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import { changeIsHistory } from "../Utils/Redux/features/stateHistory-slice";
 
 export default function MusicButton() {
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
   const dispatch = useDispatch();
 
   function toggleTab() {
-    dispatch(changeIsSelection(!stateMusic.isSelection));
     dispatch(changeIsSelectionYoutube(false));
+    dispatch(changeIsHistory(false))
+    dispatch(changeIsSelection(!stateMusic.isSelection));
   }
 
   const activeStatus = useMemo(() => {
