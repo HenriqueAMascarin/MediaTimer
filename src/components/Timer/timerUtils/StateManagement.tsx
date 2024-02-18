@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 import { heightItem } from "../styles/timerStyle";
 import { Animated, Vibration } from "react-native";
 
-import { changeScrollValues } from "../../Utils/Redux/features/dataNumbers-slice";
 import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
@@ -28,16 +27,25 @@ export default function StateManagement(values: StateManagement) {
 
   const soundRef = useRef<Audio.Sound>();
 
-  const dataNumbers = useAppSelector(({ dataNumbers }) => dataNumbers);
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
   const dispatch = useDispatch();
 
+  const dataNumbers = (() => {
+    return ({
+      scrollOne: Number(JSON.stringify(values.listOneValue)),
+      scrollTwo: Number(JSON.stringify(values.listTwoValue)),
+      scrollThree: Number(JSON.stringify(values.listThreeValue))
+    })
+  })
+
   function playTimer(heightItem: number) {
-    const numberHours = Math.round(dataNumbers.scrollOne / heightItem) * 3600;
-    const numberMinutes = Math.round(dataNumbers.scrollTwo / heightItem) * 60;
-    const numberSeconds = Math.round(dataNumbers.scrollThree / heightItem);
+    const numbers = dataNumbers();
+
+    const numberHours = Math.round(numbers.scrollOne / heightItem) * 3600;
+    const numberMinutes = Math.round(numbers.scrollTwo / heightItem) * 60;
+    const numberSeconds = Math.round(numbers.scrollThree / heightItem);
     const timeStampValue = numberHours + numberMinutes + numberSeconds;
 
     dispatch(changeRunningValue(timeStampValue));
@@ -103,13 +111,10 @@ export default function StateManagement(values: StateManagement) {
 
   useEffect(() => {
     if (stateTimer.isPickingValue && !stateTimer.isPlay) {
-      const hours = Number(JSON.stringify(values.listOneValue));
-      const minutes = Number(JSON.stringify(values.listTwoValue));
-      const seconds = Number(JSON.stringify(values.listThreeValue));
-
-      if (hours != 0 || minutes != 0 || seconds != 0) {
+    const numbers = dataNumbers();
+    
+      if (numbers.scrollOne != 0 || numbers.scrollTwo != 0 || numbers.scrollThree != 0) {
         changeHavePlayed(true);
-        dispatch(changeScrollValues({ scrollOne: hours, scrollTwo: minutes, scrollThree: seconds }));
         dispatch(changeIsPlay(true));
       } else {
         dispatch(changeIsPickingValue(false));

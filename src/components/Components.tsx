@@ -6,14 +6,16 @@ import ButtonTabs from "./InfoTabs/ButtonTabs";
 import YoutubeTabs from "./InfoTabs/YoutubeTabs";
 import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 import { deleteAsync, getInfoAsync, makeDirectoryAsync } from "expo-file-system";
-import { directoryYoutube } from "./Utils/globalVars";
+import { directoryYoutube, historyLocalKey } from "./Utils/globalVars";
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-slice';
 import notifee, { Event, EventType } from '@notifee/react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { changeHistoryArray, historyItem } from "./Utils/Redux/features/stateHistory-slice";
 
 export default function Components() {
-    const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
+    const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const dispatch = useDispatch();
 
     const eventNotifee = async ({ type, detail }: Event) => {
@@ -33,6 +35,20 @@ export default function Components() {
 
     useEffect(() => {
 
+        notifee.cancelAllNotifications();
+
+        (async () => {
+            
+            const jsonValue = await AsyncStorage.getItem(historyLocalKey);
+            let historyValue: historyItem[] | null = null;
+            if(jsonValue) historyValue = JSON.parse(jsonValue);
+
+            if(historyValue != null){
+                dispatch(changeHistoryArray(historyValue));
+            }
+            
+        })();
+
         (async () => {
 
             const { exists } = await getInfoAsync(directoryYoutube);
@@ -43,7 +59,6 @@ export default function Components() {
 
             makeDirectoryAsync(directoryYoutube, { intermediates: true });
 
-            notifee.cancelAllNotifications();
         })();
 
     }, [])

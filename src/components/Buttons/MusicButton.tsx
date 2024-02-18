@@ -27,7 +27,7 @@ export default function MusicButton() {
       }
     }
     return status;
-  }, [stateMusic.pressBtn])
+  }, [stateMusic.pressBtn]);
 
   return (
     <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: activeStatus ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => toggleTab()}>

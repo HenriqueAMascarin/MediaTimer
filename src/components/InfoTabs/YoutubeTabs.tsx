@@ -8,24 +8,48 @@ import { youtubeStyle } from "./styles/youtubeStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeIsSelectionYoutube, changeMusicLink, changeYoutube } from "../Utils/Redux/features/statesMusic-slice";
-import { youtubeDownload } from "../Utils/youtube/youtubeDownload";
+import { youtubeDownload, youtubeSearch } from "../Utils/youtube/youtubeFunctions";
+import { changeHistoryArray, historyItem } from "../Utils/Redux/features/stateHistory-slice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { historyLocalKey } from "../Utils/globalVars";
+import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
 export default function YoutubeTabs() {
 
-    const [status, changeStatus] = useState({ searching: false, success: false })
-    const [input, changeInput] = useState('');
+    const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
     const dispatch = useDispatch();
 
-    function search() {
+    const [status, changeStatus] = useState({ searching: false, success: false });
+    const [input, changeInput] = useState('');
+
+    async function search() {
         changeStatus({ searching: true, success: false });
 
-        youtubeDownload(input).then((res) => {
-            if (res) {
-                dispatch(changeMusicLink(res));
-                dispatch(changeYoutube(true));
-                changeStatus({ searching: true, success: true });
+        await youtubeSearch(input).then(async (musicItem: historyItem | null) => {
+            if (musicItem?.idMusic != null) {
+                let oldHistoryArray = stateHistory.historyItems;
+                if(oldHistoryArray.length >= 10) oldHistoryArray.pop();
+                const newArrItems = [musicItem, ...oldHistoryArray];
+
+                try {
+                    const jsonValue = JSON.stringify(newArrItems);
+                    await AsyncStorage.setItem(historyLocalKey, jsonValue);
+                    dispatch(changeHistoryArray(newArrItems))
+
+                    await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
+                        if (musicLink != null) {
+                            dispatch(changeMusicLink(musicLink));
+                            dispatch(changeYoutube(true));
+                            changeStatus({ searching: true, success: true });
+                        }
+                    });
+                } catch  {
+                    changeStatus({ searching: false, success: false });
+                }
+
             }
-        });
+        })
+
 
     }
 
