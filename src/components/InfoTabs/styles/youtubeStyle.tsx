@@ -19,9 +19,4 @@ export const youtubeStyle = StyleSheet.create({
         gap: 4,
         position: "relative"
     },
-    statusItem: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 14,
-    },
 })

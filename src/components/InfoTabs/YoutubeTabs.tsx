@@ -1,22 +1,23 @@
 import { View, Text, TouchableOpacity, TextInput, Animated } from "react-native";
-import CloseSvg from "../../../assets/images/close.svg";
-import LoadingSvg from "../../../assets/images/loading.svg";
-import CorrectSvg from "../../../assets/images/correct.svg";
-import SearchSvg from "../../../assets/images/search.svg";
+import CloseSvg from "@assets/images/close.svg";
+import SearchSvg from "@assets/images/search.svg";
 import { useState } from "react";
 import { youtubeStyle } from "./styles/youtubeStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
-import { changeIsSelectionYoutube, changeMusicLink, changeYoutube } from "../Utils/Redux/features/statesMusic-slice";
+import { changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
 import { youtubeDownload, youtubeSearch } from "../Utils/youtube/youtubeFunctions";
 import { changeHistoryArray, historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { historyLocalKey } from "../Utils/globalVars";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import { changeMusic } from "../Utils/buttons";
+import {SuccessAlert, LoadingAlert} from "@src/components/InfoTabs/Alerts/Components";
 
 export default function YoutubeTabs() {
 
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+    const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const dispatch = useDispatch();
 
     const [status, changeStatus] = useState({ searching: false, success: false });
@@ -28,7 +29,7 @@ export default function YoutubeTabs() {
         await youtubeSearch(input).then(async (musicItem: historyItem | null) => {
             if (musicItem?.idMusic != null) {
                 let oldHistoryArray = stateHistory.historyItems;
-                if(oldHistoryArray.length >= 10) oldHistoryArray.pop();
+                if (oldHistoryArray.length >= 10) oldHistoryArray.pop();
                 const newArrItems = [musicItem, ...oldHistoryArray];
 
                 try {
@@ -38,12 +39,11 @@ export default function YoutubeTabs() {
 
                     await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
-                            dispatch(changeMusicLink(musicLink));
-                            dispatch(changeYoutube(true));
+                            changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
                             changeStatus({ searching: true, success: true });
                         }
                     });
-                } catch  {
+                } catch {
                     changeStatus({ searching: false, success: false });
                 }
 
@@ -57,24 +57,6 @@ export default function YoutubeTabs() {
         changeStatus({ searching: false, success: false });
         dispatch(changeIsSelectionYoutube(false));
     }
-
-    let spinValue = new Animated.Value(0);
-
-    Animated.loop(
-        Animated.timing(
-            spinValue,
-            {
-                toValue: 1,
-                duration: 1500,
-                useNativeDriver: false
-            }
-        )
-    ).start();
-
-    const spin = spinValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '360deg'],
-    })
 
     return (
         <View style={{ position: "relative" }}>
@@ -99,25 +81,9 @@ export default function YoutubeTabs() {
 
 
                 !status.success ?
-                    <View style={[youtubeStyle.item, youtubeStyle.statusItem]}>
-                        <Animated.View style={{ transform: [{ rotate: spin }] }}>
-                            <LoadingSvg />
-                        </Animated.View>
-
-                        <Text>
-                            Buscando música
-                        </Text>
-                    </View>
+                    <LoadingAlert/>
                     :
-                    <View style={[youtubeStyle.item, youtubeStyle.statusItem]}>
-
-                        <CorrectSvg />
-
-                        <Text>
-                            Música encontrada
-                        </Text>
-
-                    </View>
+                    <SuccessAlert />
             }
             {!status.searching || status.success ?
                 <TouchableOpacity style={{ position: "absolute", top: 6, right: 6, height: 16, width: 16, elevation: 10, zIndex: 2 }} onPress={() => onClose()}>

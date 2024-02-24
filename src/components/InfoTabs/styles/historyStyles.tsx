@@ -11,6 +11,9 @@ export const historyStyle = StyleSheet.create({
       },
     item: {
         display: "flex",
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         backgroundColor: colorsStyle.principal.gray,
         shadowColor: "#000",
         shadowOpacity: 0.5,
@@ -18,8 +21,9 @@ export const historyStyle = StyleSheet.create({
         elevation: 5,
         borderRadius: 14,
         paddingVertical: 6,
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
         width: 200,
         minHeight: 50,
+        gap: 2,
     }, 
 });

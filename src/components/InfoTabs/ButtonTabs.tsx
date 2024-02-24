@@ -9,49 +9,27 @@ import FireSvg from "../../../assets/images/fire.svg";
 import YoutubeSvg from "../../../assets/images/youtube.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
-import { changePressBtn, changeMusicLink, changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
-import { AVPlaybackSource } from "expo-av";
+import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
+import { changeMusic } from "../Utils/buttons";
 
 export default function ButtonTabs() {
 
   const dispatch = useDispatch();
   const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
 
-  useEffect(() => {
-    if (stateMusic.pressBtn.youtube) {
-      changeMusic({ youtube: true }, null);
-    }
-  }, [stateMusic.pressBtn.youtube])
-
   function changeYoutube() {
     dispatch(changeIsSelection(false));
     dispatch(changeIsSelectionYoutube(true));
   };
 
-  function changeFire() { changeMusic({ fire: true }, require('@assets/sounds/fire.wav')) };
+  function changeFire() { changeMusic(stateMusic.pressBtn, { fire: true }, require('@assets/sounds/fire.wav')) };
 
-  function changeWaves() { changeMusic({ waves: true }, require('@assets/sounds/waves.wav')) };
+  function changeWaves() { changeMusic(stateMusic.pressBtn, { waves: true }, require('@assets/sounds/waves.wav')) };
 
-  function changeForest() { changeMusic({ forest: true }, require('@assets/sounds/nature.wav')) };
+  function changeForest() { changeMusic(stateMusic.pressBtn, { forest: true }, require('@assets/sounds/nature.wav')) };
 
   function resetAll() {
-    changeMusic({ reset: true }, null);
-  }
-
-  function changeMusic(changeBtn: {} | null, musicLink: AVPlaybackSource | string | null) {
-
-    let newBtnsObj = { ...stateMusic.pressBtn };
-
-    for (let key in stateMusic.pressBtn) {
-      newBtnsObj[key] = false;
-    }
-
-    newBtnsObj = { ...newBtnsObj, ...changeBtn };
-
-    dispatch(changePressBtn(newBtnsObj));
-
-    dispatch(changeMusicLink(musicLink))
-
+    changeMusic(stateMusic.pressBtn, { reset: true });
   }
 
   return (

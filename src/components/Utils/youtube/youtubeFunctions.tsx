@@ -12,7 +12,7 @@ export async function youtubeSearch(name: string){
     .then((res) => {
       itemId = res.data.items[0].id.videoId;
       if(itemId){
-        newMusic = {nameMusic: res.data.items[0].snippet.title, authorMusic: res.data.items[0].snippet.channelTitle, idMusic: res.data.items[0].id.videoId};
+        newMusic = {nameMusic: res.data.items[0].snippet.title, authorMusic: res.data.items[0].snippet.channelTitle, idMusic: res.data.items[0].id.videoId, isSelected: false};
       }
     });
 

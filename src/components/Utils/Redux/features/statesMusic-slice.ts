@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AVPlaybackSource } from "expo-av";
 
-type initialType = {
+export type statesMusicType = {
     isSelection: boolean,
     pressBtn: {
         [key: string | number]: boolean,
@@ -15,7 +15,7 @@ type initialType = {
     musicLink: AVPlaybackSource | string | null,
 }
 
-const initialState: initialType = {
+const initialState: statesMusicType = {
     isSelection: false,
     pressBtn: {
         forest: false,
