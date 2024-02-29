@@ -1,5 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Animated } from "react-native";
-import CloseSvg from "@assets/images/close.svg";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import SearchSvg from "@assets/images/search.svg";
 import { useState } from "react";
 import { youtubeStyle } from "./styles/youtubeStyle";
@@ -12,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { historyLocalKey } from "../Utils/globalVars";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeMusic } from "../Utils/buttons";
-import {SuccessAlert, LoadingAlert} from "@src/components/InfoTabs/Alerts/Components";
+import {SuccessAlert, LoadingAlert, CloseButton} from "@src/components/InfoTabs/Alerts/Components";
 
 export default function YoutubeTabs() {
 
@@ -44,7 +43,7 @@ export default function YoutubeTabs() {
                         }
                     });
                 } catch {
-                    changeStatus({ searching: false, success: false });
+                    changeStatus({ searching: true, success: false });
                 }
 
             }
@@ -63,6 +62,7 @@ export default function YoutubeTabs() {
             {!status.searching ?
 
                 <View style={[youtubeStyle.item, youtubeStyle.searchItem]}>
+                    <CloseButton clickFunction={onClose}/>
                     <Text style={{ color: colorsStyle.principal.blue, fontSize: 20 }}>
                         Nome da música
                     </Text>
@@ -83,14 +83,8 @@ export default function YoutubeTabs() {
                 !status.success ?
                     <LoadingAlert/>
                     :
-                    <SuccessAlert />
-            }
-            {!status.searching || status.success ?
-                <TouchableOpacity style={{ position: "absolute", top: 6, right: 6, height: 16, width: 16, elevation: 10, zIndex: 2 }} onPress={() => onClose()}>
-                    <CloseSvg width={'16px'} height={'16px'} />
-                </TouchableOpacity>
-                : null}
-
+                    <SuccessAlert closeFunction={onClose}/>
+                }
         </View>
     )
 }

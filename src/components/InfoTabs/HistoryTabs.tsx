@@ -34,6 +34,10 @@ export default function HistoryTabs() {
         }
     }
 
+    function onClose(){
+
+    }
+
     return (
         <ScrollView horizontal>
             <View style={[historyStyle.container]}>
@@ -55,7 +59,7 @@ export default function HistoryTabs() {
             <View>
                 <LoadingAlert/>
 
-                <SuccessAlert/>
+                <SuccessAlert closeFunction={onClose}/>
             </View>
         </ScrollView>
     )
