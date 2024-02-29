@@ -42,7 +42,7 @@ export function ErrorAlert({ alertText, closeFunction }: { alertText?: string, c
   
         <CorrectSvg />
   
-        <Text>{alertText ?? "Música não encontrada"}</Text>
+        <Text>{alertText ?? "Música erro"}</Text>
       </View>
     );
   }

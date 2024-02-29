@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { historyLocalKey } from "../Utils/globalVars";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeMusic } from "../Utils/buttons";
-import {SuccessAlert, LoadingAlert, CloseButton} from "@src/components/InfoTabs/Alerts/Components";
+import { SuccessAlert, LoadingAlert, CloseButton, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
 
 export default function YoutubeTabs() {
 
@@ -19,11 +19,11 @@ export default function YoutubeTabs() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const dispatch = useDispatch();
 
-    const [status, changeStatus] = useState({ searching: false, success: false });
+    const [status, changeStatus] = useState({ searching: false, success: false, error: false });
     const [input, changeInput] = useState('');
 
     async function search() {
-        changeStatus({ searching: true, success: false });
+        changeStatus({ searching: true, success: false, error: false });
 
         await youtubeSearch(input).then(async (musicItem: historyItem | null) => {
             if (musicItem?.idMusic != null) {
@@ -39,11 +39,11 @@ export default function YoutubeTabs() {
                     await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
                             changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
-                            changeStatus({ searching: true, success: true });
+                            changeStatus({ searching: true, success: true, error: false });
                         }
                     });
                 } catch {
-                    changeStatus({ searching: true, success: false });
+                    changeStatus({ searching: true, success: false, error: true });
                 }
 
             }
@@ -53,7 +53,7 @@ export default function YoutubeTabs() {
     }
 
     function onClose() {
-        changeStatus({ searching: false, success: false });
+        changeStatus({ searching: false, success: false, error: false });
         dispatch(changeIsSelectionYoutube(false));
     }
 
@@ -62,7 +62,7 @@ export default function YoutubeTabs() {
             {!status.searching ?
 
                 <View style={[youtubeStyle.item, youtubeStyle.searchItem]}>
-                    <CloseButton clickFunction={onClose}/>
+                    <CloseButton clickFunction={onClose} />
                     <Text style={{ color: colorsStyle.principal.blue, fontSize: 20 }}>
                         Nome da música
                     </Text>
@@ -79,12 +79,14 @@ export default function YoutubeTabs() {
 
                 :
 
-
-                !status.success ?
-                    <LoadingAlert/>
+                !status.success && !status.error ?
+                    <LoadingAlert />
                     :
-                    <SuccessAlert closeFunction={onClose}/>
-                }
+                    status.success && !status.error ?
+                        <SuccessAlert closeFunction={onClose} />
+                        :
+                        <ErrorAlert closeFunction={onClose} />
+            }
         </View>
     )
 }

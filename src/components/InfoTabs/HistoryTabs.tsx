@@ -3,11 +3,16 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
-import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
-import {SuccessAlert, LoadingAlert} from "@src/components/InfoTabs/Alerts/Components";
+import { changeHistoryArray, changeIsHistory, historyItem } from "../Utils/Redux/features/stateHistory-slice";
+import { SuccessAlert, LoadingAlert, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+    const [status, changeStatus] = useState({ searching: false, success: false, error: false });
+    const dispatch = useDispatch();
+
 
     function musicName(nameMusic: string) {
         const nameOnly = nameMusic.slice(nameMusic.indexOf('-') + 2).slice(0, 20);
@@ -26,41 +31,52 @@ export default function HistoryTabs() {
             }
 
             try {
-                
+
                 newArr[newArr.findIndex((el) => el == item)].isSelected = true;
+                dispatch(changeHistoryArray(newArr));
             } catch (error) {
                 return;
             }
         }
     }
 
-    function onClose(){
-
+    function onClose() {
+        changeStatus({ searching: false, success: false, error: false });
+        dispatch(changeIsHistory(false));
     }
 
     return (
-        <ScrollView horizontal>
-            <View style={[historyStyle.container]}>
-                {stateHistory.historyItems.map((item, keyItem) => {
-                    return (
-                        <View style={[historyStyle.item]} key={keyItem}>
-                            <View>
-                                <Text>{musicName(item.nameMusic)}</Text>
-                                <Text>{item.nameMusic.slice(0, item.nameMusic.indexOf('-')) ?? item.authorMusic}</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => changeItemSelected(item)}>
-                                <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.blackGray} />
-                            </TouchableOpacity>
-                        </View>
-                    )
-                })}
-            </View>
+        <View>
+            {!status.searching ?
+                <ScrollView horizontal>
 
-            <View>
-                <LoadingAlert/>
+                    <View style={[historyStyle.container]}>
+                        {stateHistory.historyItems.map((item, keyItem) => {
+                            return (
+                                <View style={[historyStyle.item]} key={keyItem}>
+                                    <View>
+                                        <Text>{musicName(item.nameMusic)}</Text>
+                                        <Text>{item.nameMusic.slice(0, item.nameMusic.indexOf('-')) ?? item.authorMusic}</Text>
+                                    </View>
+                                    <TouchableOpacity onPress={() => changeItemSelected(item)}>
+                                        <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.blackGray} />
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        })}
+                    </View>
+                </ScrollView>
 
-                <SuccessAlert closeFunction={onClose}/>
-            </View>
-        </ScrollView>
+                :
+
+                !status.success && !status.error ?
+                    <LoadingAlert />
+                    :
+                    status.success && !status.error ?
+                        <SuccessAlert closeFunction={onClose} />
+                        :
+                        <ErrorAlert closeFunction={onClose} />
+            }
+        </View>
     )
 }
