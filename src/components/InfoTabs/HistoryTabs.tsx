@@ -7,9 +7,12 @@ import { changeHistoryArray, changeIsHistory, historyItem } from "../Utils/Redux
 import { SuccessAlert, LoadingAlert, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { youtubeDownload } from "../Utils/youtube/youtubeFunctions";
+import { changeMusic } from "../Utils/buttons";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+    const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
     const dispatch = useDispatch();
 
@@ -24,19 +27,29 @@ export default function HistoryTabs() {
 
     function changeItemSelected(item: historyItem) {
         if (!item.isSelected) {
+
+            changeStatus({ searching: true, success: false, error: false })
+
             let newArr = stateHistory.historyItems;
 
             for (const key in newArr) {
                 newArr[key].isSelected = false;
             }
 
-            try {
+            youtubeDownload(item.idMusic).then((musicLink: string | null) => {
+                if (musicLink != null) {
+                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+                    changeStatus({ searching: true, success: true, error: false });
+                    newArr[newArr.findIndex((el) => el == item)].isSelected = true;
+                    dispatch(changeHistoryArray(newArr));
+                    dispatch(changeIsHistory(true));
+                }
+            }).catch(() => {
+                dispatch(changeIsHistory(false));
+                changeStatus({ searching: true, success: false, error: true });
+            });
 
-                newArr[newArr.findIndex((el) => el == item)].isSelected = true;
-                dispatch(changeHistoryArray(newArr));
-            } catch (error) {
-                return;
-            }
+
         }
     }
 
