@@ -30,7 +30,7 @@ export default function HistoryTabs() {
 
             changeStatus({ searching: true, success: false, error: false })
 
-            let newArr = stateHistory.historyItems;
+            let newArr = [...stateHistory.historyItems];
 
             for (const key in newArr) {
                 newArr[key].isSelected = false;
@@ -38,14 +38,14 @@ export default function HistoryTabs() {
 
             youtubeDownload(item.idMusic).then((musicLink: string | null) => {
                 if (musicLink != null) {
+                    const index = newArr.findIndex((el) => el == item);
+                    newArr[index] = {...newArr[index], isSelected: true};
                     changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
                     changeStatus({ searching: true, success: true, error: false });
-                    newArr[newArr.findIndex((el) => el == item)].isSelected = true;
                     dispatch(changeHistoryArray(newArr));
-                    dispatch(changeIsHistory(true));
                 }
             }).catch(() => {
-                dispatch(changeIsHistory(false));
+                changeHistoryArray(newArr);
                 changeStatus({ searching: true, success: false, error: true });
             });
 
