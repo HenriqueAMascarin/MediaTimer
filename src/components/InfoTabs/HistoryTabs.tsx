@@ -40,7 +40,7 @@ export default function HistoryTabs() {
                 if (musicLink != null) {
                     const index = newArr.findIndex((el) => el == item);
                     newArr[index] = {...newArr[index], isSelected: true};
-                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
                     changeStatus({ searching: true, success: true, error: false });
                     dispatch(changeHistoryArray(newArr));
                 }

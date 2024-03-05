@@ -28,13 +28,18 @@ export default function YoutubeTabs() {
         await youtubeSearch(input).then(async (musicItem: historyItem | null) => {
             if (musicItem?.idMusic != null) {
                 let oldHistoryArray = stateHistory.historyItems;
+
+                for (const key in oldHistoryArray) {
+                    oldHistoryArray[key].isSelected = false;
+                }
+
                 if (oldHistoryArray.length >= 10) oldHistoryArray.pop();
                 const newArrItems = [musicItem, ...oldHistoryArray];
 
                 try {
                     const jsonValue = JSON.stringify(newArrItems);
                     await AsyncStorage.setItem(historyLocalKey, jsonValue);
-                    dispatch(changeHistoryArray(newArrItems))
+                    dispatch(changeHistoryArray(newArrItems));
 
                     await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
