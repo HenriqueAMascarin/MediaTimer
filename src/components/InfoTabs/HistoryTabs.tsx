@@ -19,7 +19,7 @@ export default function HistoryTabs() {
 
     function musicName(nameMusic: string) {
         const nameOnly = nameMusic.slice(nameMusic.indexOf('-') + 2).slice(0, 20) + " ";
-        console.log(nameOnly.lastIndexOf(' '))
+        
         const nameFormated = (nameOnly.lastIndexOf(' ') != -1 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly + '...') ;
 
         return nameFormated;
