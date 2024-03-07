@@ -8,6 +8,10 @@ const dispatch = store.dispatch;
 
 export function changeMusic(musicStates: statesMusicType['pressBtn'], changeBtn?: {} | null, musicLink?: AVPlaybackSource | string, changeHistory = true) {
 
+    if (changeHistory) {
+        changeLocalHistoryArray()
+    }
+
     let newBtnsObj = { ...musicStates };
 
     for (let key in musicStates) {
@@ -15,10 +19,6 @@ export function changeMusic(musicStates: statesMusicType['pressBtn'], changeBtn?
     }
 
     newBtnsObj = { ...newBtnsObj, ...changeBtn };
-
-    if(changeHistory){
-        changeLocalHistoryArray()
-    }
 
     dispatch(changePressBtn(newBtnsObj));
 

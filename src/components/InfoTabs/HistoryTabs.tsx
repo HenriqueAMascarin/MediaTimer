@@ -18,9 +18,9 @@ export default function HistoryTabs() {
 
 
     function musicName(nameMusic: string) {
-        const nameOnly = nameMusic.slice(nameMusic.indexOf('-') + 2).slice(0, 20);
-
-        const nameFormated = (nameOnly.lastIndexOf(' ') != -1 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : null) + '...';
+        const nameOnly = nameMusic.slice(nameMusic.indexOf('-') + 2).slice(0, 20) + " ";
+        console.log(nameOnly.lastIndexOf(' '))
+        const nameFormated = (nameOnly.lastIndexOf(' ') != -1 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly + '...') ;
 
         return nameFormated;
     }
@@ -32,13 +32,13 @@ export default function HistoryTabs() {
 
             let newArr = [...stateHistory.historyItems];
 
-            for (const key in newArr) {
+            for (let key = 0; key < newArr.length; key++) {
                 newArr[key].isSelected = false;
             }
 
             youtubeDownload(item.idMusic).then((musicLink: string | null) => {
                 if (musicLink != null) {
-                    const index = newArr.findIndex((el) => el == item);
+                    const index = newArr.findIndex((el) => el.idMusic == item.idMusic);
                     newArr[index] = {...newArr[index], isSelected: true};
                     changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
                     changeStatus({ searching: true, success: true, error: false });

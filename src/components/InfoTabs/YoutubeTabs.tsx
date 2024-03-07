@@ -27,10 +27,14 @@ export default function YoutubeTabs() {
 
         await youtubeSearch(input).then(async (musicItem: historyItem | null) => {
             if (musicItem?.idMusic != null) {
-                let oldHistoryArray = stateHistory.historyItems;
+                let oldHistoryArray = [...stateHistory.historyItems];
 
-                for (const key in oldHistoryArray) {
-                    oldHistoryArray[key].isSelected = false;
+                for (let key = 0; key < oldHistoryArray.length; key++) {
+                    oldHistoryArray[key] = {...oldHistoryArray[key], isSelected: false};
+
+                    if(musicItem.idMusic == oldHistoryArray[key].idMusic){
+                        oldHistoryArray.splice(key, 1)
+                    }
                 }
 
                 if (oldHistoryArray.length >= 10) oldHistoryArray.pop();
