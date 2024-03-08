@@ -17,15 +17,17 @@ export default function HistoryButton() {
   const dispatch = useDispatch();
 
   function changeHistory() {
-    dispatch(changeIsSelectionYoutube(false));
-    dispatch(changeIsSelection(false));
-    dispatch(changeIsHistory(!stateHistory.isHistory));
+    if (stateHistory.historyItems.length > 0) {
+      dispatch(changeIsSelectionYoutube(false));
+      dispatch(changeIsSelection(false));
+      dispatch(changeIsHistory(!stateHistory.isHistory));
+    }
   }
 
   const hasItemSelected = useMemo(() => stateHistory.historyItems.find((el) => el.isSelected == true), [stateHistory.historyItems])
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, {backgroundColor: hasItemSelected ? colorsStyle.principal.blue : colorsStyle.principal.gray}]} onPress={() => changeHistory()}>
+    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: hasItemSelected ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => changeHistory()}>
       <HistorySvg width={"35px"} height={"35px"} fill={hasItemSelected ? colorsStyle.principal.white : colorsStyle.principal.black} />
     </TouchableOpacity>
   );

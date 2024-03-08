@@ -6,7 +6,7 @@ export const alertsStyles = StyleSheet.create(
         item: {
             display: "flex",
             flexDirection: 'row',
-            justifyContent: 'space-around',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             backgroundColor: colorsStyle.principal.gray,
             shadowColor: "#000",
@@ -15,10 +15,10 @@ export const alertsStyles = StyleSheet.create(
             elevation: 5,
             borderRadius: 14,
             paddingVertical: 6,
-            paddingHorizontal: 5,
-            width: 200,
-            minHeight: 50,
-            gap: 2,
+            paddingHorizontal: 20,
+            width: 250,
+            minHeight: 52,
+            gap: 20,
         },
         statusItem: {
             flexDirection: "row",

@@ -22,6 +22,8 @@ export default function YoutubeTabs() {
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
     const [input, changeInput] = useState('');
 
+    const [textProgress, changeTextProgress] = useState("Buscando a música");
+
     async function search() {
         changeStatus({ searching: true, success: false, error: false });
 
@@ -30,9 +32,9 @@ export default function YoutubeTabs() {
                 let oldHistoryArray = [...stateHistory.historyItems];
 
                 for (let key = 0; key < oldHistoryArray.length; key++) {
-                    oldHistoryArray[key] = {...oldHistoryArray[key], isSelected: false};
+                    oldHistoryArray[key] = { ...oldHistoryArray[key], isSelected: false };
 
-                    if(musicItem.idMusic == oldHistoryArray[key].idMusic){
+                    if (musicItem.idMusic == oldHistoryArray[key].idMusic) {
                         oldHistoryArray.splice(key, 1)
                     }
                 }
@@ -44,6 +46,8 @@ export default function YoutubeTabs() {
                     const jsonValue = JSON.stringify(newArrItems);
                     await AsyncStorage.setItem(historyLocalKey, jsonValue);
                     dispatch(changeHistoryArray(newArrItems));
+
+                    changeTextProgress('Baixando a música');
 
                     await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
@@ -58,7 +62,7 @@ export default function YoutubeTabs() {
             }
         })
 
-
+        changeTextProgress('Buscando a música');
     }
 
     function onClose() {
@@ -89,7 +93,7 @@ export default function YoutubeTabs() {
                 :
 
                 !status.success && !status.error ?
-                    <LoadingAlert />
+                    <LoadingAlert alertText={textProgress} />
                     :
                     status.success && !status.error ?
                         <SuccessAlert closeFunction={onClose} />

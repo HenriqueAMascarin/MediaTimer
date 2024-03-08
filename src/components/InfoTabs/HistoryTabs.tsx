@@ -83,7 +83,7 @@ export default function HistoryTabs() {
                 :
 
                 !status.success && !status.error ?
-                    <LoadingAlert />
+                    <LoadingAlert alertText="Baixando a música"/>
                     :
                     status.success && !status.error ?
                         <SuccessAlert closeFunction={onClose} />

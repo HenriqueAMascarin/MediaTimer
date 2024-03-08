@@ -69,7 +69,7 @@ export function LoadingAlert({ alertText }: { alertText?: string }) {
         <LoadingSvg />
       </Animated.View>
 
-      <Text>{alertText ?? "Buscando música"}</Text>
+      <Text>{alertText ?? "Buscando a música"}</Text>
     </View>
   );
 }
