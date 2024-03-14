@@ -3,6 +3,7 @@ import LoadingSvg from "@assets/images/loading.svg";
 import { alertsStyles } from "../styles/alertsStyles";
 import { View, Text, Animated, TouchableOpacity } from "react-native";
 import CloseSvg from "@assets/images/close.svg";
+import WarningSvg from "@assets/images/warning.svg";
 
 export function CloseButton ({clickFunction}: {clickFunction: Function,}){
     return(
@@ -25,10 +26,10 @@ export function CloseButton ({clickFunction}: {clickFunction: Function,}){
 
 export function SuccessAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
   return (
-    <View style={[alertsStyles.item, alertsStyles.statusItem]}>
+    <View style={[alertsStyles.item]}>
     <CloseButton clickFunction={closeFunction}/>
 
-      <CorrectSvg />
+      <CorrectSvg style={{minWidth: 30}}/>
 
       <Text>{alertText ?? "Música encontrada"}</Text>
     </View>
@@ -37,12 +38,12 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
 
 export function ErrorAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
     return (
-      <View style={[alertsStyles.item, alertsStyles.statusItem]}>
+      <View style={[alertsStyles.item]}>
         <CloseButton clickFunction={closeFunction}/>
   
-        <CorrectSvg />
+        <WarningSvg style={{minWidth: 30}}/>
   
-        <Text>{alertText ?? "Música erro"}</Text>
+        <Text>{alertText ?? "Falha na busca"}</Text>
       </View>
     );
   }
@@ -66,7 +67,7 @@ export function LoadingAlert({ alertText }: { alertText?: string }) {
   return (
     <View style={[alertsStyles.item]}>
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <LoadingSvg />
+        <LoadingSvg style={{minWidth: 30}}/>
       </Animated.View>
 
       <Text>{alertText ?? "Buscando a música"}</Text>

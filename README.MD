@@ -12,7 +12,6 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
   - [Demonstração](#demonstração)
   - [Links](#links)
   - [Tecnologias usadas](#Tecnologias-usadas)
-  - [Futuras tecnologias](#Futuras-tecnologias)
 
 ## Sobre
 
@@ -30,13 +29,11 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 
 ### O que falta no projeto?
 
-- Algumas tecnologias
-- Funcionalidade de músicas (API)
-- Tema branco e preto igual ao design
-- Botão pra trocar o tamanho da interface do aplicativo
-- Melhorias
+- Tema escuro
+- Configurações dentro do app
+- Revisão do projeto
 
-### Demonstração Android
+### Demonstração Android (NÃO RECENTE)
 
 ![](./assets/showingApp.gif)
 
@@ -55,16 +52,20 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 
 - Portfólio: [clique aqui](https://henriqueamascarin.vercel.app).
 
+- Trello do projeto: [clique aqui](https://trello.com/b/qz6KPuiC/mediatimer)
+
 ### Tecnologias usadas
 
 - React Native
-- Expo
+- React Native Async Storage
+- React Native Background Timer
 - React Native Animated 
-- React Context API
 - React SVG + SVG Transformer
+- React Native Dotenv
+- Expo
+- Expo AV
+- Expo File System
+- Axios
 - Typescript
 - Redux
-
-### Futuras tecnologias
-
-- API de músicas
+- Notifee

@@ -18,9 +18,8 @@ export default function HistoryTabs() {
 
 
     function musicName(nameMusic: string) {
-        const nameOnly = nameMusic.slice(nameMusic.indexOf('-') + 2).slice(0, 20) + " ";
-        
-        const nameFormated = (nameOnly.lastIndexOf(' ') != -1 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly + '...') ;
+        const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') + 2).slice(0, 20) + " ";
+        const nameFormated = nameOnly.lastIndexOf(' ') < 18 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly.slice(0, nameOnly.lastIndexOf('  ')) + '...';
 
         return nameFormated;
     }
@@ -39,7 +38,7 @@ export default function HistoryTabs() {
             youtubeDownload(item.idMusic).then((musicLink: string | null) => {
                 if (musicLink != null) {
                     const index = newArr.findIndex((el) => el.idMusic == item.idMusic);
-                    newArr[index] = {...newArr[index], isSelected: true};
+                    newArr[index] = { ...newArr[index], isSelected: true };
                     changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
                     changeStatus({ searching: true, success: true, error: false });
                     dispatch(changeHistoryArray(newArr));
@@ -69,7 +68,7 @@ export default function HistoryTabs() {
                                 <View style={[historyStyle.item]} key={keyItem}>
                                     <View>
                                         <Text>{musicName(item.nameMusic)}</Text>
-                                        <Text>{item.nameMusic.slice(0, item.nameMusic.indexOf('-')) ?? item.authorMusic}</Text>
+                                        <Text>{item.nameMusic.indexOf(' -') != -1 ? item.nameMusic.slice(0, item.nameMusic.indexOf(' -')) : item.authorMusic}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)}>
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.blackGray} />
@@ -83,7 +82,7 @@ export default function HistoryTabs() {
                 :
 
                 !status.success && !status.error ?
-                    <LoadingAlert alertText="Baixando a música"/>
+                    <LoadingAlert alertText="Baixando a música" />
                     :
                     status.success && !status.error ?
                         <SuccessAlert closeFunction={onClose} />

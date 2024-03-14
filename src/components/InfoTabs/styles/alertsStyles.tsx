@@ -18,11 +18,6 @@ export const alertsStyles = StyleSheet.create(
             paddingHorizontal: 20,
             width: 250,
             minHeight: 52,
-            gap: 20,
-        },
-        statusItem: {
-            flexDirection: "row",
-            alignItems: "center",
             gap: 14,
         },
     }
