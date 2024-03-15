@@ -30,12 +30,11 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 ### O que falta no projeto?
 
 - Tema escuro
-- Configurações dentro do app
 - Revisão do projeto
 
-### Demonstração Android (NÃO RECENTE)
+### Demonstração Android
 
-![](./assets/showingApp.gif)
+![](./assets/reviewImage.jpg)
 
 - Baixar demonstração atual: [clique aqui](https://expo.dev/accounts/luckthegamers/projects/media-timer/builds/3548762e-fa94-4620-99c3-251d095ef330).
 

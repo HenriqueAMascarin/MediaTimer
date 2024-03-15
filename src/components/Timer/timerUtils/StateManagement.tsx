@@ -112,8 +112,8 @@ export default function StateManagement(values: StateManagement) {
 
   useEffect(() => {
     if (stateTimer.isPickingValue && !stateTimer.isPlay) {
-    const numbers = dataNumbers();
-    
+      const numbers = dataNumbers();
+
       if (numbers.scrollOne != 0 || numbers.scrollTwo != 0 || numbers.scrollThree != 0) {
         changeHavePlayed(true);
         dispatch(changeIsPlay(true));
@@ -173,6 +173,7 @@ export default function StateManagement(values: StateManagement) {
 
         stopTimer();
         Vibration.vibrate(400);
+        
       }
     }
   }, [stateTimer.isPlay]);
