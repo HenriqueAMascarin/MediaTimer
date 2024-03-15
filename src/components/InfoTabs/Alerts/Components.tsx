@@ -5,7 +5,7 @@ import { View, Text, Animated, TouchableOpacity } from "react-native";
 import CloseSvg from "@assets/images/close.svg";
 import WarningSvg from "@assets/images/warning.svg";
 
-export function CloseButton ({clickFunction}: {clickFunction: Function,}){
+export function CloseButton ({clickFunction}: {clickFunction: Function}){
     return(
         <TouchableOpacity
         style={{

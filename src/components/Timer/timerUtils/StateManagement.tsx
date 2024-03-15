@@ -131,8 +131,6 @@ export default function StateManagement(values: StateManagement) {
           dispatch(changeIsSelection(false));
           dispatch(changeIsHistory(false));
 
-          soundRef.current = undefined;
-
           if (stateMusic.musicLink) {
             const { sound } = await Audio.Sound.createAsync(
               typeof stateMusic.musicLink == 'string' ?
@@ -140,7 +138,7 @@ export default function StateManagement(values: StateManagement) {
                 : stateMusic.musicLink
             );
 
-            soundRef.current = sound
+            soundRef.current = sound;
 
             if (soundRef.current) {
               soundRef.current.setIsLoopingAsync(true);
@@ -157,6 +155,8 @@ export default function StateManagement(values: StateManagement) {
               })
 
             }
+          } else {
+            soundRef.current = undefined;
           }
 
           const totalValue = playTimer(heightItem);
