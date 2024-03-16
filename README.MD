@@ -2,6 +2,8 @@
 
 Aplicativo de timer de tempo com API de músicas, usando React Native para criação e com objetivo de solucionar um problema pessoal! (em progresso)
 
+⚠️ Lembrando é apenas um projeto pessoal e não será disponibilizado em nenhuma loja (por conta de direitos autorais)
+
 ## Conteúdos
 
 - [Sobre](#Sobre)
@@ -36,7 +38,7 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 
 ![](./assets/reviewImage.jpg)
 
-- Baixar demonstração atual: [clique aqui](https://expo.dev/accounts/luckthegamers/projects/media-timer/builds/3548762e-fa94-4620-99c3-251d095ef330).
+- Baixar demonstração atual: [clique aqui](https://expo.dev/accounts/henriqueam/projects/media-timer/builds/0b869dbe-79cd-4121-935b-3f3f93356e98).
 
 📙 Passo a passo 📙
 - Entre no link pelo celular
