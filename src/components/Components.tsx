@@ -1,4 +1,4 @@
-import { View, SafeAreaView } from "react-native";
+import { View, SafeAreaView, useColorScheme } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import ComponentTimer from "./Timer/ComponentTimer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
@@ -13,11 +13,15 @@ import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-sl
 import notifee, { Event, EventType } from '@notifee/react-native';
 import HistoryTabs from "./InfoTabs/HistoryTabs";
 import { changeLocalHistoryArray } from "./Utils/changeLocalHistoryArray";
+import { changeTheme } from "./Utils/Redux/features/stateTheme-slice";
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+    const stateTheme = useAppSelector(({ stateTheme }) => stateTheme);
+
     const dispatch = useDispatch();
+    const colorScheme = useColorScheme();
 
     const eventNotifee = async ({ type, detail }: Event) => {
         const { notification } = detail;
@@ -43,7 +47,7 @@ export default function Components() {
         (async () => {
 
             const { exists } = await getInfoAsync(directoryYoutube);
-            
+
             if (exists) {
                 deleteAsync(directoryYoutube);
             }
@@ -52,14 +56,17 @@ export default function Components() {
 
         })();
 
+        dispatch(changeTheme(colorScheme ?? 'light'));
+
     }, [])
 
+
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ 'backgroundColor': stateTheme.background, flex: 1 }}>
             <ComponentTimer />
 
             <View style={buttonsStyle.container}>
-                <View style={{ minHeight: 90 }}>
+                <View style={{ minHeight: 90, 'backgroundColor': stateTheme.background  }}>
                     {stateMusic.isYoutubeSelection ? <YoutubeTabs /> : <></>}
                     {stateMusic.isSelection ? <ButtonTabs /> : <></>}
                     {stateHistory.isHistory ? <HistoryTabs /> : <></>}

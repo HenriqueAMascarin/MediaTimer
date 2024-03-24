@@ -2,7 +2,7 @@
 
 Aplicativo de timer de tempo com API de músicas, usando React Native para criação e com objetivo de solucionar um problema pessoal! (em progresso)
 
-⚠️ Lembrando é apenas um projeto pessoal e não será disponibilizado em nenhuma loja (por conta de direitos autorais)
+⚠️ Lembrando, é apenas um projeto pessoal e não será disponibilizado em nenhuma loja (por conta de direitos autorais)
 
 ## Conteúdos
 

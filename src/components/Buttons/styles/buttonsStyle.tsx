@@ -7,7 +7,7 @@ export const buttonsStyle = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         marginTop: 70,
-        gap: 10
+        gap: 10,
     },
     buttonsContainer: {
         marginBottom: "auto",
