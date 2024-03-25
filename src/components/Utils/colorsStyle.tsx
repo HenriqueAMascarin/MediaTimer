@@ -8,10 +8,12 @@ export const colorsStyle = ({
     },
     lightTheme: {
         background: '#FFFFFF',
-        principal: '#000000'
+        principal: '#000000',
+        secondary: '#494949'
     },
     darkTheme: {
         background: '#494949',
         principal: '#FFFFFF',
+        secondary: "#E0E0E0"
     }
 })

@@ -56,10 +56,13 @@ export default function Components() {
 
         })();
 
-        dispatch(changeTheme(colorScheme ?? 'light'));
+        
 
     }, [])
 
+    useEffect(() => {
+        dispatch(changeTheme(colorScheme ?? 'light'));
+    }, [colorScheme])
 
     return (
         <SafeAreaView style={{ 'backgroundColor': stateTheme.background, flex: 1 }}>

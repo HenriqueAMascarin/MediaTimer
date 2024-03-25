@@ -15,7 +15,9 @@ import { changeMusic } from "../Utils/buttons";
 export default function ButtonTabs() {
 
   const dispatch = useDispatch();
-  const stateMusic = useAppSelector(({stateMusic}) => stateMusic);
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+  const stateTheme = useAppSelector(({ stateTheme }) => stateTheme);
+
 
   function changeYoutube() {
     dispatch(changeIsSelection(false));
@@ -32,31 +34,33 @@ export default function ButtonTabs() {
     changeMusic(stateMusic.pressBtn, { reset: true });
   }
 
+
+
   return (
     <ScrollView horizontal>
       <View style={infoStyles.container}>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={resetAll}>
-          <NothingSvg width="45px" height="45px" fill={stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: stateMusic.pressBtn.reset ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Nenhum</Text>
+          <NothingSvg width="45px" height="45px" fill={stateMusic.pressBtn.reset ? colorsStyle.principal.blue : stateTheme.principal} />
+          <Text style={{ color: stateMusic.pressBtn.reset ? colorsStyle.principal.blue : stateTheme.principal }}>Nenhum</Text>
         </TouchableOpacity>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeForest}>
-          <ForestSvg width="45px" height="45px" fill={stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: stateMusic.pressBtn.forest ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Floresta</Text>
+          <ForestSvg width="45px" height="45px" fill={stateMusic.pressBtn.forest ? colorsStyle.principal.blue : stateTheme.principal} />
+          <Text style={{ color: stateMusic.pressBtn.forest ? colorsStyle.principal.blue : stateTheme.principal }}>Floresta</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeWaves}>
-          <WavesSvg width="45px" height="45px" fill={stateMusic.pressBtn.waves ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: stateMusic.pressBtn.waves ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Ondas</Text>
+          <WavesSvg width="45px" height="45px" fill={stateMusic.pressBtn.waves ? colorsStyle.principal.blue : stateTheme.principal} />
+          <Text style={{ color: stateMusic.pressBtn.waves ? colorsStyle.principal.blue : stateTheme.principal }}>Ondas</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeFire}>
-          <FireSvg width="45px" height="45px" fill={stateMusic.pressBtn.fire ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: stateMusic.pressBtn.fire ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Fogueira</Text>
+          <FireSvg width="45px" height="45px" fill={stateMusic.pressBtn.fire ? colorsStyle.principal.blue : stateTheme.principal} />
+          <Text style={{ color: stateMusic.pressBtn.fire ? colorsStyle.principal.blue : stateTheme.principal }}>Fogueira</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeYoutube}>
-          <YoutubeSvg width="45px" height="45px" fill={stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-          <Text style={{ color: stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : colorsStyle.principal.black }}>Youtube</Text>
+          <YoutubeSvg width="45px" height="45px" fill={stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : stateTheme.principal} />
+          <Text style={{ color: stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : stateTheme.principal }}>Youtube</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

@@ -16,6 +16,8 @@ import StateManagement from "./timerUtils/StateManagement";
 
 export default function Timer() {
   const timerValues = useAppSelector(({timerValues}) => timerValues);
+  const stateTheme = useAppSelector(({stateTheme}) => stateTheme);
+
 
   const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
   const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
@@ -45,7 +47,7 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity }]}>:</Animated.Text>
+          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: stateTheme.principal }]}>:</Animated.Text>
         </View>
 
         <View style={timerStyle.listContainer}>
@@ -57,7 +59,7 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity }]}>:</Animated.Text>
+          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: stateTheme.principal }]}>:</Animated.Text>
         </View>
 
         <View style={timerStyle.listContainer}>

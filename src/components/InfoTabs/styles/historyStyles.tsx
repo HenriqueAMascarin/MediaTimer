@@ -23,7 +23,7 @@ export const historyStyle = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 5,
         width: 220,
-        minHeight: 50,
+        height: 70,
         gap: 2,
     }, 
 });

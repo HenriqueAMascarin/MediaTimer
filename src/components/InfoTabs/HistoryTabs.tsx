@@ -60,8 +60,7 @@ export default function HistoryTabs() {
     return (
         <View>
             {!status.searching ?
-                <ScrollView horizontal>
-
+                <ScrollView horizontal style={[{maxHeight: 90}]}>
                     <View style={[historyStyle.container]}>
                         {stateHistory.historyItems.map((item, keyItem) => {
                             return (
@@ -71,7 +70,7 @@ export default function HistoryTabs() {
                                         <Text>{item.nameMusic.indexOf(' -') != -1 ? item.nameMusic.slice(0, item.nameMusic.indexOf(' -')) : item.authorMusic}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)}>
-                                        <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.blackGray} />
+                                        <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
                                     </TouchableOpacity>
                                 </View>
                             )

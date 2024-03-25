@@ -2,6 +2,7 @@ import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { colorNumber } from "./TimerAnimations/TimerPause";
+import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
 interface TimerNumber {
     numberCountOpacity: Animated.Value,
@@ -10,9 +11,12 @@ interface TimerNumber {
 
 export default function TimerNumber({numberCountOpacity, number}: TimerNumber) {
 
+    const stateTheme = useAppSelector(({ stateTheme }) => stateTheme);
+
+
     let colorAnimated = colorNumber.interpolate({
         inputRange: [0, 1],
-        outputRange: [colorsStyle.principal.black, colorsStyle.principal.blue],
+        outputRange: [stateTheme.principal, colorsStyle.principal.blue],
         extrapolate: "clamp",
     })
 
