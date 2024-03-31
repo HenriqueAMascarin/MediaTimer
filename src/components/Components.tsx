@@ -6,14 +6,16 @@ import ButtonTabs from "./InfoTabs/ButtonTabs";
 import YoutubeTabs from "./InfoTabs/YoutubeTabs";
 import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 import { deleteAsync, getInfoAsync, makeDirectoryAsync } from "expo-file-system";
-import { directoryYoutube } from "./Utils/globalVars";
+import { directoryYoutube, themeLocalKey } from "./Utils/globalVars";
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-slice';
 import notifee, { Event, EventType } from '@notifee/react-native';
 import HistoryTabs from "./InfoTabs/HistoryTabs";
 import { changeLocalHistoryArray } from "./Utils/changeLocalHistoryArray";
-import { changeTheme } from "./Utils/Redux/features/stateTheme-slice";
+import { changeTheme, themes } from "./Utils/Redux/features/stateTheme-slice";
+import HamburguerMenu from "./Theme/HamburguerMenu";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -56,20 +58,31 @@ export default function Components() {
 
         })();
 
-        
+
 
     }, [])
 
     useEffect(() => {
-        dispatch(changeTheme(colorScheme ?? 'light'));
+        (async () => {
+            let localTheme = await AsyncStorage.getItem(themeLocalKey);
+            let theme = colorScheme || "light";
+
+            if (localTheme == 'dark' || localTheme == 'light') {
+                theme = localTheme;
+            }
+            
+            dispatch(changeTheme(theme));
+        })()
     }, [colorScheme])
 
     return (
-        <SafeAreaView style={{ 'backgroundColor': stateTheme.background, flex: 1 }}>
+        <SafeAreaView style={{ 'backgroundColor': stateTheme.background, flex: 1, position: "relative" }}>
+            <HamburguerMenu />
+
             <ComponentTimer />
 
             <View style={buttonsStyle.container}>
-                <View style={{ minHeight: 90, 'backgroundColor': stateTheme.background  }}>
+                <View style={{ minHeight: 90, 'backgroundColor': stateTheme.background }}>
                     {stateMusic.isYoutubeSelection ? <YoutubeTabs /> : <></>}
                     {stateMusic.isSelection ? <ButtonTabs /> : <></>}
                     {stateHistory.isHistory ? <HistoryTabs /> : <></>}
