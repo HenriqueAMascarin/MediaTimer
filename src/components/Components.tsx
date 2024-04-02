@@ -7,13 +7,13 @@ import YoutubeTabs from "./InfoTabs/YoutubeTabs";
 import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 import { deleteAsync, getInfoAsync, makeDirectoryAsync } from "expo-file-system";
 import { directoryYoutube, themeLocalKey } from "./Utils/globalVars";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-slice';
 import notifee, { Event, EventType } from '@notifee/react-native';
 import HistoryTabs from "./InfoTabs/HistoryTabs";
 import { changeLocalHistoryArray } from "./Utils/changeLocalHistoryArray";
-import { changeTheme, themes } from "./Utils/Redux/features/stateTheme-slice";
+import { changeTheme, themesType } from "./Utils/Redux/features/stateTheme-slice";
 import HamburguerMenu from "./Theme/HamburguerMenu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -62,22 +62,32 @@ export default function Components() {
 
     }, [])
 
-    useEffect(() => {
-        (async () => {
-            let localTheme = await AsyncStorage.getItem(themeLocalKey);
-            let theme = colorScheme || "light";
+    const currentTheme = async () => {
+        let localTheme = await AsyncStorage.getItem(themeLocalKey);
+        let theme = colorScheme || "light";
+        let newThemeOption: typeof themeOption = null;
 
-            if (localTheme == 'dark' || localTheme == 'light') {
-                theme = localTheme;
-            }
-            
+        if (localTheme == 'dark' || localTheme == 'light') {
+            theme = localTheme;
+            newThemeOption = localTheme;
+        }
+
+        return { theme, newThemeOption };
+    };
+
+    const [themeOption, changeThemeOption] = useState<themesType | null>(null);
+
+    useEffect(() => {
+        currentTheme().then(({ theme, newThemeOption }) => {
+            changeThemeOption(newThemeOption);
             dispatch(changeTheme(theme));
-        })()
+        })
+
     }, [colorScheme])
 
     return (
         <SafeAreaView style={{ 'backgroundColor': stateTheme.background, flex: 1, position: "relative" }}>
-            <HamburguerMenu />
+            <HamburguerMenu initialOption={themeOption}></HamburguerMenu>
 
             <ComponentTimer />
 

@@ -1,24 +1,16 @@
 import { Text, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { hamburguerStyles } from "./styles/hamburguerStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
-import { changeTheme, themes } from "../Utils/Redux/features/stateTheme-slice";
+import { changeTheme, themesType } from "../Utils/Redux/features/stateTheme-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
 
-type themesItems = ({
-    label: string;
-    type: null;
-    isActive: boolean;
-} | {
-    label: string;
-    type: themes;
-    isActive: boolean;
-})[]
+type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
-export default function HamburguerMenu() {
+export default function HamburguerMenu({ initialOption }: { initialOption: themesType | null }) {
     const stateTheme = useAppSelector(({ stateTheme }) => stateTheme);
     const dispatch = useDispatch();
 
@@ -30,25 +22,39 @@ export default function HamburguerMenu() {
         changeConfigModal(!configModal);
     }
 
-    const [typesTheme, changeTypesTheme] = useState<themesItems>([{ label: 'Gerenciado pelo sistema', type: null, isActive: false }, { label: 'Branco', type: 'light', isActive: false }, { label: 'Escuro', type: 'dark', isActive: false }]);
+    const [typesTheme, changeTypesTheme] = useState<typeItemTheme[]>([{ label: 'Gerenciado pelo sistema', type: null, isActive: false }, { label: 'Branco', type: 'light', isActive: false }, { label: 'Escuro', type: 'dark', isActive: false }]);
 
-    function onTheme(themeElement: typeof typesTheme[0]) {
-        let arrTheme = [...typesTheme];
+    function typesThemeDifference(differentElement: themesType | null) {
+        let newTypesTheme = [...typesTheme];
 
-        arrTheme.forEach((el) => {
-            if (el != themeElement) {
-                el.isActive = false;
+        newTypesTheme.forEach((element) => {
+            if (element.type != differentElement) {
+                element.isActive = false;
             } else {
-                el.isActive = true
+                element.isActive = true;
             }
-        });
+        })
 
-        changeTypesTheme(arrTheme);
+        return { newTypesTheme };
+    }
+
+    useEffect(() => {
+
+        const { newTypesTheme } = typesThemeDifference(initialOption);
+        
+        changeTypesTheme(newTypesTheme);
+
+    }, [initialOption])
+
+    function onTheme(themeElement: typeItemTheme) {
+        const { newTypesTheme } = typesThemeDifference(themeElement.type);
+
+        changeTypesTheme(newTypesTheme);
 
         dispatch(changeTheme(themeElement.type ?? colorScheme ?? 'light'));
 
         if (themeElement.type) {
-            AsyncStorage.setItem(themeLocalKey, themeElement.type)
+            AsyncStorage.setItem(themeLocalKey, themeElement.type);
         } else {
             AsyncStorage.removeItem(themeLocalKey);
         }
@@ -65,7 +71,7 @@ export default function HamburguerMenu() {
                 ?
                 <View style={{ flex: 1, flexGrow: 1, zIndex: 10 }}>
 
-                    <View style={[hamburguerStyles.modalContainer, {backgroundColor: stateTheme.background}]}>
+                    <View style={[hamburguerStyles.modalContainer, { backgroundColor: stateTheme.background }]}>
                         <Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 2, color: stateTheme.principal }}>Escolher tema</Text>
                         {typesTheme.map((theme, keyTheme) => {
                             return (
