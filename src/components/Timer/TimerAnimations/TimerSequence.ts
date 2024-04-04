@@ -22,7 +22,7 @@ export function sequenceTimer(stateOption: boolean) {
         Animated.parallel([
             Animated.timing(lineAnimated.heightLine, {
                 toValue: stateOption ? 0 : initialValues.initialHeightLine,
-                duration: 500,
+                duration: 300,
                 delay: 100,
                 useNativeDriver: false,
             }),

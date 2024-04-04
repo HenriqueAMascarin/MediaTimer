@@ -96,7 +96,6 @@ export default function StateManagement(values: StateManagement) {
       body: 'Arraste para cancelar',
       android: {
         channelId,
-        color: AndroidColor.BLUE,
         colorized: true,
         autoCancel: false,
         importance: AndroidImportance.HIGH,
@@ -105,6 +104,8 @@ export default function StateManagement(values: StateManagement) {
         },
         showTimestamp: true,
         timestamp: Date.now() + timerValues.totalValue * 1000,
+        smallIcon: 'ic_media_timer',
+        color: '#149CFF'
       },
     });
 
@@ -124,6 +125,18 @@ export default function StateManagement(values: StateManagement) {
   }, [stateTimer.isPickingValue]);
 
   useEffect(() => {
+    (async () => {
+      if (stateMusic.musicLink != null) {
+        const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
+        soundRef.current = sound;
+      } else {
+        soundRef.current = undefined;
+      }
+    })();
+
+  }, [stateMusic.musicLink])
+
+  useEffect(() => {
     if (havePlayed) {
 
       if (stateTimer.isPlay) {
@@ -131,32 +144,19 @@ export default function StateManagement(values: StateManagement) {
           dispatch(changeIsSelection(false));
           dispatch(changeIsHistory(false));
 
-          if (stateMusic.musicLink) {
-            const { sound } = await Audio.Sound.createAsync(
-              typeof stateMusic.musicLink == 'string' ?
-                { uri: stateMusic.musicLink }
-                : stateMusic.musicLink
-            );
+          if (soundRef.current) {
+            soundRef.current.setIsLoopingAsync(true);
+            soundRef.current.playAsync();
 
-            soundRef.current = sound;
-
-            if (soundRef.current) {
-              soundRef.current.setIsLoopingAsync(true);
-              soundRef.current.playAsync();
-
-              await Audio.setAudioModeAsync({
-                allowsRecordingIOS: false,
-                staysActiveInBackground: true,
-                interruptionModeIOS: InterruptionModeIOS.DuckOthers,
-                playsInSilentModeIOS: true,
-                shouldDuckAndroid: true,
-                interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-                playThroughEarpieceAndroid: false,
-              })
-
-            }
-          } else {
-            soundRef.current = undefined;
+            await Audio.setAudioModeAsync({
+              allowsRecordingIOS: false,
+              staysActiveInBackground: true,
+              interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+              playsInSilentModeIOS: true,
+              shouldDuckAndroid: true,
+              interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+              playThroughEarpieceAndroid: false,
+            })
           }
 
           const totalValue = playTimer(heightItem);
@@ -173,7 +173,7 @@ export default function StateManagement(values: StateManagement) {
 
         stopTimer();
         Vibration.vibrate(400);
-        
+
       }
     }
   }, [stateTimer.isPlay]);
