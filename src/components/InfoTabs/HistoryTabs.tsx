@@ -12,10 +12,12 @@ import { changeMusic } from "../Utils/buttons";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
-    const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
-    const [status, changeStatus] = useState({ searching: false, success: false, error: false });
-    const dispatch = useDispatch();
 
+    const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
+    const [status, changeStatus] = useState({ searching: false, success: false, error: false });
+    
+    const dispatch = useDispatch();
 
     function musicName(nameMusic: string) {
         const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') + 2).slice(0, 20) + " ";

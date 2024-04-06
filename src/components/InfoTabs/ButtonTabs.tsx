@@ -34,8 +34,6 @@ export default function ButtonTabs() {
     changeMusic(stateMusic.pressBtn, { reset: true });
   }
 
-
-
   return (
     <ScrollView horizontal>
       <View style={infoStyles.container}>

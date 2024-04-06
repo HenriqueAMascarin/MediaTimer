@@ -20,6 +20,7 @@ export default function YoutubeTabs() {
     const dispatch = useDispatch();
 
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
+    
     const [input, changeInput] = useState('');
 
     const [textProgress, changeTextProgress] = useState("Buscando a música");

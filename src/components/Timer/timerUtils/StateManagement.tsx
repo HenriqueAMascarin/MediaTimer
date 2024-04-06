@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { heightItem } from "../styles/timerStyle";
 import { Animated, Vibration } from "react-native";
@@ -7,7 +7,7 @@ import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
-import notifee, { AndroidColor, AndroidImportance } from '@notifee/react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
@@ -41,25 +41,43 @@ export default function StateManagement(values: StateManagement) {
     })
   })
 
+  function formatedTimer(timestamp: number) {
+    const newHours = Math.floor(timestamp / 3600)
+      .toString()
+      .padStart(2, "0");
+
+    const newMinutes = Math.floor((timestamp % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+
+    const newSeconds = Math.floor((timestamp % 3600) % 60)
+      .toString()
+      .padStart(2, "0");
+
+    return { newHours, newMinutes, newSeconds };
+  }
+
+
   function playTimer(heightItem: number) {
     const numbers = dataNumbers();
 
     const numberHours = Math.round(numbers.scrollOne / heightItem) * 3600;
     const numberMinutes = Math.round(numbers.scrollTwo / heightItem) * 60;
     const numberSeconds = Math.round(numbers.scrollThree / heightItem);
-    const timeStampValue = numberHours + numberMinutes + numberSeconds;
+    const timestampValue = numberHours + numberMinutes + numberSeconds;
 
-    dispatch(changeRunningValue(timeStampValue));
-    dispatch(changeTotalValue(timeStampValue));
+    const formatedValues = formatedTimer(timestampValue);
+
+    dispatch(changeTotalValue(timestampValue));
+    dispatch(changeRunningValue({ hours: formatedValues.newHours, minutes: formatedValues.newMinutes, seconds: formatedValues.newSeconds, timestamp: timestampValue }));
     sequenceTimer(true);
 
-    return timeStampValue;
+    return timestampValue;
   }
 
   function stopTimer() {
     dispatch(changeIsPickingValue(false));
     dispatch(changeIsPaused(false));
-    dispatch(changeRunningValue(0));
     dispatch(changeTotalValue(0));
 
     sequenceTimer(false);
@@ -84,30 +102,37 @@ export default function StateManagement(values: StateManagement) {
       name: 'Timer channel',
     });
 
-
     let newValue = newTotalValue;
-    BackgroundTimer.runBackgroundTimer(() => {
-      newValue--;
-      return dispatch(changeRunningValue(newValue));
-    }, 1000);
 
-    await notifee.displayNotification({
-      title: 'Timer em andamento',
-      body: 'Arraste para cancelar',
-      android: {
-        channelId,
-        colorized: true,
-        autoCancel: false,
-        importance: AndroidImportance.HIGH,
-        pressAction: {
-          id: 'default',
+    async function createNotification(formatedValues: ) {
+      await notifee.displayNotification({
+        title: 'Timer em andamento',
+        body: 'Arraste para cancelar',
+        id: 'Media-timer-notification',
+        subtitle: `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}`,
+        android: {
+          channelId,
+          autoCancel: false,
+          importance: AndroidImportance.HIGH,
+          pressAction: {
+            id: 'default',
+          },
+          smallIcon: 'ic_media_timer',
+          color: '#149CFF'
         },
-        showTimestamp: true,
-        timestamp: Date.now() + timerValues.totalValue * 1000,
-        smallIcon: 'ic_media_timer',
-        color: '#149CFF'
-      },
-    });
+      });
+    }
+
+    BackgroundTimer.runBackgroundTimer(async () => {
+      newValue--;
+
+      const formatedValues = formatedTimer(newValue);
+
+      dispatch(changeRunningValue({ hours: formatedValues.newHours, minutes: formatedValues.newMinutes, seconds: formatedValues.newSeconds, timestamp: newValue }));
+
+      createNotification()
+
+    }, 1000);
 
   }
 
@@ -125,18 +150,6 @@ export default function StateManagement(values: StateManagement) {
   }, [stateTimer.isPickingValue]);
 
   useEffect(() => {
-    (async () => {
-      if (stateMusic.musicLink != null) {
-        const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
-        soundRef.current = sound;
-      } else {
-        soundRef.current = undefined;
-      }
-    })();
-
-  }, [stateMusic.musicLink])
-
-  useEffect(() => {
     if (havePlayed) {
 
       if (stateTimer.isPlay) {
@@ -144,10 +157,16 @@ export default function StateManagement(values: StateManagement) {
           dispatch(changeIsSelection(false));
           dispatch(changeIsHistory(false));
 
-          if (soundRef.current) {
-            soundRef.current.setIsLoopingAsync(true);
-            soundRef.current.playAsync();
+          await soundRef.current?.unloadAsync();
 
+          if (stateMusic.musicLink != null) {
+            const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
+            soundRef.current = sound;
+          } else {
+            soundRef.current = undefined;
+          }
+
+          if (soundRef.current) {
             await Audio.setAudioModeAsync({
               allowsRecordingIOS: false,
               staysActiveInBackground: true,
@@ -157,18 +176,25 @@ export default function StateManagement(values: StateManagement) {
               interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
               playThroughEarpieceAndroid: false,
             })
+
+            await soundRef.current.setIsLoopingAsync(true);
+
+            await soundRef.current.playAsync();
           }
 
           const totalValue = playTimer(heightItem);
-          onDisplayNotification(totalValue);
+          await onDisplayNotification(totalValue);
         })();
 
       } else {
+
         stopTimerInterval();
 
-        if (soundRef.current) {
+        if (soundRef.current != undefined) {
+
           soundRef.current.stopAsync();
           soundRef.current = new Audio.Sound();
+
         }
 
         stopTimer();
@@ -179,23 +205,25 @@ export default function StateManagement(values: StateManagement) {
   }, [stateTimer.isPlay]);
 
   useEffect(() => {
-    if (stateTimer.isPlay && havePlayed) {
-      pauseTimerAnimation();
+    (async () => {
+      if (stateTimer.isPlay && havePlayed) {
+        pauseTimerAnimation();
 
-      if (stateTimer.isPaused) {
-        soundRef.current?.pauseAsync();
-        stopTimerInterval();
-      } else {
-        onDisplayNotification(timerValues.runningValue);
-        soundRef.current?.playAsync();
+        if (stateTimer.isPaused) {
+          await soundRef.current?.pauseAsync();
+          stopTimerInterval();
+        } else {
+          onDisplayNotification(timerValues.runningValue.timestamp);
+          await soundRef.current?.playAsync();
+        }
+
       }
-
-    }
+    })();
   }, [stateTimer.isPaused]);
 
   useEffect(() => {
     if (havePlayed) {
-      if (timerValues.runningValue <= 0 || !stateTimer.isPlay) {
+      if (timerValues.runningValue.timestamp <= 0 || !stateTimer.isPlay) {
         dispatch(changeIsPlay(false));
       }
     }

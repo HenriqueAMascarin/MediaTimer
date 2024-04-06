@@ -9,10 +9,9 @@ interface TimerNumber {
     number: string,
 }
 
-export default function TimerNumber({numberCountOpacity, number}: TimerNumber) {
+export default function TimerNumber({ numberCountOpacity, number }: TimerNumber) {
 
     const stateTheme = useAppSelector(({ stateTheme }) => stateTheme);
-
 
     let colorAnimated = colorNumber.interpolate({
         inputRange: [0, 1],
@@ -21,7 +20,7 @@ export default function TimerNumber({numberCountOpacity, number}: TimerNumber) {
     })
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: colorAnimated}]} allowFontScaling={false}>
+        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: colorAnimated }]} allowFontScaling={false}>
             {number}
         </Animated.Text>
     )
