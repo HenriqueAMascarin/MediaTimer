@@ -94,8 +94,29 @@ export default function StateManagement(values: StateManagement) {
     timerPause(isPaused);
   }
 
+  async function createNotification(channelId: string, formatedValues?: ReturnType<typeof formatedTimer>) {
+    await notifee.displayNotification({
+      title: 'Timer em andamento',
+      body: 'Arraste para cancelar',
+      id: 'Media-timer-notification',
+      subtitle: formatedValues ? `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}` : 'Carregando',
+      android: {
+        channelId,
+        autoCancel: false,
+        importance: AndroidImportance.HIGH,
+        pressAction: {
+          id: 'default',
+        },
+        smallIcon: 'ic_media_timer',
+        color: '#149CFF'
+      },
+    });
+
+  }
+
   async function onDisplayNotification(newTotalValue: number) {
-    await notifee.requestPermission()
+
+    await notifee.requestPermission();
 
     const channelId = await notifee.createChannel({
       id: 'Timer',
@@ -104,24 +125,7 @@ export default function StateManagement(values: StateManagement) {
 
     let newValue = newTotalValue;
 
-    async function createNotification(formatedValues: ) {
-      await notifee.displayNotification({
-        title: 'Timer em andamento',
-        body: 'Arraste para cancelar',
-        id: 'Media-timer-notification',
-        subtitle: `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}`,
-        android: {
-          channelId,
-          autoCancel: false,
-          importance: AndroidImportance.HIGH,
-          pressAction: {
-            id: 'default',
-          },
-          smallIcon: 'ic_media_timer',
-          color: '#149CFF'
-        },
-      });
-    }
+    await createNotification(channelId);
 
     BackgroundTimer.runBackgroundTimer(async () => {
       newValue--;
@@ -130,8 +134,7 @@ export default function StateManagement(values: StateManagement) {
 
       dispatch(changeRunningValue({ hours: formatedValues.newHours, minutes: formatedValues.newMinutes, seconds: formatedValues.newSeconds, timestamp: newValue }));
 
-      createNotification()
-
+      await createNotification(channelId, formatedValues);
     }, 1000);
 
   }
@@ -156,8 +159,6 @@ export default function StateManagement(values: StateManagement) {
         (async function play() {
           dispatch(changeIsSelection(false));
           dispatch(changeIsHistory(false));
-
-          await soundRef.current?.unloadAsync();
 
           if (stateMusic.musicLink != null) {
             const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
@@ -188,18 +189,19 @@ export default function StateManagement(values: StateManagement) {
 
       } else {
 
-        stopTimerInterval();
+        (async () => {
+          stopTimerInterval();
 
-        if (soundRef.current != undefined) {
+          if (soundRef.current != undefined) {
+            await soundRef.current.stopAsync();
+            await soundRef.current?.unloadAsync();
+            soundRef.current = new Audio.Sound();
 
-          soundRef.current.stopAsync();
-          soundRef.current = new Audio.Sound();
+          }
 
-        }
-
-        stopTimer();
-        Vibration.vibrate(400);
-
+          stopTimer();
+          Vibration.vibrate(400);
+        })
       }
     }
   }, [stateTimer.isPlay]);
