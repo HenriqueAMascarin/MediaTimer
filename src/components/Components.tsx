@@ -1,4 +1,4 @@
-import { View, SafeAreaView, useColorScheme } from "react-native";
+import { View, SafeAreaView, useColorScheme, Animated } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import ComponentTimer from "./Timer/ComponentTimer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
@@ -57,9 +57,6 @@ export default function Components() {
             makeDirectoryAsync(directoryYoutube, { intermediates: true });
 
         })();
-
-
-
     }, [])
 
     const currentTheme = async () => {
@@ -87,18 +84,18 @@ export default function Components() {
 
     return (
         <SafeAreaView style={{ 'backgroundColor': stateTheme.background, flex: 1, position: "relative" }}>
-            <HamburguerMenu initialOption={themeOption}></HamburguerMenu>
+                <HamburguerMenu initialOption={themeOption}></HamburguerMenu>
 
-            <ComponentTimer />
+                <ComponentTimer />
 
-            <View style={buttonsStyle.container}>
-                <View style={{ minHeight: 90, 'backgroundColor': stateTheme.background }}>
-                    {stateMusic.isYoutubeSelection ? <YoutubeTabs /> : <></>}
-                    {stateMusic.isSelection ? <ButtonTabs /> : <></>}
-                    {stateHistory.isHistory ? <HistoryTabs /> : <></>}
+                <View style={buttonsStyle.container}>
+                    <View style={{ minHeight: 90, 'backgroundColor': stateTheme.background }}>
+                        {stateMusic.isYoutubeSelection ? <YoutubeTabs /> : <></>}
+                        {stateMusic.isSelection ? <ButtonTabs /> : <></>}
+                        {stateHistory.isHistory ? <HistoryTabs /> : <></>}
+                    </View>
+                    <Buttons />
                 </View>
-                <Buttons />
-            </View>
         </SafeAreaView>
     )
 }

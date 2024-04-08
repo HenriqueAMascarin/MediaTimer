@@ -1,7 +1,7 @@
-import { Text, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
+import { Animated, Text, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { hamburguerStyles } from "./styles/hamburguerStyles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeTheme, themesType } from "../Utils/Redux/features/stateTheme-slice";
@@ -18,10 +18,20 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
 
     const [configModal, changeConfigModal] = useState(false);
 
+    const opacityModal = useRef(new Animated.Value(0)).current;
+
     function toggleModal() {
         changeConfigModal(!configModal);
     }
 
+    useEffect(() => {
+        Animated.timing(opacityModal, {
+            toValue: configModal ? 1 : 0,
+            duration: 200,
+            useNativeDriver: false,
+        }).start();
+    }, [configModal]);
+    
     const [typesTheme, changeTypesTheme] = useState<typeItemTheme[]>([{ label: 'Gerenciado pelo sistema', type: null, isActive: false }, { label: 'Branco', type: 'light', isActive: false }, { label: 'Escuro', type: 'dark', isActive: false }]);
 
     function typesThemeDifference(differentElement: themesType | null) {
@@ -69,7 +79,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
             </TouchableOpacity>
             {configModal
                 ?
-                <View style={{ flex: 1, flexGrow: 1, zIndex: 10 }}>
+                <Animated.View style={{ flex: 1, flexGrow: 1, zIndex: 10, opacity: opacityModal }}>
 
                     <View style={[hamburguerStyles.modalContainer, { backgroundColor: stateTheme.background }]}>
                         <Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 2, color: stateTheme.principal }}>Escolher tema</Text>
@@ -87,7 +97,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                     <TouchableWithoutFeedback onPress={() => toggleModal()} >
                         <View style={[{ flex: 1, flexGrow: 1, backgroundColor: 'rgba(0, 0, 0, 0.58)' }]}></View>
                     </TouchableWithoutFeedback>
-                </View>
+                </Animated.View>
                 :
                 null}
         </View>

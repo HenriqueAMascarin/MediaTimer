@@ -39,25 +39,31 @@ export default function ButtonTabs() {
       <View style={infoStyles.container}>
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={resetAll}>
           <NothingSvg width="45px" height="45px" fill={stateMusic.pressBtn.reset ? colorsStyle.principal.blue : stateTheme.principal} />
+
           <Text style={{ color: stateMusic.pressBtn.reset ? colorsStyle.principal.blue : stateTheme.principal }}>Nenhum</Text>
         </TouchableOpacity>
+
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeForest}>
           <ForestSvg width="45px" height="45px" fill={stateMusic.pressBtn.forest ? colorsStyle.principal.blue : stateTheme.principal} />
+
           <Text style={{ color: stateMusic.pressBtn.forest ? colorsStyle.principal.blue : stateTheme.principal }}>Floresta</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeWaves}>
           <WavesSvg width="45px" height="45px" fill={stateMusic.pressBtn.waves ? colorsStyle.principal.blue : stateTheme.principal} />
+
           <Text style={{ color: stateMusic.pressBtn.waves ? colorsStyle.principal.blue : stateTheme.principal }}>Ondas</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeFire}>
           <FireSvg width="45px" height="45px" fill={stateMusic.pressBtn.fire ? colorsStyle.principal.blue : stateTheme.principal} />
+
           <Text style={{ color: stateMusic.pressBtn.fire ? colorsStyle.principal.blue : stateTheme.principal }}>Fogueira</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={infoStyles.buttonsInfo} onPress={changeYoutube}>
           <YoutubeSvg width="45px" height="45px" fill={stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : stateTheme.principal} />
+
           <Text style={{ color: stateMusic.pressBtn.youtube ? colorsStyle.principal.blue : stateTheme.principal }}>Youtube</Text>
         </TouchableOpacity>
       </View>

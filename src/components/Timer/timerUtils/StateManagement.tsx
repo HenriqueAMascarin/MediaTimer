@@ -84,9 +84,8 @@ export default function StateManagement(values: StateManagement) {
     timerPause(false);
   }
 
-  function stopTimerInterval() {
+  async function stopTimerInterval() {
     BackgroundTimer.stopBackgroundTimer();
-    notifee.cancelAllNotifications();
   }
 
   function pauseTimerAnimation() {
@@ -94,9 +93,9 @@ export default function StateManagement(values: StateManagement) {
     timerPause(isPaused);
   }
 
-  async function createNotification(channelId: string, formatedValues?: ReturnType<typeof formatedTimer>) {
+  async function createNotification(channelId: string, formatedValues?: ReturnType<typeof formatedTimer>, customTitle: string = 'Timer em andamento') {
     await notifee.displayNotification({
-      title: 'Timer em andamento',
+      title: customTitle,
       body: 'Arraste para cancelar',
       id: 'Media-timer-notification',
       subtitle: formatedValues ? `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}` : 'Carregando',
@@ -189,19 +188,19 @@ export default function StateManagement(values: StateManagement) {
 
       } else {
 
-        (async () => {
-          stopTimerInterval();
+        stopTimerInterval();
 
-          if (soundRef.current != undefined) {
-            await soundRef.current.stopAsync();
-            await soundRef.current?.unloadAsync();
-            soundRef.current = new Audio.Sound();
+        if (soundRef.current != undefined) {
+          soundRef.current.stopAsync();
 
-          }
+          soundRef.current?.unloadAsync();
 
-          stopTimer();
-          Vibration.vibrate(400);
-        })
+          soundRef.current = new Audio.Sound();
+        }
+
+        notifee.cancelAllNotifications();
+        stopTimer();
+        Vibration.vibrate(400);
       }
     }
   }, [stateTimer.isPlay]);
@@ -214,6 +213,13 @@ export default function StateManagement(values: StateManagement) {
         if (stateTimer.isPaused) {
           await soundRef.current?.pauseAsync();
           stopTimerInterval();
+
+          const channelId = await notifee.createChannel({
+            id: 'Timer',
+            name: 'Timer channel',
+          });
+          
+          createNotification(channelId, undefined, 'Timer Pausado')
         } else {
           onDisplayNotification(timerValues.runningValue.timestamp);
           await soundRef.current?.playAsync();
