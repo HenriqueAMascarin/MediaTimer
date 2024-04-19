@@ -1,18 +1,16 @@
-import { Animated, Text, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
-import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
 import { hamburguerStyles } from "./styles/hamburguerStyles";
 import { useEffect, useRef, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
-import { changeTheme, themesType } from "../Utils/Redux/features/stateTheme-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
+import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
 export default function HamburguerMenu({ initialOption }: { initialOption: themesType | null }) {
-    const stateTheme = useAppSelector(({ stateTheme }) => stateTheme);
-    const dispatch = useDispatch();
+    const {data: dataTheme, change: changeTheme} = useTheme();
 
     const colorScheme = useColorScheme();
 
@@ -61,7 +59,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
 
         changeTypesTheme(newTypesTheme);
 
-        dispatch(changeTheme(themeElement.type ?? colorScheme ?? 'light'));
+        changeTheme(themeElement.type ?? colorScheme ?? 'light');
 
         if (themeElement.type) {
             AsyncStorage.setItem(themeLocalKey, themeElement.type);
@@ -73,27 +71,27 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
     return (
         <View style={hamburguerStyles.container}>
             <TouchableOpacity style={hamburguerStyles.hamburguerContainer} onPress={() => toggleModal()}>
-                <View style={[hamburguerStyles.hamburguerPads, { backgroundColor: stateTheme.principal }]} />
-                <View style={[hamburguerStyles.hamburguerPads, { backgroundColor: stateTheme.principal }]} />
-                <View style={[hamburguerStyles.hamburguerPads, { backgroundColor: stateTheme.principal }]} />
+                <Animated.View style={[hamburguerStyles.hamburguerPads, { backgroundColor: dataTheme.animatedValues.principalColor }]} />
+                <Animated.View style={[hamburguerStyles.hamburguerPads, { backgroundColor: dataTheme.animatedValues.principalColor }]} />
+                <Animated.View style={[hamburguerStyles.hamburguerPads, { backgroundColor: dataTheme.animatedValues.principalColor }]} />
             </TouchableOpacity>
             {configModal
                 ?
                 <Animated.View style={{ flex: 1, flexGrow: 1, zIndex: 10, opacity: opacityModal }}>
 
-                    <View style={[hamburguerStyles.modalContainer, { backgroundColor: stateTheme.background }]}>
-                        <Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 2, color: stateTheme.principal }}>Escolher tema</Text>
+                    <Animated.View style={[hamburguerStyles.modalContainer, { backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
+                        <Animated.Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 2, color: dataTheme.animatedValues.principalColor }}>Escolher tema</Animated.Text>
                         {typesTheme.map((theme, keyTheme) => {
                             return (
                                 <TouchableOpacity onPress={() => onTheme(theme)} key={keyTheme} style={{ flexDirection: "row", alignItems: 'center', gap: 8 }}>
-                                    <View style={{ borderWidth: 1, width: 18, borderRadius: 18, height: 18, position: 'relative', padding: 2, borderColor: stateTheme.principal }}>
+                                    <Animated.View style={{ borderWidth: 1, width: 18, borderRadius: 18, height: 18, position: 'relative', padding: 2, borderColor: dataTheme.animatedValues.principalColor }}>
                                         {theme.isActive ? <View style={{ backgroundColor: colorsStyle.principal.blue, position: "relative", flex: 1, borderRadius: 18 }} /> : null}
-                                    </View>
-                                    <Text style={{ fontSize: 18, color: stateTheme.principal }}>{theme.label}</Text>
+                                    </Animated.View>
+                                    <Animated.Text style={{ fontSize: 18, color: dataTheme.animatedValues.principalColor }}>{theme.label}</Animated.Text>
                                 </TouchableOpacity>
                             )
                         })}
-                    </View>
+                    </Animated.View>
                     <TouchableWithoutFeedback onPress={() => toggleModal()} >
                         <View style={[{ flex: 1, flexGrow: 1, backgroundColor: 'rgba(0, 0, 0, 0.58)' }]}></View>
                     </TouchableWithoutFeedback>
