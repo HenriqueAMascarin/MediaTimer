@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Animated, Easing, useColorScheme } from "react-native";
 import { colorsStyle } from "../colorsStyle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,20 +15,19 @@ const animatedValues = {
 };
 
 const ThemeContext = createContext<{
-    data: {
+    dataTheme: {
         animatedValues: {
             backgroundColor: Animated.AnimatedInterpolation<string | number>;
             principalColor: Animated.AnimatedInterpolation<string | number>;
             secondaryColor: Animated.AnimatedInterpolation<string | number>;
         },
         selectedOption: null | themesType
-    }, change: React.Dispatch<React.SetStateAction<themesType>>
+    }, changeTheme: React.Dispatch<React.SetStateAction<themesType>>
 }>({
-    data: {
+    dataTheme: {
         animatedValues: {
             backgroundColor: animatedValues.backgroundAnimated.interpolate({
                 inputRange,
-                easing: Easing.inOut(Easing.ease),
                 outputRange: [
                     colorsStyle.lightTheme.background,
                     colorsStyle.darkTheme.background,
@@ -36,7 +35,6 @@ const ThemeContext = createContext<{
             }),
             principalColor: animatedValues.principalAnimated.interpolate({
                 inputRange,
-                easing: Easing.inOut(Easing.ease),
                 outputRange: [
                     colorsStyle.lightTheme.principal,
                     colorsStyle.darkTheme.principal,
@@ -44,7 +42,6 @@ const ThemeContext = createContext<{
             }),
             secondaryColor: animatedValues.secondaryAnimated.interpolate({
                 inputRange,
-                easing: Easing.inOut(Easing.ease),
                 outputRange: [
                     colorsStyle.lightTheme.secondary,
                     colorsStyle.darkTheme.secondary,
@@ -52,7 +49,7 @@ const ThemeContext = createContext<{
             })
         },
         selectedOption: null
-    }, change: useState
+    }, changeTheme: useState
 });
 
 type items = {
@@ -85,33 +82,36 @@ export default function ThemeProvider({ children }: items) {
         currentTheme().then(({ theme, newThemeOption }) => {
             changeThemeOption(newThemeOption);
             changeThemeType(theme);
+
         })
-    }, [colorScheme, [], themeType])
+    }, [colorScheme, themeType])
 
     useEffect(() => {
         Animated.parallel([
             Animated.timing(animatedValues.backgroundAnimated, {
                 toValue: themeType == "dark" ? 1 : 0,
+                delay: 1,
                 duration: 300,
                 useNativeDriver: false,
             }),
             Animated.timing(animatedValues.principalAnimated, {
                 toValue: themeType == "dark" ? 1 : 0,
+                delay: 1,
                 duration: 300,
                 useNativeDriver: false,
             }),
             Animated.timing(animatedValues.secondaryAnimated, {
                 toValue: themeType == "dark" ? 1 : 0,
+                delay: 1,
                 duration: 300,
                 useNativeDriver: false,
             }),
         ]).start();
     }, [themeType]);
 
-    const [themes, changeThemes] = useState({
+    const themes = useRef({
         backgroundColor: animatedValues.backgroundAnimated.interpolate({
             inputRange,
-            easing: Easing.inOut(Easing.ease),
             outputRange: [
                 colorsStyle.lightTheme.background,
                 colorsStyle.darkTheme.background,
@@ -119,7 +119,6 @@ export default function ThemeProvider({ children }: items) {
         }),
         principalColor: animatedValues.principalAnimated.interpolate({
             inputRange,
-            easing: Easing.inOut(Easing.ease),
             outputRange: [
                 colorsStyle.lightTheme.principal,
                 colorsStyle.darkTheme.principal,
@@ -127,20 +126,18 @@ export default function ThemeProvider({ children }: items) {
         }),
         secondaryColor: animatedValues.secondaryAnimated.interpolate({
             inputRange,
-            easing: Easing.inOut(Easing.ease),
             outputRange: [
                 colorsStyle.lightTheme.secondary,
                 colorsStyle.darkTheme.secondary,
             ],
         })
-    })
-
+    }).current;
 
     return (
         <ThemeContext.Provider
             value={{
-                data: {animatedValues: themes, selectedOption: themeOption},
-                change: changeThemeType,
+                dataTheme: { animatedValues: themes, selectedOption: themeOption, },
+                changeTheme: changeThemeType,
             }}>
             {children}
         </ThemeContext.Provider>
@@ -149,6 +146,6 @@ export default function ThemeProvider({ children }: items) {
 
 export function useTheme() {
     const context = useContext(ThemeContext);
-    const { data, change } = context;
-    return { data, change };
+    const { dataTheme, changeTheme } = context;
+    return { dataTheme, changeTheme };
 }

@@ -11,7 +11,7 @@ interface AnimatedNumber {
 
 export default function AnimatedNumber({ itemIndex, itemNumber, scrollY }: AnimatedNumber) {
 
-    const {data: dataTheme} = useTheme();
+    const { dataTheme } = useTheme();
 
     let numberOpacity: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.5);
     let numberTransform: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.8);

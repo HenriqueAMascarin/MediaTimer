@@ -6,9 +6,10 @@ import { useDispatch } from "react-redux";
 import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { SvgXml } from "react-native-svg";
 import { fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "./svgsXml";
+import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
 
 interface Props {
@@ -29,7 +30,7 @@ export default function ButtonTabs() {
 
   const dispatch = useDispatch();
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
-  const { data: dataTheme } = useTheme();
+  const { dataTheme } = useTheme();
 
   function changeYoutube() {
     dispatch(changeIsSelection(false));
@@ -37,6 +38,12 @@ export default function ButtonTabs() {
   };
 
   const IconsComponent = Animated.createAnimatedComponent(createSvg);
+
+  let opacityModal = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
+  }, []);
 
   function changeFire() { changeMusic(stateMusic.pressBtn, { fire: true }, require('@assets/sounds/fire.wav')) };
 
@@ -56,7 +63,7 @@ export default function ButtonTabs() {
   ]
 
   return (
-    <ScrollView horizontal>
+    <Animated.ScrollView horizontal style={{ opacity: opacityModal }}>
       <View style={infoStyles.container}>
         {ButtonsGroup.map((icon, keyItem) => {
           return (
@@ -68,6 +75,6 @@ export default function ButtonTabs() {
           )
         })}
       </View>
-    </ScrollView>
+    </Animated.ScrollView>
   );
 }

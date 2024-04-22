@@ -17,7 +17,7 @@ import { useTheme } from "../Utils/Context/ThemeContext";
 
 export default function Timer() {
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
-  const {data: dataTheme} = useTheme();
+  const { dataTheme } = useTheme();
 
   const listOne = useRef({ array: numberList(23), animated: { scrollY: new Animated.Value(0) } }).current;
   const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;

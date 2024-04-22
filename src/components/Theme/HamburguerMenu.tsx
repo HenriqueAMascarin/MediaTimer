@@ -2,34 +2,30 @@ import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, useColorSch
 import { hamburguerStyles } from "./styles/hamburguerStyles";
 import { useEffect, useRef, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
-import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
 import { themesType, useTheme } from "../Utils/Context/ThemeContext";
+import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
 export default function HamburguerMenu({ initialOption }: { initialOption: themesType | null }) {
-    const {data: dataTheme, change: changeTheme} = useTheme();
+    const { dataTheme, changeTheme } = useTheme();
 
     const colorScheme = useColorScheme();
 
     const [configModal, changeConfigModal] = useState(false);
 
-    const opacityModal = useRef(new Animated.Value(0)).current;
+    let opacityModal = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        animatedModalsOpacity({ isOpen: configModal, animatedOpacity: opacityModal });
+    }, [configModal]);
 
     function toggleModal() {
         changeConfigModal(!configModal);
     }
 
-    useEffect(() => {
-        Animated.timing(opacityModal, {
-            toValue: configModal ? 1 : 0,
-            duration: 200,
-            useNativeDriver: false,
-        }).start();
-    }, [configModal]);
-    
     const [typesTheme, changeTypesTheme] = useState<typeItemTheme[]>([{ label: 'Gerenciado pelo sistema', type: null, isActive: false }, { label: 'Branco', type: 'light', isActive: false }, { label: 'Escuro', type: 'dark', isActive: false }]);
 
     function typesThemeDifference(differentElement: themesType | null) {
@@ -49,7 +45,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
     useEffect(() => {
 
         const { newTypesTheme } = typesThemeDifference(initialOption);
-        
+
         changeTypesTheme(newTypesTheme);
 
     }, [initialOption])

@@ -7,7 +7,7 @@ import { useTheme } from "../Utils/Context/ThemeContext";
 export default function TotalTimeText() {
 
     const timerValues = useAppSelector(({ timerValues }) => timerValues);
-    const {data: dataTheme} = useTheme();
+    const { dataTheme } = useTheme();
 
 
     const hours = Math.floor(timerValues.totalValue / 3600).toString().padStart(2, "0");

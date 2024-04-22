@@ -19,7 +19,7 @@ import { useTheme } from "./Utils/Context/ThemeContext";
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
-    const {data: dataTheme} = useTheme();
+    const { dataTheme } = useTheme();
 
     const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ export default function Components() {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <Animated.View style={{backgroundColor: dataTheme.animatedValues.backgroundColor, flex: 1, position: "relative" }}>
+            <Animated.View style={{ backgroundColor: dataTheme.animatedValues.backgroundColor, flex: 1, position: "relative" }}>
                 <HamburguerMenu initialOption={dataTheme.selectedOption}></HamburguerMenu>
 
                 <ComponentTimer />
@@ -70,6 +70,7 @@ export default function Components() {
                         {stateMusic.isSelection ? <ButtonTabs /> : <></>}
                         {stateHistory.isHistory ? <HistoryTabs /> : <></>}
                     </Animated.View>
+
                     <Buttons />
                 </View>
             </Animated.View>

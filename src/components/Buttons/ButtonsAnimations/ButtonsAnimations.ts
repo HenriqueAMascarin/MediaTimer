@@ -8,14 +8,14 @@ export default function appersButtons(stateOption: boolean) {
     Animated.parallel([
         Animated.timing(opacityInitialButtons, {
             toValue: stateOption ? 0 : 1,
-            duration: 400,
-            delay: stateOption ? 0 : 200,
+            duration: 300,
+            delay: stateOption ? 20 : 220,
             useNativeDriver: false,
         }),
         Animated.timing(opacityOtherButtons, {
             toValue: stateOption ? 1 : 0,
-            duration: 400,
-            delay: stateOption ? 200 : 0,
+            duration: 300,
+            delay: stateOption ? 220 : 20,
             useNativeDriver: false,
         })
     ]).start();

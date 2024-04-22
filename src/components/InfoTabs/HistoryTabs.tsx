@@ -1,14 +1,15 @@
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { changeHistoryArray, changeIsHistory, historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import { SuccessAlert, LoadingAlert, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { youtubeDownload } from "../Utils/youtube/youtubeFunctions";
 import { changeMusic } from "../Utils/buttons";
+import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -59,10 +60,16 @@ export default function HistoryTabs() {
         dispatch(changeIsHistory(false));
     }
 
+    let opacityModal = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
+    }, []);
+
     return (
         <View>
             {!status.searching ?
-                <ScrollView horizontal style={[{maxHeight: 90}]}>
+                <Animated.ScrollView horizontal style={[{maxHeight: 90, opacity: opacityModal}]}>
                     <View style={[historyStyle.container]}>
                         {stateHistory.historyItems.map((item, keyItem) => {
                             return (
@@ -78,7 +85,7 @@ export default function HistoryTabs() {
                             )
                         })}
                     </View>
-                </ScrollView>
+                </Animated.ScrollView>
 
                 :
 

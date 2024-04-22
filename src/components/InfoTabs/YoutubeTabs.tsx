@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Animated } from "react-native";
 import SearchSvg from "@assets/images/search.svg";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { youtubeStyle } from "./styles/youtubeStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import { historyLocalKey } from "../Utils/globalVars";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeMusic } from "../Utils/buttons";
 import { SuccessAlert, LoadingAlert, CloseButton, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
+import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
 export default function YoutubeTabs() {
 
@@ -20,10 +21,16 @@ export default function YoutubeTabs() {
     const dispatch = useDispatch();
 
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
-    
+
     const [input, changeInput] = useState('');
 
     const [textProgress, changeTextProgress] = useState("Buscando a música");
+
+    let opacityModal = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
+    }, []);
 
     async function search() {
         changeStatus({ searching: true, success: false, error: false });
@@ -75,7 +82,7 @@ export default function YoutubeTabs() {
         <View style={{ position: "relative" }}>
             {!status.searching ?
 
-                <View style={[youtubeStyle.item, youtubeStyle.searchItem]}>
+                <Animated.View style={[youtubeStyle.item, youtubeStyle.searchItem, { opacity: opacityModal }]}>
                     <CloseButton clickFunction={onClose} />
                     <Text style={{ color: colorsStyle.principal.blue, fontSize: 20 }}>
                         Nome da música
@@ -89,7 +96,7 @@ export default function YoutubeTabs() {
                         </TouchableOpacity>
                     </View>
 
-                </View>
+                </Animated.View>
 
                 :
 
