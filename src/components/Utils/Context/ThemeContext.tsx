@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Animated, Easing, useColorScheme } from "react-native";
+import { Animated, useColorScheme } from "react-native";
 import { colorsStyle } from "../colorsStyle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../globalVars";
@@ -112,6 +112,7 @@ export default function ThemeProvider({ children }: items) {
     const themes = useRef({
         backgroundColor: animatedValues.backgroundAnimated.interpolate({
             inputRange,
+            extrapolate: "clamp",
             outputRange: [
                 colorsStyle.lightTheme.background,
                 colorsStyle.darkTheme.background,
@@ -119,6 +120,7 @@ export default function ThemeProvider({ children }: items) {
         }),
         principalColor: animatedValues.principalAnimated.interpolate({
             inputRange,
+            extrapolate: "clamp",
             outputRange: [
                 colorsStyle.lightTheme.principal,
                 colorsStyle.darkTheme.principal,
@@ -126,6 +128,7 @@ export default function ThemeProvider({ children }: items) {
         }),
         secondaryColor: animatedValues.secondaryAnimated.interpolate({
             inputRange,
+            extrapolate: "clamp",
             outputRange: [
                 colorsStyle.lightTheme.secondary,
                 colorsStyle.darkTheme.secondary,

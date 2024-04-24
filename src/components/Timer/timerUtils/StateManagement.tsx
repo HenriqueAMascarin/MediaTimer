@@ -93,12 +93,12 @@ export default function StateManagement(values: StateManagement) {
     timerPause(isPaused);
   }
 
-  async function createNotification(channelId: string, formatedValues?: ReturnType<typeof formatedTimer>, customTitle: string = 'Timer em andamento') {
+  async function createNotification(channelId: string, formatedValues?: ReturnType<typeof formatedTimer>, customTitle: string = 'Timer em andamento', isPaused: boolean = false) {
     await notifee.displayNotification({
       title: customTitle,
       body: 'Arraste para cancelar',
       id: 'Media-timer-notification',
-      subtitle: formatedValues ? `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}` : 'Carregando',
+      subtitle: isPaused ? '' : formatedValues ? `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}` : 'Carregando',
       android: {
         channelId,
         autoCancel: false,
@@ -113,14 +113,20 @@ export default function StateManagement(values: StateManagement) {
 
   }
 
-  async function onDisplayNotification(newTotalValue: number) {
-
-    await notifee.requestPermission();
-
+  async function createChannelId() {
     const channelId = await notifee.createChannel({
       id: 'Timer',
       name: 'Timer channel',
     });
+
+    return channelId;
+  }
+
+  async function onDisplayNotification(newTotalValue: number) {
+
+    await notifee.requestPermission();
+
+    const channelId = await createChannelId();
 
     let newValue = newTotalValue;
 
@@ -214,12 +220,9 @@ export default function StateManagement(values: StateManagement) {
           await soundRef.current?.pauseAsync();
           stopTimerInterval();
 
-          const channelId = await notifee.createChannel({
-            id: 'Timer',
-            name: 'Timer channel',
-          });
-          
-          createNotification(channelId, undefined, 'Timer Pausado')
+          const channelId = await createChannelId();
+
+          createNotification(channelId, undefined, 'Timer Pausado', true)
         } else {
           onDisplayNotification(timerValues.runningValue.timestamp);
           await soundRef.current?.playAsync();

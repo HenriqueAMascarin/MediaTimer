@@ -1,4 +1,4 @@
-import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
+import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme, Text, Linking } from "react-native";
 import { hamburguerStyles } from "./styles/hamburguerStyles";
 import { useEffect, useRef, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
 import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
+import Logo from '@assets/images/logo.svg';
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
@@ -64,6 +65,10 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
         }
     }
 
+    function openPortfolio() {
+        Linking.openURL('https://henriqueamascarin.vercel.app');
+    }
+
     return (
         <View style={hamburguerStyles.container}>
             <TouchableOpacity style={hamburguerStyles.hamburguerContainer} onPress={() => toggleModal()}>
@@ -87,6 +92,12 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                                 </TouchableOpacity>
                             )
                         })}
+                    </Animated.View>
+                    <Animated.View style={{opacity: opacityModal, zIndex: 10, bottom: 0, position: 'absolute', alignSelf: 'center'}}>
+                        <TouchableOpacity onPress={() => openPortfolio()} style={{ display: 'flex', marginBottom: 30, flexDirection: "row", alignItems: 'center', gap: 14, justifyContent: 'center' }}>
+                            <Logo width={'68px'} height={'68px'} />
+                            <Text style={{ maxWidth: 110, color: colorsStyle.principal.white, fontWeight: '600', fontSize: 26 }}>Henrique Mascarin</Text>
+                        </TouchableOpacity>
                     </Animated.View>
                     <TouchableWithoutFeedback onPress={() => toggleModal()} >
                         <View style={[{ flex: 1, flexGrow: 1, backgroundColor: 'rgba(0, 0, 0, 0.58)' }]}></View>
