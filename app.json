@@ -5,7 +5,7 @@
     "description": "This is an timer music app",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashScreen.png",
       "resizeMode": "cover",
       "backgroundColor": "#149CFF"
     },
