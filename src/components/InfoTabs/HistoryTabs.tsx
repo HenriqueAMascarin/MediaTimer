@@ -21,8 +21,10 @@ export default function HistoryTabs() {
     const dispatch = useDispatch();
 
     function musicName(nameMusic: string) {
-        const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') + 2).slice(0, 20) + " ";
-        const nameFormated = nameOnly.lastIndexOf(' ') < 18 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly.slice(0, nameOnly.lastIndexOf('  ')) + '...';
+        const maxLength = 16;
+
+        const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') + 2).slice(0, maxLength) + " ";
+        const nameFormated = nameOnly.lastIndexOf(' ') < maxLength - 2 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly.slice(0, nameOnly.lastIndexOf('  ')) + '...';
 
         return nameFormated;
     }
@@ -74,8 +76,8 @@ export default function HistoryTabs() {
                         {stateHistory.historyItems.map((item, keyItem) => {
                             return (
                                 <View style={[historyStyle.item]} key={keyItem}>
-                                    <View>
-                                        <Text>{musicName(item.nameMusic)}</Text>
+                                    <View style={{width: 150}}>
+                                        <Text >{musicName(item.nameMusic)}</Text>
                                         <Text>{item.nameMusic.indexOf(' -') != -1 ? item.nameMusic.slice(0, item.nameMusic.indexOf(' -')) : item.authorMusic}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)}>
