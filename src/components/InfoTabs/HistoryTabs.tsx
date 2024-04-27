@@ -23,7 +23,7 @@ export default function HistoryTabs() {
     function musicName(nameMusic: string) {
         const maxLength = 16;
 
-        const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') + 2).slice(0, maxLength) + " ";
+        const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') != -1 ? nameMusic.indexOf('- ') + 2 : 0).slice(0, maxLength) + " ";
         const nameFormated = nameOnly.lastIndexOf(' ') < maxLength - 2 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly.slice(0, nameOnly.lastIndexOf('  ')) + '...';
 
         return nameFormated;
@@ -78,7 +78,7 @@ export default function HistoryTabs() {
                                 <View style={[historyStyle.item]} key={keyItem}>
                                     <View style={{width: 150}}>
                                         <Text >{musicName(item.nameMusic)}</Text>
-                                        <Text>{item.nameMusic.indexOf(' -') != -1 ? item.nameMusic.slice(0, item.nameMusic.indexOf(' -')) : item.authorMusic}</Text>
+                                        <Text>{item.nameMusic.indexOf(' -') != -1 && item.nameMusic.slice(0, item.nameMusic.indexOf(' -')).length < 16 ? item.nameMusic.slice(0, item.nameMusic.indexOf(' -')) : item.authorMusic}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)}>
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />

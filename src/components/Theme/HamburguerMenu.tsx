@@ -7,6 +7,7 @@ import { themeLocalKey } from "../Utils/globalVars";
 import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import Logo from '@assets/images/logo.svg';
+import { CloseButton } from "../InfoTabs/Alerts/Components";
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
@@ -81,6 +82,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                 <Animated.View style={{ flex: 1, flexGrow: 1, zIndex: 10, opacity: opacityModal }}>
 
                     <Animated.View style={[hamburguerStyles.modalContainer, { backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
+                        <CloseButton clickFunction={() => toggleModal()} color={dataTheme.animatedValues.principalColor} customPos={{top: 12, right: 12}}/>
                         <Animated.Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 2, color: dataTheme.animatedValues.principalColor }}>Escolher tema</Animated.Text>
                         {typesTheme.map((theme, keyTheme) => {
                             return (

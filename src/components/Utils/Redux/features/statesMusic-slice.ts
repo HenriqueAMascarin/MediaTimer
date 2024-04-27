@@ -11,7 +11,7 @@ export type statesMusicType = {
         youtube: boolean
         reset: boolean
     },
-    isYoutubeSelection: boolean,
+    isSelectionYoutube: boolean,
     musicLink: AVPlaybackSource | string | null,
 }
 
@@ -24,7 +24,7 @@ const initialState: statesMusicType = {
         youtube: false,
         reset: true
     },
-    isYoutubeSelection: false,
+    isSelectionYoutube: false,
     musicLink: null
 }
 
@@ -39,7 +39,7 @@ export const stateMusicSlice = createSlice({
             state.pressBtn.youtube = action.payload;
         },
         changeIsSelectionYoutube: (state, action: PayloadAction<boolean>) => {
-            state.isYoutubeSelection = action.payload;
+            state.isSelectionYoutube = action.payload;
         },
         changePressBtn: (state, action: PayloadAction<typeof initialState.pressBtn>) => {
             state.pressBtn = action.payload;

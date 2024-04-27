@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Animated, StyleProp, ViewStyle } from "react-native";
+import { View, TouchableOpacity, Animated } from "react-native";
 import { infoStyles } from "./styles/infoStyles";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -7,24 +7,9 @@ import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/feat
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef } from "react";
-import { SvgXml } from "react-native-svg";
-import { fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "./svgsXml";
+import { createSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "./svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
-
-interface Props {
-  color: string;
-  style: StyleProp<ViewStyle>,
-  xml: string
-}
-
-class createSvg extends React.Component<Props, {}> {
-  render() {
-    return (
-      <SvgXml xml={this.props.xml} width="45px" height="45px" fill={this.props.color} style={this.props.style} />
-    )
-  }
-}
 
 export default function ButtonTabs() {
 

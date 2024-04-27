@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
 import { heightItem } from "../styles/timerStyle";
-import { Animated, Vibration } from "react-native";
+import { Animated } from "react-native";
 
 import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
-import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
@@ -27,6 +27,26 @@ export default function StateManagement(values: StateManagement) {
   const [havePlayed, changeHavePlayed] = useState(false);
 
   const soundRef = useRef<Audio.Sound>();
+  const timerFinalSound = useRef<Audio.Sound>();
+
+  useEffect(() => {
+    if (timerFinalSound.current == undefined) {
+      (async function initial() {
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          staysActiveInBackground: true,
+          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+          playsInSilentModeIOS: true,
+          shouldDuckAndroid: true,
+          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+          playThroughEarpieceAndroid: false,
+        })
+
+        const { sound: timerClock } = await Audio.Sound.createAsync(require('@assets/sounds/timer.wav'));
+        timerFinalSound.current = timerClock;
+      })();
+    }
+  }, [timerFinalSound])
 
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
@@ -163,7 +183,10 @@ export default function StateManagement(values: StateManagement) {
       if (stateTimer.isPlay) {
         (async function play() {
           dispatch(changeIsSelection(false));
+
           dispatch(changeIsHistory(false));
+
+          dispatch(changeIsSelectionYoutube(false));
 
           if (stateMusic.musicLink != null) {
             const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
@@ -173,16 +196,6 @@ export default function StateManagement(values: StateManagement) {
           }
 
           if (soundRef.current) {
-            await Audio.setAudioModeAsync({
-              allowsRecordingIOS: false,
-              staysActiveInBackground: true,
-              interruptionModeIOS: InterruptionModeIOS.DuckOthers,
-              playsInSilentModeIOS: true,
-              shouldDuckAndroid: true,
-              interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-              playThroughEarpieceAndroid: false,
-            })
-
             await soundRef.current.setIsLoopingAsync(true);
 
             await soundRef.current.playAsync();
@@ -199,14 +212,18 @@ export default function StateManagement(values: StateManagement) {
         if (soundRef.current != undefined) {
           soundRef.current.stopAsync();
 
-          soundRef.current?.unloadAsync();
+          soundRef.current.unloadAsync();
 
           soundRef.current = new Audio.Sound();
         }
 
         notifee.cancelAllNotifications();
+
         stopTimer();
-        Vibration.vibrate(400);
+
+        if (timerFinalSound.current) {
+          timerFinalSound.current.playAsync().then(() => timerFinalSound.current?.stopAsync());
+        }
       }
     }
   }, [stateTimer.isPlay]);
@@ -239,8 +256,6 @@ export default function StateManagement(values: StateManagement) {
       }
     }
   }, [timerValues.runningValue]);
-
-
 
   return <></>;
 }

@@ -66,7 +66,7 @@ export default function Components() {
 
                 <View style={buttonsStyle.container}>
                     <Animated.View style={{ minHeight: 90, 'backgroundColor': dataTheme.animatedValues.backgroundColor }}>
-                        {stateMusic.isYoutubeSelection ? <YoutubeTabs /> : <></>}
+                        {stateMusic.isSelectionYoutube ? <YoutubeTabs /> : <></>}
                         {stateMusic.isSelection ? <ButtonTabs /> : <></>}
                         {stateHistory.isHistory ? <HistoryTabs /> : <></>}
                     </Animated.View>
