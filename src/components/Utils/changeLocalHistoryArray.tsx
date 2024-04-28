@@ -1,4 +1,4 @@
-import { alertLocalKey, historyLocalKey } from "./globalVars";
+import { historyLocalKey } from "./globalVars";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeHistoryArray, historyItem } from "./Redux/features/stateHistory-slice";
 import { store } from "./Redux/store";

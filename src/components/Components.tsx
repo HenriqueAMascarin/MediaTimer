@@ -46,7 +46,7 @@ export default function Components() {
 
         changeLocalHistoryArray();
 
-        (async () => {
+        (async function initialAlertConfig() {
             const jsonValue = await AsyncStorage.getItem(alertLocalKey);
 
             if (!jsonValue) {
@@ -56,7 +56,7 @@ export default function Components() {
             }
         })();
 
-        (async () => {
+        (async function initialYoutubeConfig() {
 
             const { exists } = await getInfoAsync(directoryYoutube);
 
@@ -67,6 +67,7 @@ export default function Components() {
             makeDirectoryAsync(directoryYoutube, { intermediates: true });
 
         })();
+
     }, [])
 
     return (
