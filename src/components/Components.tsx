@@ -1,4 +1,4 @@
-import { View, SafeAreaView, useColorScheme, Animated, Easing } from "react-native";
+import { View, SafeAreaView, Animated } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import ComponentTimer from "./Timer/ComponentTimer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
@@ -6,7 +6,7 @@ import ButtonTabs from "./InfoTabs/ButtonTabs";
 import YoutubeTabs from "./InfoTabs/YoutubeTabs";
 import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 import { deleteAsync, getInfoAsync, makeDirectoryAsync } from "expo-file-system";
-import { directoryYoutube } from "./Utils/globalVars";
+import { alertLocalKey, directoryYoutube } from "./Utils/globalVars";
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-slice';
@@ -15,6 +15,8 @@ import HistoryTabs from "./InfoTabs/HistoryTabs";
 import { changeLocalHistoryArray } from "./Utils/changeLocalHistoryArray";
 import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -43,6 +45,16 @@ export default function Components() {
         notifee.cancelAllNotifications();
 
         changeLocalHistoryArray();
+
+        (async () => {
+            const jsonValue = await AsyncStorage.getItem(alertLocalKey);
+
+            if (!jsonValue) {
+                AsyncStorage.setItem(alertLocalKey, 'true');
+            } else {
+                dispatch(changeIsAlert(jsonValue == 'true' ? true : false));
+            }
+        })();
 
         (async () => {
 

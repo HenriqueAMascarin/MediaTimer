@@ -5,7 +5,7 @@ import { changeLocalHistoryArray } from "./changeLocalHistoryArray";
 
 const dispatch = store.dispatch;
 
-export function changeMusic(musicStates: statesMusicType['pressBtn'], changeBtn?: {} | null, musicLink: statesMusicType['musicLink'] = null, changeHistory = true) {
+export function changeMusic(musicStates: statesMusicType['pressBtn'], changeBtn?: {} | null, musicLink: statesMusicType['musicLink'] = null, changeHistory = false) {
 
     if (changeHistory) {
         changeLocalHistoryArray();

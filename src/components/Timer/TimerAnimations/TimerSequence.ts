@@ -7,6 +7,7 @@ export let numberCountOpacity = new Animated.Value(0);
 export let listOpacity = new Animated.Value(1);
 export let gapList = new Animated.Value(10);
 export let totalTimeOpacity = new Animated.Value(0);
+export let timerAlertOpacity = new Animated.Value(0);
 
 export function sequenceTimer(stateOption: boolean) {
     const initialValues = {
@@ -16,7 +17,8 @@ export function sequenceTimer(stateOption: boolean) {
         initialNumberCountOpacity: 0,
         initialListOpacity: 1,
         initialGapList: 10,
-        initialtotalTimeOpacity: 0
+        initialtotalTimeOpacity: 0,
+        timerAlertOpacity: 0,
     }
     
         Animated.parallel([
@@ -60,6 +62,12 @@ export function sequenceTimer(stateOption: boolean) {
                 toValue: stateOption ? 1 : initialValues.initialtotalTimeOpacity,
                 duration: 300,
                 delay: stateOption ? 600 : 100,
+                useNativeDriver: false,
+            }),
+            Animated.timing(timerAlertOpacity, {
+                toValue: stateOption ? 1 : initialValues.initialtotalTimeOpacity,
+                duration: 300,
+                delay: stateOption ? 650 : 100,
                 useNativeDriver: false,
             })
         ]).start();

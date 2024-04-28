@@ -27,6 +27,7 @@ export default function StateManagement(values: StateManagement) {
   const [havePlayed, changeHavePlayed] = useState(false);
 
   const soundRef = useRef<Audio.Sound>();
+
   const timerFinalSound = useRef<Audio.Sound>();
 
   useEffect(() => {
@@ -49,8 +50,13 @@ export default function StateManagement(values: StateManagement) {
   }, [timerFinalSound])
 
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
+
+  const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
+
   const dispatch = useDispatch();
 
   const dataNumbers = (() => {
@@ -221,8 +227,8 @@ export default function StateManagement(values: StateManagement) {
 
         stopTimer();
 
-        if (timerFinalSound.current) {
-          timerFinalSound.current.playAsync().then(() => timerFinalSound.current?.stopAsync());
+        if (timerFinalSound.current && stateAlert.isAlert) {
+          timerFinalSound.current.playAsync().then(() => {timerFinalSound.current?.stopAsync()});
         }
       }
     }

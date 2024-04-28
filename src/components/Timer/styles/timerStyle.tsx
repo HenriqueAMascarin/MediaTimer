@@ -57,5 +57,11 @@ export const timerStyle = StyleSheet.create({
         color: colorsStyle.principal.blackGray,
         position: "absolute",
         opacity: 0,
+    },
+    timerAlertSvg:{
+        bottom: 2,
+        color: colorsStyle.principal.blackGray,
+        position: "absolute",
+        opacity: 0,
     }
 })

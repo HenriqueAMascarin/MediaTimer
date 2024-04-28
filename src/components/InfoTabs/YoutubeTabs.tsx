@@ -52,14 +52,17 @@ export default function YoutubeTabs() {
 
                 try {
                     const jsonValue = JSON.stringify(newArrItems);
+                    
                     await AsyncStorage.setItem(historyLocalKey, jsonValue);
+
                     dispatch(changeHistoryArray(newArrItems));
 
                     changeTextProgress('Baixando a música');
 
                     await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
-                            changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+                            changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, true);
+                            
                             changeStatus({ searching: true, success: true, error: false });
                         }
                     });

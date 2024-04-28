@@ -7,7 +7,7 @@ import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/feat
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef } from "react";
-import { createSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "./svgsXml";
+import { CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
 
@@ -21,8 +21,6 @@ export default function ButtonTabs() {
     dispatch(changeIsSelection(false));
     dispatch(changeIsSelectionYoutube(true));
   };
-
-  const IconsComponent = Animated.createAnimatedComponent(createSvg);
 
   let opacityModal = useRef(new Animated.Value(0)).current;
 
@@ -53,7 +51,7 @@ export default function ButtonTabs() {
         {ButtonsGroup.map((icon, keyItem) => {
           return (
             <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem}>
-              <IconsComponent xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
+              <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
 
               <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }}>{icon.label}</Animated.Text>
             </TouchableOpacity>

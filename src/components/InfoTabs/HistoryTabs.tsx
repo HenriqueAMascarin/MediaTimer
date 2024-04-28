@@ -43,9 +43,13 @@ export default function HistoryTabs() {
             youtubeDownload(item.idMusic).then((musicLink: string | null) => {
                 if (musicLink != null) {
                     const index = newArr.findIndex((el) => el.idMusic == item.idMusic);
+
                     newArr[index] = { ...newArr[index], isSelected: true };
-                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
+
+                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+
                     changeStatus({ searching: true, success: true, error: false });
+
                     dispatch(changeHistoryArray(newArr));
                 }
             }).catch(() => {

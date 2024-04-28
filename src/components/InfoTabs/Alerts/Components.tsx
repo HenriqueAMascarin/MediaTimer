@@ -5,7 +5,7 @@ import { Text, Animated, TouchableOpacity } from "react-native";
 import WarningSvg from "@assets/images/warning.svg";
 import { animatedModalsOpacity } from "@src/components/Utils/animatedModalsOpacity";
 import { colorsStyle } from "@src/components/Utils/colorsStyle";
-import { closeSvgXml, createSvg } from "../svgsXml";
+import { CustomAnimatedSvg, closeSvgXml } from "../../Utils/svgsXml";
 
 type CloseButtonType = {
   clickFunction: Function,
@@ -22,8 +22,6 @@ function resetOpacityModal() {
 
 export function CloseButton({ clickFunction, color = colorsStyle.principal.black, customPos = { top: 6, right: 6 } }: CloseButtonType) {
 
-  const AnimatedClose = Animated.createAnimatedComponent(createSvg);
-
   return (
     <TouchableOpacity
       style={{
@@ -37,7 +35,7 @@ export function CloseButton({ clickFunction, color = colorsStyle.principal.black
       }}
       onPress={() => clickFunction()}
     >
-      <AnimatedClose xml={closeSvgXml} width={"16px"} height={"16px"} color={color} />
+      <CustomAnimatedSvg xml={closeSvgXml} width={"16px"} height={"16px"} color={color} />
     </TouchableOpacity>
   )
 }

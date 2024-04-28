@@ -14,6 +14,7 @@ import TotalTimeText from "./TotalTimeText";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import StateManagement from "./timerUtils/StateManagement";
 import { useTheme } from "../Utils/Context/ThemeContext";
+import TimerAlert from "./TimerAlert";
 
 export default function Timer() {
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
@@ -59,6 +60,8 @@ export default function Timer() {
         </View>
 
         <TotalTimeText />
+
+        <TimerAlert />
       </Animated.View>
     </View>
   );
