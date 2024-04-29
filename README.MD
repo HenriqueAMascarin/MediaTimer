@@ -1,8 +1,8 @@
 # MediaTimer
 
-Aplicativo de timer de tempo com API de músicas, usando React Native para criação e com objetivo de solucionar um problema pessoal! (em progresso)
+Aplicativo de timer de tempo com API de músicas, usando React Native para criação e com objetivo de solucionar um problema pessoal!
 
-⚠️ Lembrando, é apenas um projeto pessoal e não será disponibilizado em nenhuma loja (por conta de direitos autorais)
+⚠️ Lembrando, é apenas um projeto pessoal e não será disponibilizado em nenhuma loja. (diretrizes YouTube)
 
 ## Conteúdos
 
@@ -22,11 +22,11 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 
 ### O que aprendi?
 
- ( Área que irei escrever quando terminar o projeto )
+Aperfeiçoei minha lógica de programação e melhorei em tais tecnologias, passando por diversos desafios. Assim, Aprendendo a usar o React Native no dia a dia.
 
 ### O que busco no futuro?
 
-  ( Área que irei escrever quando terminar o projeto )
+Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native, para no futuro estar trabalhando com essa tecnologia.
 
 ### Demonstração Android
 
@@ -35,6 +35,7 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 - Baixar demonstração atual: [clique aqui](https://expo.dev/accounts/henriqueam/projects/media-timer/builds/0b869dbe-79cd-4121-935b-3f3f93356e98).
 
 📙 Passo a passo 📙
+
 - Entre no link pelo celular
 - Clique em install e fazer o download do arquivo
 - Clique em abrir e instalar
@@ -54,7 +55,7 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 - React Native
 - React Native Async Storage
 - React Native Background Timer
-- React Native Animated 
+- React Native Animated
 - React SVG + SVG Transformer
 - React Native Dotenv
 - Expo
