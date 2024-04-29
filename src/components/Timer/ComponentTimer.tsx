@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { View, Animated } from "react-native";
 
 import { timerStyle } from "./styles/timerStyle";

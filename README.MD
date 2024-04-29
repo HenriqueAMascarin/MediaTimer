@@ -10,7 +10,6 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
   - [Screenshot](#screenshot)
   - [O que aprendi?](#O-que-aprendi?)
   - [O que busco no futuro?](#O-que-busco-no-futuro?)
-  - [O que falta no projeto?](#O-que-falta-no-projeto?)
   - [Demonstração](#demonstração)
   - [Links](#links)
   - [Tecnologias usadas](#Tecnologias-usadas)
@@ -28,11 +27,6 @@ Aplicativo de timer de tempo com API de músicas, usando React Native para cria�
 ### O que busco no futuro?
 
   ( Área que irei escrever quando terminar o projeto )
-
-### O que falta no projeto?
-
-- Tema escuro
-- Revisão do projeto
 
 ### Demonstração Android
 

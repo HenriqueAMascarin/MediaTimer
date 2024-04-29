@@ -1,5 +1,5 @@
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import { colorsStyle } from "../Utils/colorsStyle";

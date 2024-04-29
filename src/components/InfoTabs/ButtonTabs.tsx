@@ -10,7 +10,6 @@ import React, { useEffect, useRef } from "react";
 import { CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 
-
 export default function ButtonTabs() {
 
   const dispatch = useDispatch();
@@ -32,7 +31,7 @@ export default function ButtonTabs() {
 
   function changeWaves() { changeMusic(stateMusic.pressBtn, { waves: true }, require('@assets/sounds/waves.wav')) };
 
-  function changeForest() { changeMusic(stateMusic.pressBtn, { forest: true }, require('@assets/sounds/nature.wav')) };
+  function changeForest() { changeMusic(stateMusic.pressBtn, { forest: true }, require('@assets/sounds/forest.wav')) };
 
   function resetAll() {
     changeMusic(stateMusic.pressBtn, { reset: true });

@@ -1,4 +1,5 @@
 import { Animated } from "react-native";
+
 export function animatedModalsOpacity({
   isOpen,
   animatedOpacity,

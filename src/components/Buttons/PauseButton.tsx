@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { changeIsPaused } from "../Utils/Redux/features/stateTimer-slice";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
-
 export default function PauseButton() {
   const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
   const dispatch = useDispatch();
