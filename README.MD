@@ -1,6 +1,6 @@
 # MediaTimer
 
-Aplicativo de timer de tempo com API de músicas, usando React Native para criação e com objetivo de solucionar um problema pessoal!
+Aplicativo de timer com API de músicas, usando React Native com objetivo de solucionar um problema pessoal!
 
 ⚠️ Lembrando, é apenas um projeto pessoal e não será disponibilizado em nenhuma loja. (diretrizes YouTube)
 
@@ -26,7 +26,7 @@ Aperfeiçoei minha lógica de programação e melhorei em tais tecnologias, pass
 
 ### O que busco no futuro?
 
-Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native, para no futuro estar trabalhando com essa tecnologia.
+Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native. Para no futuro estar trabalhando com essa tecnologia.
 
 ### Demonstração Android
 
