@@ -13,11 +13,13 @@ type CloseButtonType = {
   customPos?: { top: number, right: number }
 }
 
-let opacityModal = new Animated.Value(0);
+function createOpacity(){
+  let opacityModal = new Animated.Value(0);
 
-function resetOpacityModal() {
   opacityModal.setValue(0);
   animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
+
+  return opacityModal;
 }
 
 export function CloseButton({ clickFunction, color = colorsStyle.principal.black, customPos = { top: 6, right: 6 } }: CloseButtonType) {
@@ -41,7 +43,7 @@ export function CloseButton({ clickFunction, color = colorsStyle.principal.black
 }
 
 export function SuccessAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
-  resetOpacityModal();
+  let opacityModal = createOpacity();
 
   return (
     <Animated.View style={[alertsStyles.item, { opacity: opacityModal }]}>
@@ -55,7 +57,7 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
 }
 
 export function ErrorAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
-  resetOpacityModal();
+  const opacityModal = createOpacity();
 
   return (
     <Animated.View style={[alertsStyles.item, { opacity: opacityModal }]}>
@@ -69,7 +71,7 @@ export function ErrorAlert({ alertText, closeFunction }: { alertText?: string, c
 }
 
 export function LoadingAlert({ alertText }: { alertText?: string }) {
-  resetOpacityModal();
+  let opacityModal = createOpacity();
 
   let spinValue = new Animated.Value(0);
 

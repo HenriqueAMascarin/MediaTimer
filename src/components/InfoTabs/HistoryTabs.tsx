@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { youtubeDownload } from "../Utils/youtube/youtubeFunctions";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
+import {decode} from 'html-entities';
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -17,16 +18,31 @@ export default function HistoryTabs() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
 
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
-    
+
     const dispatch = useDispatch();
 
     function musicName(nameMusic: string) {
         const maxLength = 16;
 
-        const nameOnly = nameMusic.slice(nameMusic.indexOf('- ') != -1 ? nameMusic.indexOf('- ') + 2 : 0).slice(0, maxLength) + " ";
+        const nameMusicDecode = decode(nameMusic);
+
+        const nameOnly = nameMusicDecode.slice(nameMusicDecode.indexOf('- ') != -1 ? nameMusicDecode.indexOf('- ') + 2 : 0).slice(0, maxLength) + " ";
+        
         const nameFormated = nameOnly.lastIndexOf(' ') < maxLength - 2 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly.slice(0, nameOnly.lastIndexOf('  ')) + '...';
 
         return nameFormated;
+    }
+
+    function authorName(item: historyItem) {
+        const maxLength = 19;
+
+        const nameMusicDecode = decode(item.nameMusic);
+
+        const authorName = (nameMusicDecode.indexOf(' -') != -1 && nameMusicDecode.slice(0, nameMusicDecode.indexOf(' -')).length < maxLength ? nameMusicDecode.slice(0, nameMusicDecode.indexOf(' -')) : decode(item.authorMusic)).slice(0, maxLength);
+        
+        const authorNameFormated = authorName.length < maxLength ? authorName : authorName.slice(0, authorName.lastIndexOf('  ')) + '...';
+        
+        return authorNameFormated;
     }
 
     function changeItemSelected(item: historyItem) {
@@ -75,14 +91,14 @@ export default function HistoryTabs() {
     return (
         <View>
             {!status.searching ?
-                <Animated.ScrollView horizontal style={[{maxHeight: 90, opacity: opacityModal}]}>
+                <Animated.ScrollView horizontal style={[{ maxHeight: 90, opacity: opacityModal }]}>
                     <View style={[historyStyle.container]}>
                         {stateHistory.historyItems.map((item, keyItem) => {
                             return (
                                 <View style={[historyStyle.item]} key={keyItem}>
-                                    <View style={{width: 150}}>
+                                    <View style={{ width: 150 }}>
                                         <Text >{musicName(item.nameMusic)}</Text>
-                                        <Text>{item.nameMusic.indexOf(' -') != -1 && item.nameMusic.slice(0, item.nameMusic.indexOf(' -')).length < 16 ? item.nameMusic.slice(0, item.nameMusic.indexOf(' -')) : item.authorMusic}</Text>
+                                        <Text>{authorName(item)}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)}>
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
