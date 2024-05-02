@@ -28,16 +28,16 @@ Aperfeiçoei minha lógica de programação e melhorei em tais tecnologias, pass
 
 Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native. Para no futuro estar trabalhando com essa tecnologia.
 
-### Demonstração Android
+### Demonstração
 
 ![](./assets/reviewImage.jpg)
 
-- Baixar demonstração atual: [clique aqui](https://expo.dev/accounts/henriqueam/projects/media-timer/builds/0b869dbe-79cd-4121-935b-3f3f93356e98).
+- Baixar demonstração atual: [clique aqui](https://henriqueamascarin.vercel.app/#projetos/MediaTimer).
 
 📙 Passo a passo 📙
 
 - Entre no link pelo celular
-- Clique em install e fazer o download do arquivo
+- Clique em "Baixe o aplicativo" e espere baixar
 - Clique em abrir e instalar
 - Caso aparecer app de risco bloqueado, clique em mais detalhes e instalar assim mesmo.
 - Por fim abra o aplicativo!
