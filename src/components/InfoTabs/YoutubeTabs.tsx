@@ -87,7 +87,7 @@ export default function YoutubeTabs() {
 
                 <Animated.View style={[youtubeStyle.item, youtubeStyle.searchItem, { opacity: opacityModal }]}>
                     <CloseButton clickFunction={onClose} />
-                    <Text style={{ color: colorsStyle.principal.blue, fontSize: 20 }}>
+                    <Text style={{ color: colorsStyle.principal.blue, fontSize: 20 }} allowFontScaling={false}>
                         Nome da música
                     </Text>
 

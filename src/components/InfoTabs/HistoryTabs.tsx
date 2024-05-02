@@ -97,8 +97,8 @@ export default function HistoryTabs() {
                             return (
                                 <View style={[historyStyle.item]} key={keyItem}>
                                     <View style={{ width: 150 }}>
-                                        <Text >{musicName(item.nameMusic)}</Text>
-                                        <Text>{authorName(item)}</Text>
+                                        <Text allowFontScaling={false}>{musicName(item.nameMusic)}</Text>
+                                        <Text allowFontScaling={false}>{authorName(item)}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)}>
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />

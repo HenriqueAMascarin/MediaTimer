@@ -51,7 +51,7 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
 
       <CorrectSvg style={{ minWidth: 30 }} />
 
-      <Text>{alertText ?? "Música encontrada"}</Text>
+      <Text allowFontScaling={false}>{alertText ?? "Música encontrada"}</Text>
     </Animated.View>
   );
 }
@@ -65,7 +65,7 @@ export function ErrorAlert({ alertText, closeFunction }: { alertText?: string, c
 
       <WarningSvg style={{ minWidth: 30 }} />
 
-      <Text>{alertText ?? "Falha na busca"}</Text>
+      <Text allowFontScaling={false}>{alertText ?? "Falha na busca"}</Text>
     </Animated.View>
   );
 }
@@ -95,7 +95,7 @@ export function LoadingAlert({ alertText }: { alertText?: string }) {
         <LoadingSvg style={{ minWidth: 30 }} />
       </Animated.View>
 
-      <Text>{alertText ?? "Buscando a música"}</Text>
+      <Text allowFontScaling={false}>{alertText ?? "Buscando a música"}</Text>
     </Animated.View>
   );
 }

@@ -52,7 +52,7 @@ export default function ButtonTabs() {
             <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem}>
               <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
 
-              <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }}>{icon.label}</Animated.Text>
+              <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }} allowFontScaling={false}>{icon.label}</Animated.Text>
             </TouchableOpacity>
           )
         })}
