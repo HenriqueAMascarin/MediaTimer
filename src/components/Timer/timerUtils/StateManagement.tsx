@@ -46,13 +46,11 @@ export default function StateManagement(values: StateManagement) {
         const { sound: timerClock } = await Audio.Sound.createAsync(require('@assets/sounds/timer.wav'));
         timerFinalSound.current = timerClock;
 
-        if (timerFinalSound.current) {
-          timerFinalSound.current.setOnPlaybackStatusUpdate(async (playbackStatus) => {
-            if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
-              timerFinalSound.current?.stopAsync();
-            }
-          });
-        }
+        timerFinalSound.current?.setOnPlaybackStatusUpdate(async (playbackStatus) => {
+          if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
+            timerFinalSound.current?.stopAsync();
+          }
+        });
 
       })();
     }
