@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { youtubeDownload } from "../Utils/youtube/youtubeFunctions";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
-import {decode} from 'html-entities';
+import { decode } from 'html-entities';
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -27,7 +27,7 @@ export default function HistoryTabs() {
         const nameMusicDecode = decode(nameMusic);
 
         const nameOnly = nameMusicDecode.slice(nameMusicDecode.indexOf('- ') != -1 ? nameMusicDecode.indexOf('- ') + 2 : 0).slice(0, maxLength) + " ";
-        
+
         const nameFormated = nameOnly.lastIndexOf(' ') < maxLength - 2 ? nameOnly.slice(0, nameOnly.lastIndexOf(' ')) : nameOnly.slice(0, nameOnly.lastIndexOf('  ')) + '...';
 
         return nameFormated;
@@ -39,10 +39,15 @@ export default function HistoryTabs() {
         const nameMusicDecode = decode(item.nameMusic);
 
         const authorName = (nameMusicDecode.indexOf(' -') != -1 && nameMusicDecode.slice(0, nameMusicDecode.indexOf(' -')).length < maxLength ? nameMusicDecode.slice(0, nameMusicDecode.indexOf(' -')) : decode(item.authorMusic)).slice(0, maxLength);
-        
+
         const authorNameFormated = authorName.length < maxLength ? authorName : authorName.slice(0, authorName.lastIndexOf('  ')) + '...';
-        
+
         return authorNameFormated;
+    }
+
+    function errorYoutubeStatus(newArr: historyItem[]) {
+        changeHistoryArray(newArr);
+        changeStatus({ searching: true, success: false, error: true });
     }
 
     function changeItemSelected(item: historyItem) {
@@ -67,10 +72,11 @@ export default function HistoryTabs() {
                     changeStatus({ searching: true, success: true, error: false });
 
                     dispatch(changeHistoryArray(newArr));
+                } else {
+                    errorYoutubeStatus(newArr);
                 }
             }).catch(() => {
-                changeHistoryArray(newArr);
-                changeStatus({ searching: true, success: false, error: true });
+                errorYoutubeStatus(newArr);
             });
 
 

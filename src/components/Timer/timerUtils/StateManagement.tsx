@@ -135,7 +135,7 @@ export default function StateManagement(values: StateManagement) {
       android: {
         channelId,
         autoCancel: false,
-        importance: AndroidImportance.HIGH,
+        importance: AndroidImportance.LOW,
         pressAction: {
           id: 'default',
         },
@@ -143,7 +143,6 @@ export default function StateManagement(values: StateManagement) {
         color: '#149CFF'
       },
     });
-
   }
 
   async function createChannelId() {

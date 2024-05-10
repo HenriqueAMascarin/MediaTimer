@@ -32,6 +32,10 @@ export default function YoutubeTabs() {
         animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
     }, []);
 
+    function caseErrorStatus() {
+        changeStatus({ searching: true, success: false, error: true });
+    }
+
     async function search() {
         changeStatus({ searching: true, success: false, error: false });
 
@@ -47,12 +51,16 @@ export default function YoutubeTabs() {
                     }
                 }
 
-                if (oldHistoryArray.length >= 10) oldHistoryArray.pop();
+                if (oldHistoryArray.length >= 10) {
+                    oldHistoryArray.pop();
+                };
+
                 const newArrItems = [musicItem, ...oldHistoryArray];
 
                 try {
+
                     const jsonValue = JSON.stringify(newArrItems);
-                    
+
                     await AsyncStorage.setItem(historyLocalKey, jsonValue);
 
                     dispatch(changeHistoryArray(newArrItems));
@@ -62,18 +70,21 @@ export default function YoutubeTabs() {
                     await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
                             changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, true);
-                            
+
                             changeStatus({ searching: true, success: true, error: false });
                         }
                     });
                 } catch {
-                    changeStatus({ searching: true, success: false, error: true });
+                    caseErrorStatus();
+                } finally {
+                    changeTextProgress('Buscando a música');
                 }
 
+            } else {
+                caseErrorStatus();
             }
-        })
+        }).catch(() => caseErrorStatus());
 
-        changeTextProgress('Buscando a música');
     }
 
     function onClose() {
