@@ -7,11 +7,11 @@ import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
-import notifee, { AndroidImportance } from '@notifee/react-native';
+import notifee, {  AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { changeRunningValue, changeTotalValue } from "@src/components/Utils/Redux/features/timerValues-slice";
+import { changeRunningValueTimestamp, changeTotalValue } from "@src/components/Utils/Redux/features/timerValues-slice";
 import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
@@ -74,23 +74,6 @@ export default function StateManagement(values: StateManagement) {
     })
   })
 
-  function formatedTimer(timestamp: number) {
-    const newHours = Math.floor(timestamp / 3600)
-      .toString()
-      .padStart(2, "0");
-
-    const newMinutes = Math.floor((timestamp % 3600) / 60)
-      .toString()
-      .padStart(2, "0");
-
-    const newSeconds = Math.floor((timestamp % 3600) % 60)
-      .toString()
-      .padStart(2, "0");
-
-    return { newHours, newMinutes, newSeconds };
-  }
-
-
   function playTimer(heightItem: number) {
     const numbers = dataNumbers();
 
@@ -99,10 +82,8 @@ export default function StateManagement(values: StateManagement) {
     const numberSeconds = Math.round(numbers.scrollThree / heightItem);
     const timestampValue = numberHours + numberMinutes + numberSeconds;
 
-    const formatedValues = formatedTimer(timestampValue);
-
     dispatch(changeTotalValue(timestampValue));
-    dispatch(changeRunningValue({ hours: formatedValues.newHours, minutes: formatedValues.newMinutes, seconds: formatedValues.newSeconds, timestamp: timestampValue }));
+    dispatch(changeRunningValueTimestamp(timestampValue));
     sequenceTimer(true);
 
     return timestampValue;
@@ -126,12 +107,11 @@ export default function StateManagement(values: StateManagement) {
     timerPause(isPaused);
   }
 
-  async function createNotification(channelId: string, formatedValues?: ReturnType<typeof formatedTimer>, customTitle: string = 'Timer em andamento', isPaused: boolean = false) {
+  async function createNotification(channelId: string, timestamp: number, customTitle: string = 'Timer em andamento', isPaused: boolean = false) {
     await notifee.displayNotification({
       title: customTitle,
       body: 'Arraste para cancelar',
-      id: 'Media-timer-notification',
-      subtitle: isPaused ? '' : formatedValues ? `${formatedValues.newHours}:${formatedValues.newMinutes}:${formatedValues.newSeconds}` : 'Carregando',
+      id: 'MediaTimer',
       android: {
         channelId,
         autoCancel: false,
@@ -140,7 +120,11 @@ export default function StateManagement(values: StateManagement) {
           id: 'default',
         },
         smallIcon: 'ic_media_timer',
-        color: '#149CFF'
+        showChronometer: isPaused ? false : true,
+        chronometerDirection: 'down',
+        timestamp: Date.now() + ((timestamp + 1)  * 1000),
+        color: '#149CFF',
+        visibility: AndroidVisibility.PUBLIC,
       },
     });
   }
@@ -149,6 +133,10 @@ export default function StateManagement(values: StateManagement) {
     const channelId = await notifee.createChannel({
       id: 'Timer',
       name: 'Timer channel',
+      importance: AndroidImportance.LOW,
+      vibration: false,
+      bypassDnd: false,
+      visibility: AndroidVisibility.PUBLIC
     });
 
     return channelId;
@@ -162,17 +150,13 @@ export default function StateManagement(values: StateManagement) {
 
     let newValue = newTotalValue;
 
-    await createNotification(channelId);
+    await createNotification(channelId, newTotalValue);
 
     BackgroundTimer.runBackgroundTimer(async () => {
-      newValue--;
 
-      const formatedValues = formatedTimer(newValue);
+      dispatch(changeRunningValueTimestamp(newValue--));
 
-      dispatch(changeRunningValue({ hours: formatedValues.newHours, minutes: formatedValues.newMinutes, seconds: formatedValues.newSeconds, timestamp: newValue }));
-
-      await createNotification(channelId, formatedValues);
-    }, 1000);
+    }, 612);
 
   }
 
@@ -214,6 +198,7 @@ export default function StateManagement(values: StateManagement) {
           }
 
           const totalValue = playTimer(heightItem);
+
           await onDisplayNotification(totalValue);
         })();
 
@@ -251,9 +236,9 @@ export default function StateManagement(values: StateManagement) {
 
           const channelId = await createChannelId();
 
-          createNotification(channelId, undefined, 'Timer Pausado', true)
+          createNotification(channelId, 0, 'Timer Pausado', true)
         } else {
-          onDisplayNotification(timerValues.runningValue.timestamp);
+          onDisplayNotification(timerValues.runningValueTimestamp);
           await soundRef.current?.playAsync();
         }
 
@@ -263,11 +248,11 @@ export default function StateManagement(values: StateManagement) {
 
   useEffect(() => {
     if (havePlayed) {
-      if (timerValues.runningValue.timestamp <= 0 || !stateTimer.isPlay) {
+      if (timerValues.runningValueTimestamp <= 0 || !stateTimer.isPlay) {
         dispatch(changeIsPlay(false));
       }
     }
-  }, [timerValues.runningValue]);
+  }, [timerValues.runningValueTimestamp]);
 
   return <></>;
 }

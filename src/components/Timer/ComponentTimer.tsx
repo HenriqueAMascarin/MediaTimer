@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { View, Animated } from "react-native";
 
 import { timerStyle } from "./styles/timerStyle";
@@ -24,6 +24,28 @@ export default function Timer() {
   const listTwo = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
   const listThree = useRef({ array: numberList(59), animated: { scrollY: new Animated.Value(0) } }).current;
 
+  const newHours = useMemo(() => {
+    return (
+      Math.floor(timerValues.runningValueTimestamp / 3600)
+        .toString()
+        .padStart(2, "0")
+    )
+  }, [timerValues.runningValueTimestamp]);
+
+  const newMinutes = useMemo(() => {
+    return (
+      Math.floor((timerValues.runningValueTimestamp % 3600) / 60)
+        .toString()
+        .padStart(2, "0")
+    )
+  }, [timerValues.runningValueTimestamp]);
+
+  const newSeconds = useMemo(() => {
+    return (Math.floor((timerValues.runningValueTimestamp % 3600) % 60)
+      .toString()
+      .padStart(2, "0"))
+  }, [timerValues.runningValueTimestamp]);
+
   return (
     <View>
       <StateManagement listOneValue={listOne.animated.scrollY} listTwoValue={listTwo.animated.scrollY} listThreeValue={listThree.animated.scrollY} />
@@ -32,7 +54,7 @@ export default function Timer() {
         <View style={timerStyle.listContainer}>
           <ListTimer dataArray={listOne} opacityAnimated={listOpacity} />
 
-          <TimerNumber numberCountOpacity={numberCountOpacity} number={timerValues.runningValue.hours} />
+          <TimerNumber numberCountOpacity={numberCountOpacity} number={newHours} />
         </View>
 
         <View style={timerStyle.listLineContainer}>
@@ -44,7 +66,7 @@ export default function Timer() {
         <View style={timerStyle.listContainer}>
           <ListTimer dataArray={listTwo} opacityAnimated={listOpacity} />
 
-          <TimerNumber numberCountOpacity={numberCountOpacity} number={timerValues.runningValue.minutes} />
+          <TimerNumber numberCountOpacity={numberCountOpacity} number={newMinutes} />
         </View>
 
         <View style={timerStyle.listLineContainer}>
@@ -56,7 +78,7 @@ export default function Timer() {
         <View style={timerStyle.listContainer}>
           <ListTimer dataArray={listThree} opacityAnimated={listOpacity} />
 
-          <TimerNumber numberCountOpacity={numberCountOpacity} number={timerValues.runningValue.seconds} />
+          <TimerNumber numberCountOpacity={numberCountOpacity} number={newSeconds} />
         </View>
 
         <TotalTimeText />
