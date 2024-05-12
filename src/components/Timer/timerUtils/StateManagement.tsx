@@ -153,10 +153,8 @@ export default function StateManagement(values: StateManagement) {
     await createNotification(channelId, newTotalValue);
 
     BackgroundTimer.runBackgroundTimer(async () => {
-
       dispatch(changeRunningValueTimestamp(newValue--));
-
-    }, 612);
+    }, 1000);
 
   }
 
