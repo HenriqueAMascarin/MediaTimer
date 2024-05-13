@@ -8,8 +8,9 @@ Aplicativo de timer com API de músicas e diversas funcionalidades, com objetivo
 
 - [Sobre](#Sobre)
   - [Screenshot](#screenshot)
-  - [O que aprendi?](#O-que-aprendi?)
-  - [O que busco no futuro?](#O-que-busco-no-futuro?)
+  - [Atualizações](#Atualizações)
+  - [Aprendizado](#Aprendizado)
+  - [Futuro](#Futuro)
   - [Demonstração](#demonstração)
   - [Links](#links)
   - [Tecnologias usadas](#Tecnologias-usadas)
@@ -20,11 +21,21 @@ Aplicativo de timer com API de músicas e diversas funcionalidades, com objetivo
 
 ![](./assets/screenshot.jpg)
 
-### O que aprendi?
+### Atualizações
+
+Media Timer 1.0.1 ✅
+
+⚙️ Mudanças
+  1 - Melhora na pesquisa de música/vídeo e validações.
+  2 - Notificação sem alertar a todo momento.
+  3 - Otimizações Contador.
+  4 - Horário do contador na notificação mudou para o horário próximo que encerrará.
+
+### Aprendizado
 
 Aperfeiçoei minha lógica de programação e melhorei em tais tecnologias, passando por diversos desafios. Assim, Aprendendo a usar o React Native no dia a dia.
 
-### O que busco no futuro?
+### Futuro
 
 Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native. Para no futuro estar trabalhando com essa tecnologia.
 
