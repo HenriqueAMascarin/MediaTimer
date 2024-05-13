@@ -127,7 +127,7 @@ export default function StateManagement(values: StateManagement) {
       title: customTitle,
       body: 'Arraste para cancelar',
       id: 'MediaTimer',
-      subtitle: isPaused ? undefined : `Encerra as ${times.hours + ':' + times.minutes + ':' + times.seconds}`,
+      subtitle: isPaused ? undefined : `Encerra próximo de ${times.hours + ':' + times.minutes + ':' + times.seconds}`,
       android: {
         channelId,
         autoCancel: false,
