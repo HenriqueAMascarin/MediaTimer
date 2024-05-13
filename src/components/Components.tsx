@@ -43,6 +43,7 @@ export default function Components() {
     useEffect(() => {
 
         notifee.cancelAllNotifications();
+        notifee.getChannels().then((res) => res.forEach(async (el) => await notifee.deleteChannel(el.id)));
 
         changeLocalHistoryArray();
 

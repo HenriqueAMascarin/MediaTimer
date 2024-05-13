@@ -7,7 +7,7 @@ import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
-import notifee, {  AndroidImportance, AndroidVisibility } from '@notifee/react-native';
+import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
@@ -108,10 +108,26 @@ export default function StateManagement(values: StateManagement) {
   }
 
   async function createNotification(channelId: string, timestamp: number, customTitle: string = 'Timer em andamento', isPaused: boolean = false) {
+
+    const dateToAlert = new Date(Date.now() + timestamp * 1000);
+
+    const times = {
+      hours: dateToAlert.getHours()
+        .toString()
+        .padStart(2, "0"),
+      minutes: dateToAlert.getMinutes()
+        .toString()
+        .padStart(2, "0"),
+      seconds: dateToAlert.getSeconds()
+        .toString()
+        .padStart(2, "0"),
+    };
+
     await notifee.displayNotification({
       title: customTitle,
       body: 'Arraste para cancelar',
       id: 'MediaTimer',
+      subtitle: isPaused ? undefined : `Encerra as ${times.hours + ':' + times.minutes + ':' + times.seconds}`,
       android: {
         channelId,
         autoCancel: false,
@@ -120,9 +136,6 @@ export default function StateManagement(values: StateManagement) {
           id: 'default',
         },
         smallIcon: 'ic_media_timer',
-        showChronometer: isPaused ? false : true,
-        chronometerDirection: 'down',
-        timestamp: Date.now() + ((timestamp + 1)  * 1000),
         color: '#149CFF',
         visibility: AndroidVisibility.PUBLIC,
       },
@@ -131,8 +144,8 @@ export default function StateManagement(values: StateManagement) {
 
   async function createChannelId() {
     const channelId = await notifee.createChannel({
-      id: 'Timer',
-      name: 'Timer channel',
+      id: 'Timer Channel',
+      name: 'Timer Channel',
       importance: AndroidImportance.LOW,
       vibration: false,
       bypassDnd: false,
