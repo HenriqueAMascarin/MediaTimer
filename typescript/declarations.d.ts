@@ -1,3 +1,4 @@
+
 declare module "*.svg" {
     import React from 'react';
     import { SvgProps } from "react-native-svg";
@@ -7,5 +8,6 @@ declare module "*.svg" {
 
 declare module '@env' {
     export const YOUTUBE_KEY: string;
-    export const GOOGLE_KEY: string,
+    export const GOOGLE_KEY: string;
+    export const PRODUCTION: string;
 }

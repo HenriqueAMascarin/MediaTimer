@@ -9,6 +9,7 @@ import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef } from "react";
 import { CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
+import { PRODUCTION } from '@env';
 
 export default function ButtonTabs() {
 
@@ -41,8 +42,11 @@ export default function ButtonTabs() {
   { svgXmlIcon: forestSvgXml, onPressFunction: changeForest, stateActive: stateMusic.pressBtn.forest, label: 'Floresta' },
   { svgXmlIcon: wavesSvgXml, onPressFunction: changeWaves, stateActive: stateMusic.pressBtn.waves, label: 'Ondas' },
   { svgXmlIcon: fireSvgXml, onPressFunction: changeFire, stateActive: stateMusic.pressBtn.fire, label: 'Fogueira' },
-  { svgXmlIcon: youtubeSvgXml, onPressFunction: changeYoutube, stateActive: stateMusic.pressBtn.youtube, label: 'Youtube' },
   ]
+
+  if (!!PRODUCTION == false) {
+    ButtonsGroup.push({ svgXmlIcon: youtubeSvgXml, onPressFunction: changeYoutube, stateActive: stateMusic.pressBtn.youtube, label: 'Youtube' });
+  }
 
   return (
     <Animated.ScrollView horizontal style={{ opacity: opacityModal }}>

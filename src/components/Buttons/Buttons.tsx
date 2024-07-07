@@ -11,10 +11,11 @@ import { buttonsStyle } from "./styles/buttonsStyle";
 import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import { PRODUCTION } from '@env';
 
 export default function Buttons() {
 
-    const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
+    const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
     useEffect(() => {
 
@@ -27,14 +28,14 @@ export default function Buttons() {
             {!stateTimer.isPlay
                 ?
                 <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
-                    <MusicButton/>
+                    <MusicButton />
                     <PlayButton />
-                    <HistoryButton />
+                    {!!PRODUCTION ? <></> : <HistoryButton />}
                 </Animated.View>
                 :
                 <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>
                     <StopButton />
-                    <PauseButton/>
+                    <PauseButton />
                 </Animated.View>
             }
         </View>
