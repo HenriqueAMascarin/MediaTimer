@@ -40,6 +40,13 @@ export const hamburguerStyles = StyleSheet.create(
             right: 12,
             paddingHorizontal: 22,
             justifyContent: 'center',
+        },
+        bannerIdContainer: {
+            position: 'absolute',
+            zIndex: 1,
+            display: "flex",
+            alignSelf: 'center',
+            justifyContent: 'center'
         }
     }
 )

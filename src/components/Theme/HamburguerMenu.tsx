@@ -8,6 +8,7 @@ import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import Logo from '@assets/images/logo.svg';
 import { CloseButton } from "../InfoTabs/Alerts/Components";
+import { BannerAd, TestIds } from 'react-native-google-mobile-ads';
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
@@ -82,7 +83,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                 <Animated.View style={{ flex: 1, flexGrow: 1, zIndex: 10, opacity: opacityModal }}>
 
                     <Animated.View style={[hamburguerStyles.modalContainer, { backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
-                        <CloseButton clickFunction={() => toggleModal()} color={dataTheme.animatedValues.principalColor} customPos={{top: 12, right: 12}}/>
+                        <CloseButton clickFunction={() => toggleModal()} color={dataTheme.animatedValues.principalColor} customPos={{ top: 12, right: 12 }} />
                         <Animated.Text style={{ fontSize: 24, fontWeight: "500", marginBottom: 2, color: dataTheme.animatedValues.principalColor }} allowFontScaling={false}>Escolher tema</Animated.Text>
                         {typesTheme.map((theme, keyTheme) => {
                             return (
@@ -95,7 +96,10 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                             )
                         })}
                     </Animated.View>
-                    <Animated.View style={{opacity: opacityModal, zIndex: 10, bottom: 0, position: 'absolute', alignSelf: 'center'}}>
+
+                    <View style={hamburguerStyles.bannerIdContainer}><BannerAd unitId={TestIds.BANNER} size="300x250" /></View>
+
+                    <Animated.View style={{ opacity: opacityModal, zIndex: 10, bottom: 0, position: 'absolute', alignSelf: 'center' }}>
                         <TouchableOpacity onPress={() => openPortfolio()} style={{ display: 'flex', marginBottom: 30, flexDirection: "row", alignItems: 'center', gap: 14, justifyContent: 'center' }}>
                             <Logo width={'68px'} height={'68px'} />
                             <Text style={{ maxWidth: 110, color: colorsStyle.principal.white, fontWeight: '600', fontSize: 26 }} allowFontScaling={false}>Henrique Mascarin</Text>

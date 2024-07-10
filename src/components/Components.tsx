@@ -87,6 +87,7 @@ export default function Components() {
 
                     <Buttons />
                 </View>
+
             </Animated.View>
         </SafeAreaView>
     )
