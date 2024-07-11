@@ -1,8 +1,6 @@
-# MediaTimer
+# Media Timer
 
-Aplicativo de timer com API de músicas e diversas funcionalidades, com objetivo de solucionar um problema pessoal!
-
-⚠️ Lembrando, é apenas um projeto pessoal e não será disponibilizado em nenhuma loja. (diretrizes YouTube)
+Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucionar um problema pessoal!
 
 ## Conteúdos
 
@@ -23,13 +21,12 @@ Aplicativo de timer com API de músicas e diversas funcionalidades, com objetivo
 
 ### Atualizações
 
-Media Timer 1.0.1 ✅
+Media Timer 1.0.2 ✅
 
 ⚙️ Mudanças
-  1 - Melhora na pesquisa de música/vídeo e validações.
-  2 - Notificação sem alertar a todo momento.
-  3 - Otimizações Contador.
-  4 - Horário do contador na notificação mudou para o horário próximo que encerrará.
+  1 - Publicação Google Play
+  2 - Anuncio de banner na tela de configurações
+  3 - Versão de produção, sem api do youtube e funcionalidade de baixar músicas.
 
 ### Aprendizado
 

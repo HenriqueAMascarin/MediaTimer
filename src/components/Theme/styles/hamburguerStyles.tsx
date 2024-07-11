@@ -43,10 +43,10 @@ export const hamburguerStyles = StyleSheet.create(
         },
         bannerIdContainer: {
             position: 'absolute',
-            zIndex: 1,
             display: "flex",
             alignSelf: 'center',
-            justifyContent: 'center'
-        }
+            justifyContent: 'center',
+            bottom: 130,
+        },
     }
 )

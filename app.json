@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "MediaTimer",
+    "name": "Media Timer",
     "slug": "media-timer",
     "description": "This is an timer music app",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#149CFF"
     },
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "assetBundlePatterns": ["**/*"],

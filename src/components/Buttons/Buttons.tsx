@@ -7,11 +7,12 @@ import HistoryButton from "./HistoryButton";
 import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 
+import { PRODUCTION } from "../Utils/globalVars";
+
 import { buttonsStyle } from "./styles/buttonsStyle";
 import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { PRODUCTION } from '@env';
 
 export default function Buttons() {
 
@@ -30,7 +31,7 @@ export default function Buttons() {
                 <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
                     <MusicButton />
                     <PlayButton />
-                    {!!PRODUCTION ? <></> : <HistoryButton />}
+                    {/* {!PRODUCTION && <HistoryButton />} */}
                 </Animated.View>
                 :
                 <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>
