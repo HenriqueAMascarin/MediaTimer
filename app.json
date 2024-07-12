@@ -20,7 +20,7 @@
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch", "remote-notification"]
       },
-      "bundleIdentifier": "com.luckthegamers.mediatimer"
+      "bundleIdentifier": "com.henriqueamascarin.mediatimer"
     },
     "android": {
       "userInterfaceStyle": "automatic",
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptativeIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.luckthegamers.mediatimer"
+      "package": "com.henriqueamascarin.mediatimer"
     },
     "web": {},
     "extra": {

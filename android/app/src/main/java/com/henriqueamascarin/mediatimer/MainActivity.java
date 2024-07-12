@@ -1,4 +1,4 @@
-package com.luckthegamers.mediatimer;
+package com.henriqueamascarin.mediatimer;
 
 import android.os.Build;
 import android.os.Bundle;
