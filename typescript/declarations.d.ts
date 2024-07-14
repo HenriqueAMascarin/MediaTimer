@@ -7,7 +7,5 @@ declare module "*.svg" {
 }
 
 declare module '@env' {
-    export const YOUTUBE_KEY: string;
-    export const GOOGLE_KEY: string;
     export const ADMOB_BANNERID: string;
 }
