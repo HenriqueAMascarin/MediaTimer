@@ -7,9 +7,10 @@ import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/feat
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef } from "react";
-import { CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "../Utils/svgsXml";
+import { audioFileSvgXml, CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { PRODUCTION } from "../Utils/globalVars";
+import * as DocumentPicker from 'expo-document-picker';
 
 export default function ButtonTabs() {
 
@@ -38,10 +39,25 @@ export default function ButtonTabs() {
     changeMusic(stateMusic.pressBtn, { reset: true });
   }
 
+  function changeAudioFile() {
+    DocumentPicker.getDocumentAsync().then((data)  => {
+      const newData: DocumentPicker.DocumentResult = data;
+      if (newData.type = 'success' ) {
+        changeMusic(stateMusic.pressBtn, { audioFile: true }, newData.uri)
+        console.log(data)
+      }
+      return;
+    }
+    );
+  };
+
+
   const ButtonsGroup = [{ svgXmlIcon: nothingSvgXml, onPressFunction: resetAll, stateActive: stateMusic.pressBtn.reset, label: 'Nenhum' },
   { svgXmlIcon: forestSvgXml, onPressFunction: changeForest, stateActive: stateMusic.pressBtn.forest, label: 'Floresta' },
   { svgXmlIcon: wavesSvgXml, onPressFunction: changeWaves, stateActive: stateMusic.pressBtn.waves, label: 'Ondas' },
   { svgXmlIcon: fireSvgXml, onPressFunction: changeFire, stateActive: stateMusic.pressBtn.fire, label: 'Fogueira' },
+  { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.fire, label: 'Arquivo' },
+
   ]
 
   // if (!PRODUCTION) {
