@@ -24,7 +24,9 @@ export default function HistoryTabs() {
     function musicName(nameMusic: string) {
         const maxLength = 16;
 
-        const nameMusicDecode = decode(nameMusic);
+        const nameWithoutFile = nameMusic.replace(/\.[^/.]+$/, "");
+
+        const nameMusicDecode = decode(nameWithoutFile);
 
         const nameOnly = nameMusicDecode.slice(nameMusicDecode.indexOf('- ') != -1 ? nameMusicDecode.indexOf('- ') + 2 : 0).slice(0, maxLength) + " ";
 
@@ -87,6 +89,7 @@ export default function HistoryTabs() {
                 }
 
                 if (success) {
+            
                     const index = newArr.findIndex((el) => el.uri == item.uri || el.idMusic == item.idMusic);
 
                     newArr[index] = { ...newArr[index], isSelected: true };
