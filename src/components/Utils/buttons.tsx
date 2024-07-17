@@ -1,11 +1,11 @@
 import { changePressBtn, changeMusicLink } from "../Utils/Redux/features/statesMusic-slice";
 import { store } from "./Redux/store";
 import { statesMusicType } from "../Utils/Redux/features/statesMusic-slice";
-import { changeLocalHistoryArray } from "./changeLocalHistoryArray";
+import { changeLocalHistoryArray } from "./historyArrayFunctions";
 
 const dispatch = store.dispatch;
 
-export function changeMusic(musicStates: statesMusicType['pressBtn'], changeBtn?: {} | null, musicLink: statesMusicType['musicLink'] = null, changeHistory = false) {
+export async function changeMusic(musicStates: statesMusicType['pressBtn'], changeBtn?: {} | null, musicLink: statesMusicType['musicLink'] = null, changeHistory = false) {
 
     if (changeHistory) {
         changeLocalHistoryArray();

@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-slice';
 import notifee, { Event, EventType } from '@notifee/react-native';
 import HistoryTabs from "./InfoTabs/HistoryTabs";
-import { changeLocalHistoryArray } from "./Utils/changeLocalHistoryArray";
+import { changeLocalHistoryArray } from "./Utils/historyArrayFunctions";
 import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";

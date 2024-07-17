@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type historyItem = { nameMusic: string; authorMusic: string; idMusic: string, isSelected: boolean };
+export type historyItem = { nameMusic: string; authorMusic?: string; idMusic?: string, isSelected: boolean, uri?: string };
 
 type initialTypeHistory = {
   isHistory: boolean;

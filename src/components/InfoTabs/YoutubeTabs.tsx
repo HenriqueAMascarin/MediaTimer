@@ -5,7 +5,7 @@ import { youtubeStyle } from "./styles/youtubeStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
-import { youtubeDownload, youtubeSearch } from "../Utils/youtube/youtubeFunctions";
+import { downloadApiMusic, youtubeSearch } from "../Utils/youtube/youtubeFunctions";
 import { changeHistoryArray, historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { historyLocalKey } from "../Utils/globalVars";
@@ -67,7 +67,7 @@ export default function YoutubeTabs() {
 
                     changeTextProgress('Baixando a música');
 
-                    await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
+                    await downloadApiMusic(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
                             changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, true);
 

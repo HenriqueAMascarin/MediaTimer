@@ -11,11 +11,15 @@ import { audioFileSvgXml, CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSv
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { PRODUCTION } from "../Utils/globalVars";
 import * as DocumentPicker from 'expo-document-picker';
+import { newHistoryArray } from "../Utils/historyArrayFunctions";
+import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
 
 export default function ButtonTabs() {
 
   const dispatch = useDispatch();
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+
   const { dataTheme } = useTheme();
 
   function changeYoutube() {
@@ -40,13 +44,14 @@ export default function ButtonTabs() {
   }
 
   function changeAudioFile() {
-    DocumentPicker.getDocumentAsync().then((data)  => {
-      const newData: DocumentPicker.DocumentResult = data;
-      if (newData.type = 'success' ) {
-        changeMusic(stateMusic.pressBtn, { audioFile: true }, newData.uri)
-        console.log(data)
+    DocumentPicker.getDocumentAsync({ type: ['audio/*'] }).then(async (data) => {
+      if (data.type == 'success') {
+        const itemFile: historyItem = {isSelected: false, nameMusic: data.name, uri: data.uri}
+
+        await newHistoryArray(stateHistory.historyItems, itemFile);
+
+        await changeMusic(stateMusic.pressBtn, { audioFile: true }, data.uri);
       }
-      return;
     }
     );
   };
@@ -56,8 +61,7 @@ export default function ButtonTabs() {
   { svgXmlIcon: forestSvgXml, onPressFunction: changeForest, stateActive: stateMusic.pressBtn.forest, label: 'Floresta' },
   { svgXmlIcon: wavesSvgXml, onPressFunction: changeWaves, stateActive: stateMusic.pressBtn.waves, label: 'Ondas' },
   { svgXmlIcon: fireSvgXml, onPressFunction: changeFire, stateActive: stateMusic.pressBtn.fire, label: 'Fogueira' },
-  { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.fire, label: 'Arquivo' },
-
+  { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.audioFile, label: 'Arquivo' },
   ]
 
   // if (!PRODUCTION) {

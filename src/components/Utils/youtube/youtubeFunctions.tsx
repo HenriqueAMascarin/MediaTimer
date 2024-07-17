@@ -18,7 +18,7 @@ export async function youtubeSearch(name: string) {
   return newMusic;
 }
 
-export async function youtubeDownload(itemId: string) {
+export async function downloadApiMusic(itemId: string) {
   let uriItem = null;
 
   if (itemId) {

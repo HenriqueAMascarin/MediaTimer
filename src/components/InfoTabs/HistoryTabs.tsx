@@ -7,7 +7,7 @@ import { changeHistoryArray, changeIsHistory, historyItem } from "../Utils/Redux
 import { SuccessAlert, LoadingAlert, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { youtubeDownload } from "../Utils/youtube/youtubeFunctions";
+import { downloadApiMusic } from "../Utils/youtube/youtubeFunctions";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from 'html-entities';
@@ -45,7 +45,7 @@ export default function HistoryTabs() {
         return authorNameFormated;
     }
 
-    function errorYoutubeStatus(newArr: historyItem[]) {
+    function errorApiMusic(newArr: historyItem[]) {
         changeHistoryArray(newArr);
         changeStatus({ searching: true, success: false, error: true });
     }
@@ -61,23 +61,41 @@ export default function HistoryTabs() {
                 newArr[key].isSelected = false;
             }
 
-            youtubeDownload(item.idMusic).then((musicLink: string | null) => {
-                if (musicLink != null) {
-                    const index = newArr.findIndex((el) => el.idMusic == item.idMusic);
+            if (item.idMusic || item.uri) {
+                let success = false;
 
-                    newArr[index] = { ...newArr[index], isSelected: true };
+                if (item.idMusic) {
+                    downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
+                        if (musicLink != null) {
+                            changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
 
-                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+                            changeStatus({ searching: true, success: true, error: false });
+
+                            success = true;
+                        } else {
+                            errorApiMusic(newArr);
+                        }
+                    }).catch(() => {
+                        errorApiMusic(newArr);
+                    });
+                } else if (item.uri) {
+                    changeMusic(stateMusic.pressBtn, { audioFile: true }, item.uri);
 
                     changeStatus({ searching: true, success: true, error: false });
 
-                    dispatch(changeHistoryArray(newArr));
-                } else {
-                    errorYoutubeStatus(newArr);
+                    success = true;
                 }
-            }).catch(() => {
-                errorYoutubeStatus(newArr);
-            });
+
+                if (success) {
+                    const index = newArr.findIndex((el) => el.uri == item.uri || el.idMusic == item.idMusic);
+
+                    newArr[index] = { ...newArr[index], isSelected: true };
+
+                    dispatch(changeHistoryArray(newArr));
+                }
+            }
+
+
 
 
         }
