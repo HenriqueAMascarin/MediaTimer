@@ -72,8 +72,6 @@ export default function HistoryTabs() {
                         if (musicLink != null) {
                             changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
 
-                            changeStatus({ searching: true, success: true, error: false });
-
                             success = true;
                         } else {
                             errorApiMusic(newArr);
@@ -85,11 +83,9 @@ export default function HistoryTabs() {
 
                     await RNFetchBlob.fs.stat(item.uri).then((data) => {
                         changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
-                    });
 
-                    changeStatus({ searching: true, success: true, error: false });
-
-                    success = true;
+                        success = true;
+                    }).catch(() => errorApiMusic(newArr));
 
                 }
 
@@ -100,12 +96,10 @@ export default function HistoryTabs() {
                     newArr[index] = { ...newArr[index], isSelected: true };
 
                     dispatch(changeHistoryArray(newArr));
+
+                    changeStatus({ searching: true, success: true, error: false });
                 }
             }
-
-
-
-
         }
     }
 

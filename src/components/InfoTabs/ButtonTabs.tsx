@@ -62,8 +62,6 @@ export default function ButtonTabs() {
 
           changeStatus({ error: false, searching: false, success: true });
 
-          
-
         } else {
           changeStatus({ error: true, searching: false, success: false });
         }
