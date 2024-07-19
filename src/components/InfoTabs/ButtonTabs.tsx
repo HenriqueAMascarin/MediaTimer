@@ -50,9 +50,10 @@ export default function ButtonTabs() {
     changeStatus({ error: false, searching: true, success: false });
 
     setTimeout(() => {
-      DocumentPicker.getDocumentAsync({ type: ['audio/*'], copyToCacheDirectory: true }).then(async (data) => {
+      DocumentPicker.getDocumentAsync({ type: ['audio/*'], copyToCacheDirectory: false, multiple: false }).then(async (data) => {
 
         if (data.type == 'success') {
+          
           const itemFile: historyItem = { isSelected: false, nameMusic: data.name, uri: data.uri }
 
           await newHistoryArray(stateHistory.historyItems, itemFile);
@@ -60,6 +61,8 @@ export default function ButtonTabs() {
           await changeMusic(stateMusic.pressBtn, { audioFile: true }, data.uri);
 
           changeStatus({ error: false, searching: false, success: true });
+
+          
 
         } else {
           changeStatus({ error: true, searching: false, success: false });

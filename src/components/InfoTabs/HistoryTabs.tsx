@@ -11,6 +11,7 @@ import { downloadApiMusic } from "../Utils/youtube/youtubeFunctions";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from 'html-entities';
+import RNFetchBlob from "rn-fetch-blob";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -52,7 +53,7 @@ export default function HistoryTabs() {
         changeStatus({ searching: true, success: false, error: true });
     }
 
-    function changeItemSelected(item: historyItem) {
+    async function changeItemSelected(item: historyItem) {
         if (!item.isSelected) {
 
             changeStatus({ searching: true, success: false, error: false })
@@ -81,15 +82,19 @@ export default function HistoryTabs() {
                         errorApiMusic(newArr);
                     });
                 } else if (item.uri) {
-                    changeMusic(stateMusic.pressBtn, { audioFile: true }, item.uri);
+
+                    await RNFetchBlob.fs.stat(item.uri).then((data) => {
+                        changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
+                    });
 
                     changeStatus({ searching: true, success: true, error: false });
 
                     success = true;
+
                 }
 
                 if (success) {
-            
+
                     const index = newArr.findIndex((el) => el.uri == item.uri || el.idMusic == item.idMusic);
 
                     newArr[index] = { ...newArr[index], isSelected: true };
