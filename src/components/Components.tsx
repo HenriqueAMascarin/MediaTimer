@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Animated } from "react-native";
+import { View, SafeAreaView, Animated, Text } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import ComponentTimer from "./Timer/ComponentTimer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
@@ -17,6 +17,9 @@ import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
+import { ADMOB_BANNERID } from '@env';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { PRODUCTION } from "./Utils/globalVars";
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -87,7 +90,12 @@ export default function Components() {
 
                     <Buttons />
                 </View>
+                <Animated.View style={[buttonsStyle.containerAd, { borderTopColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
+                    <Animated.Text style={[buttonsStyle.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>Anúncio</Animated.Text>
+                    <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
+                </Animated.View>
             </Animated.View>
+
         </SafeAreaView>
     )
 }

@@ -12,8 +12,7 @@ export async function newHistoryArray(historyItems: historyItem[], item: history
         oldHistoryArray[key] = { ...oldHistoryArray[key], isSelected: false };
 
         if (item?.idMusic ? item?.idMusic == oldHistoryArray[key]?.idMusic : item?.uri == oldHistoryArray[key]?.uri) {
-            oldHistoryArray.splice(key, 1)
-            console.log(item.uri)
+            oldHistoryArray.splice(key, 1);
         }
     }
 

@@ -8,9 +8,6 @@ import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import Logo from '@assets/images/logo.svg';
 import { CloseButton } from "../InfoTabs/Alerts/Components";
-import { BannerAd, TestIds } from 'react-native-google-mobile-ads';
-import { ADMOB_BANNERID } from '@env';
-import { PRODUCTION } from "../Utils/globalVars";
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
@@ -21,14 +18,10 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
 
     const [configModal, changeConfigModal] = useState(false);
 
-    const [adLoad, changeAdLoad] = useState(false);
-
     let opacityModal = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         animatedModalsOpacity({ isOpen: configModal, animatedOpacity: opacityModal });
-
-        changeAdLoad(false);
     }, [configModal]);
 
     function toggleModal() {
@@ -101,10 +94,6 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                                 </TouchableOpacity>
                             )
                         })}
-                    </Animated.View>
-
-                    <Animated.View style={[hamburguerStyles.bannerIdContainer, { zIndex: adLoad ? 1 : 0 }]}>
-                        <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER } size="300x250" onAdLoaded={() => changeAdLoad(true)} />
                     </Animated.View>
 
                     <Animated.View style={{ opacity: opacityModal, zIndex: 10, bottom: 0, position: 'absolute', alignSelf: 'center' }}>

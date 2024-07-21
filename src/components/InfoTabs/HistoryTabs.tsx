@@ -1,5 +1,5 @@
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, PermissionsAndroid } from 'react-native';
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -48,11 +48,6 @@ export default function HistoryTabs() {
         return authorNameFormated;
     }
 
-    function errorApiMusic(newArr: historyItem[]) {
-        changeHistoryArray(newArr);
-        changeStatus({ searching: true, success: false, error: true });
-    }
-
     async function changeItemSelected(item: historyItem) {
         if (!item.isSelected) {
 
@@ -64,33 +59,38 @@ export default function HistoryTabs() {
                 newArr[key].isSelected = false;
             }
 
-            if (item.idMusic || item.uri) {
-                let success = false;
+            let success = false;
 
-                if (item.idMusic) {
-                    downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
-                        if (musicLink != null) {
-                            changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
-
-                            success = true;
-                        } else {
-                            errorApiMusic(newArr);
-                        }
-                    }).catch(() => {
-                        errorApiMusic(newArr);
-                    });
-                } else if (item.uri) {
-
-                    await RNFetchBlob.fs.stat(item.uri).then((data) => {
-                        changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
+            if (item.idMusic) {
+                downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
+                    if (musicLink != null) {
+                        changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
 
                         success = true;
-                    }).catch(() => errorApiMusic(newArr));
+                    }
+                })
+            } else if (item.uri) {
+                await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                    {
+                        title: 'Media Timer',
+                        message:
+                            'Media Timer necessita de acesso ao armazenamento',
+                        buttonNeutral: 'Pergunte depois',
+                        buttonNegative: 'Negar',
+                        buttonPositive: 'Aceitar',
+                    },
+                ).then(async () => {
+                    if (item.uri) {
+                        await RNFetchBlob.fs.stat(item.uri).then((data) => {
+                            changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
 
-                }
+                            success = true;
+                        })
+                    }
+                })
 
                 if (success) {
-
                     const index = newArr.findIndex((el) => el.uri == item.uri || el.idMusic == item.idMusic);
 
                     newArr[index] = { ...newArr[index], isSelected: true };
@@ -98,10 +98,16 @@ export default function HistoryTabs() {
                     dispatch(changeHistoryArray(newArr));
 
                     changeStatus({ searching: true, success: true, error: false });
+                } else {
+                    changeHistoryArray(newArr);
+
+                    changeStatus({ searching: true, success: false, error: true });
                 }
             }
         }
     }
+
+
 
     function onClose() {
         changeStatus({ searching: false, success: false, error: false });
