@@ -20,6 +20,8 @@ export default function HistoryTabs() {
 
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
 
+    const [errorText, changeErrorText] = useState<null | string>(null);
+
     const dispatch = useDispatch();
 
     function musicName(nameMusic: string) {
@@ -51,6 +53,8 @@ export default function HistoryTabs() {
     async function changeItemSelected(item: historyItem) {
         if (!item.isSelected) {
 
+            changeErrorText(null);
+
             changeStatus({ searching: true, success: false, error: false })
 
             let newArr = [...stateHistory.historyItems];
@@ -72,21 +76,17 @@ export default function HistoryTabs() {
             } else if (item.uri) {
                 await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                    {
-                        title: 'Media Timer',
-                        message:
-                            'Media Timer necessita de acesso ao armazenamento',
-                        buttonNeutral: 'Pergunte depois',
-                        buttonNegative: 'Negar',
-                        buttonPositive: 'Aceitar',
-                    },
-                ).then(async () => {
-                    if (item.uri) {
-                        await RNFetchBlob.fs.stat(item.uri).then((data) => {
-                            changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
+                ).then(async (status) => {
+                    if (status == "granted") {
+                        if (item.uri) {
+                            await RNFetchBlob.fs.stat(item.uri).then((data) => {
+                                changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
 
-                            success = true;
-                        })
+                                success = true;
+                            })
+                        }
+                    } else {
+                        changeErrorText('Falta de permissões');
                     }
                 })
 
@@ -149,7 +149,7 @@ export default function HistoryTabs() {
                     status.success && !status.error ?
                         <SuccessAlert closeFunction={onClose} />
                         :
-                        <ErrorAlert closeFunction={onClose} />
+                        <ErrorAlert closeFunction={onClose} alertText={errorText} />
             }
         </View>
     )

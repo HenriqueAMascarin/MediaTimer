@@ -20,6 +20,7 @@ import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
 import { ADMOB_BANNERID } from '@env';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { PRODUCTION } from "./Utils/globalVars";
+import { stylesGeneral } from "./stylesComponents/stylesGeneral";
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -90,8 +91,8 @@ export default function Components() {
 
                     <Buttons />
                 </View>
-                <Animated.View style={[buttonsStyle.containerAd, { borderTopColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
-                    <Animated.Text style={[buttonsStyle.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>Anúncio</Animated.Text>
+                <Animated.View style={[stylesGeneral.containerAd, { borderTopColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
+                    <Animated.Text style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>Anúncio</Animated.Text>
                     <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
                 </Animated.View>
             </Animated.View>

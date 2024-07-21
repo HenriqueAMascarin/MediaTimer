@@ -56,7 +56,7 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
   );
 }
 
-export function ErrorAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
+export function ErrorAlert({ alertText, closeFunction }: { alertText?: string | null, closeFunction: Function }) {
   const opacityModal = createOpacity();
 
   return (
