@@ -91,7 +91,7 @@ export default function Components() {
 
                     <Buttons />
                 </View>
-                <Animated.View style={[stylesGeneral.containerAd, { borderTopColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
+                <Animated.View style={[stylesGeneral.containerAd, { borderColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
                     <Animated.Text style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>Anúncio</Animated.Text>
                     <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
                 </Animated.View>

@@ -65,47 +65,57 @@ export default function HistoryTabs() {
 
             let success = false;
 
-            if (item.idMusic) {
-                downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
-                    if (musicLink != null) {
-                        changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+            setTimeout(async () => {
 
-                        success = true;
-                    }
-                })
-            } else if (item.uri) {
-                await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                ).then(async (status) => {
-                    if (status == "granted") {
-                        if (item.uri) {
-                            await RNFetchBlob.fs.stat(item.uri).then((data) => {
-                                changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path);
+                try {
+                    if (item.idMusic) {
+                        downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
+                            if (musicLink != null) {
+                                changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
 
                                 success = true;
-                            })
-                        }
-                    } else {
-                        changeErrorText('Falta de permissões');
+                            }
+                        })
+                    } else if (item.uri) {
+                        await PermissionsAndroid.request(
+                            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                        ).then(async (status) => {
+                            if (status == "granted") {
+                                if (item.uri) {
+                                    await RNFetchBlob.fs.stat(item.uri).then((data) => {
+                                        changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path, false);
+
+                                        success = true;
+                                    })
+                                }
+                            } else {
+                                changeErrorText('Falta de permissões');
+                            }
+                        })
                     }
-                })
+                } catch {
+                    success = false;
+                }
 
                 if (success) {
-                    const index = newArr.findIndex((el) => el.uri == item.uri || el.idMusic == item.idMusic);
+                    const indexSelected = newArr.findIndex((el) => el?.idMusic ? el.idMusic == item.idMusic : el.uri == item.uri);
 
-                    newArr[index] = { ...newArr[index], isSelected: true };
+                    newArr[indexSelected] = { ...newArr[indexSelected], isSelected: true };
 
                     dispatch(changeHistoryArray(newArr));
 
                     changeStatus({ searching: true, success: true, error: false });
                 } else {
-                    changeHistoryArray(newArr);
+                    changeMusic(stateMusic.pressBtn, { reset: true });
+
+                    dispatch(changeHistoryArray(newArr));
 
                     changeStatus({ searching: true, success: false, error: true });
                 }
-            }
+            }, 400);
         }
     }
+
 
 
 
@@ -144,7 +154,7 @@ export default function HistoryTabs() {
                 :
 
                 !status.success && !status.error ?
-                    <LoadingAlert alertText="Baixando a música" />
+                    <LoadingAlert />
                     :
                     status.success && !status.error ?
                         <SuccessAlert closeFunction={onClose} />

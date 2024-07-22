@@ -63,6 +63,8 @@ export default function ButtonTabs() {
           changeStatus({ error: false, searching: false, success: true });
 
         } else {
+          resetAll();
+
           changeStatus({ error: true, searching: false, success: false });
         }
 
@@ -90,9 +92,9 @@ export default function ButtonTabs() {
   return (
     <>
       <>
-        {status.searching && <LoadingAlert alertText="Carregando a música" />}
-        {status.error && <ErrorAlert alertText="Falha no carregamento" closeFunction={onCloseAlerts} />}
-        {status.success && <SuccessAlert alertText="Sucesso no carregamento" closeFunction={onCloseAlerts} />}
+        {status.searching && <LoadingAlert />}
+        {status.error && <ErrorAlert  closeFunction={onCloseAlerts} />}
+        {status.success && <SuccessAlert closeFunction={onCloseAlerts} />}
       </>
 
       {(!status.error && !status.searching && !status.success) &&
