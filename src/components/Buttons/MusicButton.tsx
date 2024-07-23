@@ -32,7 +32,7 @@ export default function MusicButton() {
   }, [stateMusic.pressBtn]);
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: activeStatus ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => toggleTab()}>
+    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: activeStatus ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => toggleTab()} aria-label="Botão para ver os áudios">
       <MusicSvg width={"35px"} height={"35px"} fill={activeStatus ? colorsStyle.principal.white : colorsStyle.principal.black} />
     </TouchableOpacity>
   );

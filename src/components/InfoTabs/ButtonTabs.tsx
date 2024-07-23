@@ -102,7 +102,7 @@ export default function ButtonTabs() {
           <View style={infoStyles.container}>
             {ButtonsGroup.map((icon, keyItem) => {
               return (
-                <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem}>
+                <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem} aria-label={`Botão para escolher ${icon.label}`}>
                   <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
 
                   <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }} allowFontScaling={false}>{icon.label}</Animated.Text>

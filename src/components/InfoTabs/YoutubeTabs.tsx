@@ -103,9 +103,14 @@ export default function YoutubeTabs() {
                     </Text>
 
                     <View style={{ position: "relative", display: "flex", justifyContent: "center" }}>
-                        <TextInput style={{ backgroundColor: colorsStyle.principal.white, paddingVertical: 1, borderRadius: 14, fontSize: 16, paddingLeft: 10, paddingRight: 30 }} onChangeText={changeInput} value={input} />
+                        <TextInput
+                            style={{ backgroundColor: colorsStyle.principal.white, paddingVertical: 1, borderRadius: 14, fontSize: 16, paddingLeft: 10, paddingRight: 30 }}
+                            onChangeText={changeInput}
+                            value={input}
+                            aria-label="Campo para pesquisar a música"
+                        />
 
-                        <TouchableOpacity onPress={() => search()} style={{ position: "absolute", right: 10 }}>
+                        <TouchableOpacity onPress={() => search()} style={{ position: "absolute", right: 10 }} aria-label="Botão para pesquisar a música">
                             <SearchSvg width={'18px'} height={'18px'} />
                         </TouchableOpacity>
                     </View>

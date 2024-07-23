@@ -137,12 +137,12 @@ export default function HistoryTabs() {
                     <View style={[historyStyle.container]}>
                         {stateHistory.historyItems.map((item, keyItem) => {
                             return (
-                                <View style={[historyStyle.item]} key={keyItem}>
+                                <View style={[historyStyle.item]} key={keyItem} aria-label={`Cartão ${keyItem + 1}, sobre o áudio salvo no histórico`}>
                                     <View style={{ width: 150 }}>
                                         <Text allowFontScaling={false}>{musicName(item.nameMusic)}</Text>
                                         <Text allowFontScaling={false}>{authorName(item)}</Text>
                                     </View>
-                                    <TouchableOpacity onPress={() => changeItemSelected(item)}>
+                                    <TouchableOpacity onPress={() => changeItemSelected(item)} aria-label="Botão para selecionar o áudio">
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
                                     </TouchableOpacity>
                                 </View>

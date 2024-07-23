@@ -14,7 +14,7 @@ export default function PauseButton() {
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPaused(!stateTimer.isPaused))}>
+    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPaused(!stateTimer.isPaused))} aria-label="Botão de pausar o timer">
       {stateTimer.isPaused ? <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} /> : <PauseSvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />}
     </TouchableOpacity>
   );

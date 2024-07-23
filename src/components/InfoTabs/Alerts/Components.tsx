@@ -36,6 +36,7 @@ export function CloseButton({ clickFunction, color = colorsStyle.principal.black
         zIndex: 2,
       }}
       onPress={() => clickFunction()}
+      aria-label="Botão para fechar o elemento"
     >
       <CustomAnimatedSvg xml={closeSvgXml} width={"16px"} height={"16px"} color={color} />
     </TouchableOpacity>
