@@ -1,5 +1,5 @@
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, PermissionsAndroid } from 'react-native';
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -7,10 +7,11 @@ import { changeHistoryArray, changeIsHistory, historyItem } from "../Utils/Redux
 import { SuccessAlert, LoadingAlert, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { youtubeDownload } from "../Utils/youtube/youtubeFunctions";
+import { downloadApiMusic } from "../Utils/youtube/youtubeFunctions";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from 'html-entities';
+import RNFetchBlob from "rn-fetch-blob";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -19,12 +20,16 @@ export default function HistoryTabs() {
 
     const [status, changeStatus] = useState({ searching: false, success: false, error: false });
 
+    const [errorText, changeErrorText] = useState<null | string>(null);
+
     const dispatch = useDispatch();
 
     function musicName(nameMusic: string) {
         const maxLength = 16;
 
-        const nameMusicDecode = decode(nameMusic);
+        const nameWithoutFile = nameMusic.replace(/\.[^/.]+$/, "");
+
+        const nameMusicDecode = decode(nameWithoutFile);
 
         const nameOnly = nameMusicDecode.slice(nameMusicDecode.indexOf('- ') != -1 ? nameMusicDecode.indexOf('- ') + 2 : 0).slice(0, maxLength) + " ";
 
@@ -45,13 +50,10 @@ export default function HistoryTabs() {
         return authorNameFormated;
     }
 
-    function errorYoutubeStatus(newArr: historyItem[]) {
-        changeHistoryArray(newArr);
-        changeStatus({ searching: true, success: false, error: true });
-    }
-
-    function changeItemSelected(item: historyItem) {
+    async function changeItemSelected(item: historyItem) {
         if (!item.isSelected) {
+
+            changeErrorText(null);
 
             changeStatus({ searching: true, success: false, error: false })
 
@@ -61,27 +63,61 @@ export default function HistoryTabs() {
                 newArr[key].isSelected = false;
             }
 
-            youtubeDownload(item.idMusic).then((musicLink: string | null) => {
-                if (musicLink != null) {
-                    const index = newArr.findIndex((el) => el.idMusic == item.idMusic);
+            let success = false;
 
-                    newArr[index] = { ...newArr[index], isSelected: true };
+            setTimeout(async () => {
 
-                    changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink);
+                try {
+                    if (item.idMusic) {
+                        downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
+                            if (musicLink != null) {
+                                changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
 
-                    changeStatus({ searching: true, success: true, error: false });
+                                success = true;
+                            }
+                        })
+                    } else if (item.uri) {
+                        await PermissionsAndroid.request(
+                            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                        ).then(async (status) => {
+                            if (status == "granted") {
+                                if (item.uri) {
+                                    await RNFetchBlob.fs.stat(item.uri).then((data) => {
+                                        changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path, false);
+
+                                        success = true;
+                                    })
+                                }
+                            } else {
+                                changeErrorText('Falta de permissões');
+                            }
+                        })
+                    }
+                } catch {
+                    success = false;
+                }
+
+                if (success) {
+                    const indexSelected = newArr.findIndex((el) => el?.idMusic ? el.idMusic == item.idMusic : el.uri == item.uri);
+
+                    newArr[indexSelected] = { ...newArr[indexSelected], isSelected: true };
 
                     dispatch(changeHistoryArray(newArr));
+
+                    changeStatus({ searching: true, success: true, error: false });
                 } else {
-                    errorYoutubeStatus(newArr);
+                    changeMusic(stateMusic.pressBtn, { reset: true });
+
+                    dispatch(changeHistoryArray(newArr));
+
+                    changeStatus({ searching: true, success: false, error: true });
                 }
-            }).catch(() => {
-                errorYoutubeStatus(newArr);
-            });
-
-
+            }, 400);
         }
     }
+
+
+
 
     function onClose() {
         changeStatus({ searching: false, success: false, error: false });
@@ -101,12 +137,12 @@ export default function HistoryTabs() {
                     <View style={[historyStyle.container]}>
                         {stateHistory.historyItems.map((item, keyItem) => {
                             return (
-                                <View style={[historyStyle.item]} key={keyItem}>
+                                <View style={[historyStyle.item]} key={keyItem} aria-label={`Cartão ${keyItem + 1}, sobre o áudio salvo no histórico`}>
                                     <View style={{ width: 150 }}>
                                         <Text allowFontScaling={false}>{musicName(item.nameMusic)}</Text>
                                         <Text allowFontScaling={false}>{authorName(item)}</Text>
                                     </View>
-                                    <TouchableOpacity onPress={() => changeItemSelected(item)}>
+                                    <TouchableOpacity onPress={() => changeItemSelected(item)} aria-label="Botão para selecionar o áudio">
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
                                     </TouchableOpacity>
                                 </View>
@@ -118,12 +154,12 @@ export default function HistoryTabs() {
                 :
 
                 !status.success && !status.error ?
-                    <LoadingAlert alertText="Baixando a música" />
+                    <LoadingAlert />
                     :
                     status.success && !status.error ?
                         <SuccessAlert closeFunction={onClose} />
                         :
-                        <ErrorAlert closeFunction={onClose} />
+                        <ErrorAlert closeFunction={onClose} alertText={errorText} />
             }
         </View>
     )
