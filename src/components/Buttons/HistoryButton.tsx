@@ -27,7 +27,7 @@ export default function HistoryButton() {
   const hasItemSelected = useMemo(() => stateHistory.historyItems.find((el) => el.isSelected == true), [stateHistory.historyItems])
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: hasItemSelected ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => changeHistory()}>
+    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: hasItemSelected ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => changeHistory()} aria-label="Botão para ver o histórico">
       <HistorySvg width={"35px"} height={"35px"} fill={hasItemSelected ? colorsStyle.principal.white : colorsStyle.principal.black} />
     </TouchableOpacity>
   );

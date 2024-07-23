@@ -7,8 +7,6 @@ import HistoryButton from "./HistoryButton";
 import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 
-import { PRODUCTION } from "../Utils/globalVars";
-
 import { buttonsStyle } from "./styles/buttonsStyle";
 import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
 
@@ -31,7 +29,7 @@ export default function Buttons() {
                 <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
                     <MusicButton />
                     <PlayButton />
-                    {/* {!PRODUCTION && <HistoryButton />} */}
+                    {<HistoryButton />}
                 </Animated.View>
                 :
                 <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>

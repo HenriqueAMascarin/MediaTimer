@@ -5,7 +5,7 @@ import { youtubeStyle } from "./styles/youtubeStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
-import { youtubeDownload, youtubeSearch } from "../Utils/youtube/youtubeFunctions";
+import { downloadApiMusic, youtubeSearch } from "../Utils/youtube/youtubeFunctions";
 import { changeHistoryArray, historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { historyLocalKey } from "../Utils/globalVars";
@@ -67,7 +67,7 @@ export default function YoutubeTabs() {
 
                     changeTextProgress('Baixando a música');
 
-                    await youtubeDownload(musicItem.idMusic).then((musicLink: string | null) => {
+                    await downloadApiMusic(musicItem.idMusic).then((musicLink: string | null) => {
                         if (musicLink != null) {
                             changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, true);
 
@@ -103,9 +103,14 @@ export default function YoutubeTabs() {
                     </Text>
 
                     <View style={{ position: "relative", display: "flex", justifyContent: "center" }}>
-                        <TextInput style={{ backgroundColor: colorsStyle.principal.white, paddingVertical: 1, borderRadius: 14, fontSize: 16, paddingLeft: 10, paddingRight: 30 }} onChangeText={changeInput} value={input} />
+                        <TextInput
+                            style={{ backgroundColor: colorsStyle.principal.white, paddingVertical: 1, borderRadius: 14, fontSize: 16, paddingLeft: 10, paddingRight: 30 }}
+                            onChangeText={changeInput}
+                            value={input}
+                            aria-label="Campo para pesquisar a música"
+                        />
 
-                        <TouchableOpacity onPress={() => search()} style={{ position: "absolute", right: 10 }}>
+                        <TouchableOpacity onPress={() => search()} style={{ position: "absolute", right: 10 }} aria-label="Botão para pesquisar a música">
                             <SearchSvg width={'18px'} height={'18px'} />
                         </TouchableOpacity>
                     </View>

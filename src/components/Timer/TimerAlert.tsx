@@ -28,7 +28,7 @@ export default function TimerAlert() {
 
     return (
         <Animated.View style={[timerStyle.timerAlertSvg, { opacity: timerAlertOpacity }]}>
-            <TouchableOpacity onPress={() => changeTimerAlert()}>
+            <TouchableOpacity onPress={() => changeTimerAlert()} aria-label={`Clique para ${stateAlert.isAlert ? 'desativar' : 'ativar'} o alerta quando o temporizador finaliza`}>
                 <CustomAnimatedSvg width={"24px"} height={"24px"} xml={alertSvgXml} color={stateAlert.isAlert ? colorsStyle.principal.blue : dataTheme.animatedValues.secondaryColor} />
             </TouchableOpacity>
         </Animated.View>
