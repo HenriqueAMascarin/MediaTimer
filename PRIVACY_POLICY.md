@@ -8,7 +8,7 @@ Esse é um aplicativo temporizador desenvolvido por Henrique de Albuquerque Masc
 
 Nenhum dado é coletado. Tudo fornecido como dados de arquivos, histórico de áudios e configurações de tema são todos mantidos no aplicativo.
 
-A lista de permissões listadas a baixo são encontradas aqui no `AndroidManifest.xml`: https://github.com/HenriqueAMascarin/MediaTimer/blob/main/android/app/src/main/AndroidManifest.xml#L2-L7
+A lista de permissões listadas a baixo são encontradas aqui no [AndroidManifest.xml](https://github.com/HenriqueAMascarin/MediaTimer/blob/main/android/app/src/main/AndroidManifest.xml#L2-L7).
 
 <br/>
 
