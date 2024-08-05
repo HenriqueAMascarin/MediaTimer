@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Animated, Text } from "react-native";
+import { View, SafeAreaView, Animated } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import ComponentTimer from "./Timer/ComponentTimer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
