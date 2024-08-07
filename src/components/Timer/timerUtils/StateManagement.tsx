@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { heightItem } from "../styles/timerStyle";
-import { Animated } from "react-native";
+import { Animated, AppState, NativeEventSubscription } from "react-native";
 
 import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
@@ -29,6 +29,10 @@ export default function StateManagement(values: StateManagement) {
   const soundRef = useRef<Audio.Sound>();
 
   const timerFinalSound = useRef<Audio.Sound>();
+
+  const [stateAppListener, changeStateAppListener] = useState<NativeEventSubscription>();
+
+  const [inAppTimer, changeInAppTimer] = useState(setTimeout(() => { }));
 
   useEffect(() => {
     if (timerFinalSound.current == undefined) {
@@ -99,7 +103,13 @@ export default function StateManagement(values: StateManagement) {
   }
 
   async function stopTimerInterval() {
+    stateAppListener?.remove();
+
+    changeStateAppListener(undefined);
+
     BackgroundTimer.stopBackgroundTimer();
+
+    clearTimeout(inAppTimer);
   }
 
   function pauseTimerAnimation() {
@@ -165,10 +175,26 @@ export default function StateManagement(values: StateManagement) {
 
     await createNotification(channelId, newTotalValue);
 
-    BackgroundTimer.runBackgroundTimer(async () => {
-      dispatch(changeRunningValueTimestamp(newValue--));
-    }, 1000);
+    const timeToAlert = Date.now() + newTotalValue;
 
+    const timeout = 1000;
+
+    changeStateAppListener(AppState.addEventListener('change', (state) => {
+      if (stateTimer.isPlay) {
+        stopTimerInterval();
+        if (state == 'background') {
+          BackgroundTimer.runBackgroundTimer(async () => {
+            if (Date.now() == timeToAlert) {
+              dispatch(changeIsPlay(false));
+            }
+          }, timeout);
+        } else if (state == 'active') {
+          changeInAppTimer(setTimeout(() => {
+            dispatch(changeRunningValueTimestamp(newValue--));
+          }, timeout))
+        }
+      }
+    }));
   }
 
   useEffect(() => {
