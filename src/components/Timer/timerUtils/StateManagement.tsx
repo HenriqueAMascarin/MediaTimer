@@ -94,6 +94,8 @@ export default function StateManagement(values: StateManagement) {
   }
 
   function stopTimer() {
+    stopStateAppListener();
+
     dispatch(changeIsPickingValue(false));
     dispatch(changeIsPaused(false));
     dispatch(changeTotalValue(0));
@@ -102,14 +104,16 @@ export default function StateManagement(values: StateManagement) {
     timerPause(false);
   }
 
-  async function stopTimerInterval() {
-    stateAppListener?.remove();
-
-    changeStateAppListener(undefined);
-
+  function stopTimerInterval() {
     BackgroundTimer.stopBackgroundTimer();
 
     clearTimeout(inAppTimer);
+  }
+
+  function stopStateAppListener(){
+    stateAppListener?.remove();
+
+    changeStateAppListener(undefined);
   }
 
   function pauseTimerAnimation() {
@@ -137,7 +141,6 @@ export default function StateManagement(values: StateManagement) {
       title: customTitle,
       body: 'Arraste para cancelar',
       id: 'MediaTimer',
-      subtitle: isPaused ? undefined : `Encerra próximo de ${times.hours + ':' + times.minutes + ':' + times.seconds}`,
       android: {
         channelId,
         autoCancel: false,
@@ -179,9 +182,13 @@ export default function StateManagement(values: StateManagement) {
 
     const timeout = 1000;
 
+    stopStateAppListener();
+    
     changeStateAppListener(AppState.addEventListener('change', (state) => {
-      if (stateTimer.isPlay) {
+      console.log('hello')
+      if (stateTimer.isPlay && stateTimer.isPaused == false) {
         stopTimerInterval();
+
         if (state == 'background') {
           BackgroundTimer.runBackgroundTimer(async () => {
             if (Date.now() == timeToAlert) {
@@ -189,10 +196,14 @@ export default function StateManagement(values: StateManagement) {
             }
           }, timeout);
         } else if (state == 'active') {
+          let remainingTime = Date.now() - timeToAlert;
+
           changeInAppTimer(setTimeout(() => {
-            dispatch(changeRunningValueTimestamp(newValue--));
+            console.log(Date.now())
+            dispatch(changeRunningValueTimestamp(remainingTime));
           }, timeout))
         }
+
       }
     }));
   }
