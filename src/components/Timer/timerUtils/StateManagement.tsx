@@ -30,9 +30,9 @@ export default function StateManagement(values: StateManagement) {
 
   const timerFinalSound = useRef<Audio.Sound>();
 
-  const [stateAppListener, changeStateAppListener] = useState<NativeEventSubscription>();
+  let refAppListener = useRef<NativeEventSubscription>().current;
 
-  const [inAppTimer, changeInAppTimer] = useState(setTimeout(() => { }));
+  let inAppTimer = useRef<NodeJS.Timeout | null>(setInterval(() => { })).current;
 
   useEffect(() => {
     if (timerFinalSound.current == undefined) {
@@ -107,13 +107,16 @@ export default function StateManagement(values: StateManagement) {
   function stopTimerInterval() {
     BackgroundTimer.stopBackgroundTimer();
 
-    clearTimeout(inAppTimer);
+    if(inAppTimer){
+      clearInterval(inAppTimer);
+    }
+    inAppTimer = null
   }
 
-  function stopStateAppListener(){
-    stateAppListener?.remove();
+  function stopStateAppListener() {
+    refAppListener?.remove();
 
-    changeStateAppListener(undefined);
+    refAppListener = undefined;
   }
 
   function pauseTimerAnimation() {
@@ -183,8 +186,17 @@ export default function StateManagement(values: StateManagement) {
     const timeout = 1000;
 
     stopStateAppListener();
-    
-    changeStateAppListener(AppState.addEventListener('change', (state) => {
+
+    function playTimerInternal() {
+      inAppTimer = setInterval(() => {
+
+        dispatch(changeRunningValueTimestamp(newValue--));
+      }, timeout);
+    }
+
+    playTimerInternal();
+
+    refAppListener = AppState.addEventListener('change', (state) => {
       console.log('hello')
       if (stateTimer.isPlay && stateTimer.isPaused == false) {
         stopTimerInterval();
@@ -196,16 +208,11 @@ export default function StateManagement(values: StateManagement) {
             }
           }, timeout);
         } else if (state == 'active') {
-          let remainingTime = Date.now() - timeToAlert;
-
-          changeInAppTimer(setTimeout(() => {
-            console.log(Date.now())
-            dispatch(changeRunningValueTimestamp(remainingTime));
-          }, timeout))
+          playTimerInternal();
         }
 
       }
-    }));
+    });
   }
 
   useEffect(() => {
