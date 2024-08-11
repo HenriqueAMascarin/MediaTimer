@@ -21,12 +21,10 @@ Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucio
 
 ### Atualizações
 
-Media Timer 1.0.3 ✅
+Media Timer 1.0.4 ✅
 
 ⚙️ Mudanças
-  1 - Publicação Google Play
-  2 - Anuncio de banner na tela de configurações
-  3 - Versão de produção, sem api do youtube e funcionalidade de baixar músicas.
+  1 - Melhorias perfomance timer
 
 ### Aprendizado
 
