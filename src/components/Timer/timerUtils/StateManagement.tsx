@@ -30,9 +30,9 @@ export default function StateManagement(values: StateManagement) {
 
   const timerFinalSound = useRef<Audio.Sound>();
 
-  let refAppListener = useRef<NativeEventSubscription>().current;
+  let refAppListener = useRef<NativeEventSubscription>();
 
-  let inAppTimer = useRef<NodeJS.Timeout | null>(setInterval(() => { })).current;
+  let inAppTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (timerFinalSound.current == undefined) {
@@ -94,6 +94,7 @@ export default function StateManagement(values: StateManagement) {
   }
 
   function stopTimer() {
+    stopTimerInterval();
     stopStateAppListener();
 
     dispatch(changeIsPickingValue(false));
@@ -107,16 +108,16 @@ export default function StateManagement(values: StateManagement) {
   function stopTimerInterval() {
     BackgroundTimer.stopBackgroundTimer();
 
-    if(inAppTimer){
-      clearInterval(inAppTimer);
+    if (inAppTimer.current) {
+      clearInterval(inAppTimer.current);
     }
-    inAppTimer = null
+    inAppTimer.current = null;
   }
 
   function stopStateAppListener() {
-    refAppListener?.remove();
+    refAppListener.current?.remove();
 
-    refAppListener = undefined;
+    refAppListener.current = undefined;
   }
 
   function pauseTimerAnimation() {
@@ -125,20 +126,6 @@ export default function StateManagement(values: StateManagement) {
   }
 
   async function createNotification(channelId: string, timestamp: number, customTitle: string = 'Timer em andamento', isPaused: boolean = false) {
-
-    const dateToAlert = new Date(Date.now() + timestamp * 1000);
-
-    const times = {
-      hours: dateToAlert.getHours()
-        .toString()
-        .padStart(2, "0"),
-      minutes: dateToAlert.getMinutes()
-        .toString()
-        .padStart(2, "0"),
-      seconds: dateToAlert.getSeconds()
-        .toString()
-        .padStart(2, "0"),
-    };
 
     await notifee.displayNotification({
       title: customTitle,
@@ -177,38 +164,55 @@ export default function StateManagement(values: StateManagement) {
 
     const channelId = await createChannelId();
 
-    let newValue = newTotalValue;
-
     await createNotification(channelId, newTotalValue);
 
-    const timeToAlert = Date.now() + newTotalValue;
+    const timeNow = () => {
+      return Math.round(Date.now() / 1000);
+    }
+
+    const timeNowToAlert = (newTimeNow = timeNow()) => {
+      return (newTimeNow + newTotalValue);
+    };
+
+    const initialTimeToAlert = timeNowToAlert();
+
+    const timeLeftToAlert = (newTimeNow = timeNow()) => {
+      return initialTimeToAlert - newTimeNow;
+    }
 
     const timeout = 1000;
 
-    stopStateAppListener();
+    function playTimerInternal(totalValue: number) {
+      let newValue = totalValue;
 
-    function playTimerInternal() {
-      inAppTimer = setInterval(() => {
-
+      inAppTimer.current = setInterval(() => {
         dispatch(changeRunningValueTimestamp(newValue--));
       }, timeout);
     }
 
-    playTimerInternal();
+    playTimerInternal(newTotalValue);
 
-    refAppListener = AppState.addEventListener('change', (state) => {
-      console.log('hello')
+    refAppListener.current = AppState.addEventListener('change', (state) => {
+
       if (stateTimer.isPlay && stateTimer.isPaused == false) {
         stopTimerInterval();
 
         if (state == 'background') {
+          const newTimeNow = timeNow();
+
+          const timestampToAlert = newTimeNow + (timeLeftToAlert(newTimeNow));
+
           BackgroundTimer.runBackgroundTimer(async () => {
-            if (Date.now() == timeToAlert) {
+
+            if (timeNow() == timestampToAlert) {
               dispatch(changeIsPlay(false));
             }
           }, timeout);
+
         } else if (state == 'active') {
-          playTimerInternal();
+          let returningTotal = timeLeftToAlert();
+
+          playTimerInternal(returningTotal);
         }
 
       }
@@ -258,9 +262,7 @@ export default function StateManagement(values: StateManagement) {
         })();
 
       } else {
-
-        stopTimerInterval();
-
+        
         if (soundRef.current != undefined) {
           soundRef.current.stopAsync();
 
@@ -287,7 +289,10 @@ export default function StateManagement(values: StateManagement) {
 
         if (stateTimer.isPaused) {
           await soundRef.current?.pauseAsync();
+
           stopTimerInterval();
+
+          stopStateAppListener();
 
           const channelId = await createChannelId();
 
