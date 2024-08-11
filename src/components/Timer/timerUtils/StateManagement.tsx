@@ -141,6 +141,10 @@ export default function StateManagement(values: StateManagement) {
         smallIcon: 'ic_media_timer',
         color: '#149CFF',
         visibility: AndroidVisibility.PUBLIC,
+        showChronometer: !isPaused && true,
+        chronometerDirection: 'down',
+        // timestamp * 1000 convertion to utc
+        timestamp: isPaused ? undefined : (Date.now() + (timestamp * 1000)),
       },
     });
   }
@@ -182,15 +186,13 @@ export default function StateManagement(values: StateManagement) {
 
     const timeout = 1000;
 
-    function playTimerInternal(totalValue: number) {
-      let newValue = totalValue;
-
+    function playTimerInternal() {
       inAppTimer.current = setInterval(() => {
-        dispatch(changeRunningValueTimestamp(newValue--));
+        dispatch(changeRunningValueTimestamp(timeLeftToAlert()));
       }, timeout);
     }
 
-    playTimerInternal(newTotalValue);
+    playTimerInternal();
 
     refAppListener.current = AppState.addEventListener('change', (state) => {
 
@@ -203,16 +205,13 @@ export default function StateManagement(values: StateManagement) {
           const timestampToAlert = newTimeNow + (timeLeftToAlert(newTimeNow));
 
           BackgroundTimer.runBackgroundTimer(async () => {
-
             if (timeNow() == timestampToAlert) {
               dispatch(changeIsPlay(false));
             }
           }, timeout);
 
         } else if (state == 'active') {
-          let returningTotal = timeLeftToAlert();
-
-          playTimerInternal(returningTotal);
+          playTimerInternal();
         }
 
       }
@@ -262,7 +261,7 @@ export default function StateManagement(values: StateManagement) {
         })();
 
       } else {
-        
+
         if (soundRef.current != undefined) {
           soundRef.current.stopAsync();
 
