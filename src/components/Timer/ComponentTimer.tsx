@@ -60,7 +60,7 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>:</Animated.Text>
+          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>:</Animated.Text>
         </View>
 
         <View style={timerStyle.listContainer}>
@@ -72,7 +72,7 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>:</Animated.Text>
+          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>:</Animated.Text>
         </View>
 
         <View style={timerStyle.listContainer}>

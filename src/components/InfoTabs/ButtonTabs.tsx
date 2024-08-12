@@ -7,9 +7,8 @@ import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/feat
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef, useState } from "react";
-import { audioFileSvgXml, CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml, youtubeSvgXml } from "../Utils/svgsXml";
+import { audioFileSvgXml, CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml } from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
-import { PRODUCTION } from "../Utils/globalVars";
 import * as DocumentPicker from 'expo-document-picker';
 import { newHistoryArray } from "../Utils/historyArrayFunctions";
 import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
@@ -85,10 +84,6 @@ export default function ButtonTabs() {
   { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.audioFile, label: 'Arquivo' },
   ]
 
-  // if (!PRODUCTION) {
-  //   ButtonsGroup.push({ svgXmlIcon: youtubeSvgXml, onPressFunction: changeYoutube, stateActive: stateMusic.pressBtn.youtube, label: 'Youtube' });
-  // }
-
   return (
     <>
       <>
@@ -105,7 +100,7 @@ export default function ButtonTabs() {
                 <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem} aria-label={`Botão para escolher ${icon.label}`}>
                   <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
 
-                  <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }} allowFontScaling={false}>{icon.label}</Animated.Text>
+                  <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }} allowFontScaling={false}>{icon.label}</Animated.Text>
                 </TouchableOpacity>
               )
             })}

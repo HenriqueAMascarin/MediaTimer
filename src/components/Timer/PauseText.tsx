@@ -8,6 +8,6 @@ export default function PauseText() {
     const { dataTheme } = useTheme();
 
     return (
-        <Animated.Text style={[timerStyle.pauseText, { opacity: textOpacity, color: dataTheme.animatedValues.principalColor }]} allowFontScaling={false} aria-label="Temporizador pausado">Pausado</Animated.Text>
+        <Animated.Text style={[timerStyle.pauseText, { opacity: textOpacity, color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false} aria-label="Temporizador pausado">Pausado</Animated.Text>
     )
 }

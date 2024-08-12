@@ -15,6 +15,6 @@ export default function TotalTimeText() {
     const seconds = Math.floor((timerValues.totalValue % 3600) % 60).toString().padStart(2, "0");
 
     return (
-        <Animated.Text style={[timerStyle.totalTimeText, { opacity: totalTimeOpacity, color: dataTheme.animatedValues.secondaryColor }]} allowFontScaling={false}>Total {hours}:{minutes}:{seconds} </Animated.Text>
+        <Animated.Text style={[timerStyle.totalTimeText, { opacity: totalTimeOpacity, color: dataTheme.animatedValues.secondaryColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>Total {hours}:{minutes}:{seconds} </Animated.Text>
     )
 }

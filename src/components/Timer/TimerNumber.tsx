@@ -15,7 +15,7 @@ export default function TimerNumber({ numberCountOpacity, number }: TimerNumber)
     const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: stateTimer.isPaused ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>
+        <Animated.Text style={[timerStyle.listItem, { fontFamily: 'Roboto', position: "absolute", opacity: numberCountOpacity, color: stateTimer.isPaused ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>
             {number}
         </Animated.Text>
     )

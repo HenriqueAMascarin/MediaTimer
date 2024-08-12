@@ -30,7 +30,7 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY }: Anima
     });
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }], color: dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>
+        <Animated.Text style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }], color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>
             {itemNumber < 10 ? "0" + itemNumber : itemNumber}
         </Animated.Text>
     )
