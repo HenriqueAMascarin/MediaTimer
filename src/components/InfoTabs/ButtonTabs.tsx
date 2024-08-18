@@ -9,10 +9,11 @@ import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef, useState } from "react";
 import { audioFileSvgXml, CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml } from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
-import * as DocumentPicker from 'expo-document-picker';
 import { newHistoryArray } from "../Utils/historyArrayFunctions";
 import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
+import DocumentPicker from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
 
 export default function ButtonTabs() {
 
@@ -49,11 +50,10 @@ export default function ButtonTabs() {
     changeStatus({ error: false, searching: true, success: false });
 
     setTimeout(() => {
-      DocumentPicker.getDocumentAsync({ type: ['audio/*'], copyToCacheDirectory: false, multiple: false }).then(async (data) => {
+      DocumentPicker.pickSingle({ type: DocumentPicker.types.audio, mode: 'import', allowMultiSelection: false }).then(async (data) => {
+        if (data.uri && data.uri.includes('com.android.externalstorage') == false) {
 
-        if (data.type == 'success') {
-          
-          const itemFile: historyItem = { isSelected: false, nameMusic: data.name, uri: data.uri }
+          const itemFile: historyItem = { isSelected: false, nameMusic: data.name ?? 'Música', uri: data.uri }
 
           await newHistoryArray(stateHistory.historyItems, itemFile);
 
@@ -63,6 +63,9 @@ export default function ButtonTabs() {
 
         } else {
           resetAll();
+          if (data.uri.includes('com.android.externalstorage')) {
+            // mensagem custom escolha audios da pasta audio (selecione de outra pasta - msg)
+          }
 
           changeStatus({ error: true, searching: false, success: false });
         }
@@ -88,7 +91,7 @@ export default function ButtonTabs() {
     <>
       <>
         {status.searching && <LoadingAlert />}
-        {status.error && <ErrorAlert  closeFunction={onCloseAlerts} />}
+        {status.error && <ErrorAlert closeFunction={onCloseAlerts} />}
         {status.success && <SuccessAlert closeFunction={onCloseAlerts} />}
       </>
 

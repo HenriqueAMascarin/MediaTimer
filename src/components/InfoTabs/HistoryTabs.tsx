@@ -67,35 +67,37 @@ export default function HistoryTabs() {
 
             setTimeout(async () => {
 
-                try {
-                    if (item.idMusic) {
-                        downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
-                            if (musicLink != null) {
-                                changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
+                if (item.idMusic) {
+                    await downloadApiMusic(item.idMusic).then((musicLink: string | null) => {
+                        if (musicLink != null) {
+                            changeMusic(stateMusic.pressBtn, { youtube: true }, musicLink, false);
 
-                                success = true;
-                            }
-                        })
-                    } else if (item.uri) {
-                        await PermissionsAndroid.request(
-                            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                        ).then(async (status) => {
-                            if (status == "granted") {
-                                if (item.uri) {
-                                    await RNFetchBlob.fs.stat(item.uri).then((data) => {
-                                        changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path, false);
+                            success = true;
+                        }
+                    }).catch(() => success = false)
+                } else if (item.uri) {
 
-                                        success = true;
-                                    })
-                                }
-                            } else {
-                                changeErrorText('Falta de permissões');
+                    await PermissionsAndroid.requestMultiple(
+                        [PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+                            , PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
+                    ).then(async (status) => {
+
+
+                        if (status['android.permission.READ_EXTERNAL_STORAGE'] == 'granted'
+                            && status['android.permission.WRITE_EXTERNAL_STORAGE']) {
+
+                            if (item.uri) {
+                                await RNFetchBlob.fs.stat(item.uri).then((data) => {
+                                    changeMusic(stateMusic.pressBtn, { audioFile: true }, data.path, false);
+
+                                    success = true;
+                                }).catch(() => { success = false; })
                             }
-                        })
-                    }
-                } catch {
-                    success = false;
+                        }
+                    }).catch(() => changeErrorText('Falta de permissões'))
+
                 }
+
 
                 if (success) {
                     const indexSelected = newArr.findIndex((el) => el?.idMusic ? el.idMusic == item.idMusic : el.uri == item.uri);
@@ -139,8 +141,8 @@ export default function HistoryTabs() {
                             return (
                                 <View style={[historyStyle.item]} key={keyItem} aria-label={`Cartão ${keyItem + 1}, sobre o áudio salvo no histórico`}>
                                     <View style={{ width: 150 }}>
-                                        <Text allowFontScaling={false} style={{fontFamily: 'Roboto'}}>{musicName(item.nameMusic)}</Text>
-                                        <Text allowFontScaling={false} style={{fontFamily: 'Roboto'}}>{authorName(item)}</Text>
+                                        <Text allowFontScaling={false} style={{ fontFamily: 'Roboto' }}>{musicName(item.nameMusic)}</Text>
+                                        <Text allowFontScaling={false} style={{ fontFamily: 'Roboto' }}>{authorName(item)}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)} aria-label="Botão para selecionar o áudio">
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
