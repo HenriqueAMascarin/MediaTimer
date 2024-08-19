@@ -1,20 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.henriqueamascarin.mediatimer" xmlns:tools="http://schemas.android.com/tools">
-  <!-- USED PERMISSIONS -->
   <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-
-  <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+  <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-  <!-- USED PERMISSIONS -->
-
-  <!-- REMOVES THAT PERMISSION RESPONSIBLE TO SHOW AN ALERT IN FULLSCREEN NOTIFEE, REMOVE ESSA PERMISSÃO POR CONTA DE NÃO SER USADA E O NOTIFEE UTILIZA -->
-  <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" tools:node="remove" />
+  <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+  <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" tools:node="remove"/>
   <queries>
     <intent>
       <action android:name="android.intent.action.VIEW"/>

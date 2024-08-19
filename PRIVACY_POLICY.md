@@ -15,7 +15,7 @@ A lista de permissões listadas a baixo são encontradas aqui no [AndroidManifes
 | Permissão | Porque é necessária |
 | :---: | --- |
 | `android.permission.INTERNET` `com.google.android.gms.permission.AD_ID` | Utilizados para mostrar o anúncio de baixo na tela principal. |
-| `android.permission.READ_EXTERNAL_STORAGE` `android.permission.WRITE_EXTERNAL_STORAGE` | Utilizados para ler áudios que a pessoa seleciona do seu dispositivo ou que estão salvos no histórico. |
+| `android.permission.READ_EXTERNAL_STORAGE` `android.permission.WRITE_EXTERNAL_STORAGE` `android.permission.READ_MEDIA_AUDIO`| Utilizados para ler áudios que a pessoa seleciona do seu dispositivo ou que estão salvos no histórico. |
 | `android.permission.SYSTEM_ALERT_WINDOW` | Utilizado para mostrar as notificações do aplicativo, quando está executando o temporizador. |
 | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION` | Utilizado para encontrar o local do arquivo selecionado na aba de histórico. |
 | `android.permission.MODIFY_AUDIO_SETTINGS` | Utilizado com a tecnologia EXPO AV, para configurar os áudios usados no aplicativo. |
