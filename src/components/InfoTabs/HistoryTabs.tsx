@@ -81,10 +81,8 @@ export default function HistoryTabs() {
                         [PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
                             , PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]
                     ).then(async (status) => {
-
-
                         if (status['android.permission.READ_EXTERNAL_STORAGE'] == 'granted'
-                            && status['android.permission.WRITE_EXTERNAL_STORAGE']) {
+                            && status['android.permission.WRITE_EXTERNAL_STORAGE'] == 'granted') {
 
                             if (item.uri) {
                                 await RNFetchBlob.fs.stat(item.uri).then((data) => {
@@ -95,9 +93,7 @@ export default function HistoryTabs() {
                             }
                         }
                     }).catch(() => changeErrorText('Falta de permissões'))
-
                 }
-
 
                 if (success) {
                     const indexSelected = newArr.findIndex((el) => el?.idMusic ? el.idMusic == item.idMusic : el.uri == item.uri);

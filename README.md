@@ -6,7 +6,6 @@ Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucio
 
 - [Sobre](#Sobre)
   - [Screenshot](#screenshot)
-  - [Atualizações](#Atualizações)
   - [Aprendizado](#Aprendizado)
   - [Futuro](#Futuro)
   - [Demonstração](#demonstração)
@@ -18,13 +17,6 @@ Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucio
 ### Screenshot
 
 ![](./assets/screenshot.jpg)
-
-### Atualizações
-
-Media Timer 1.0.4 ✅
-
-⚙️ Mudanças
-  1 - Melhorias perfomance timer
 
 ### Aprendizado
 

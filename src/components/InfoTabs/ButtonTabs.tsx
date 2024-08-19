@@ -12,8 +12,7 @@ import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { newHistoryArray } from "../Utils/historyArrayFunctions";
 import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
-import DocumentPicker from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
+import * as DocumentPicker from 'expo-document-picker';
 
 export default function ButtonTabs() {
 
@@ -24,6 +23,7 @@ export default function ButtonTabs() {
   const { dataTheme } = useTheme();
 
   const [status, changeStatus] = useState({ searching: false, success: false, error: false });
+  const [errorText, changeErrorText] = useState<null | string>(null);
 
   function changeYoutube() {
     dispatch(changeIsSelection(false));
@@ -44,14 +44,24 @@ export default function ButtonTabs() {
 
   function resetAll() {
     changeMusic(stateMusic.pressBtn, { reset: true });
+
+    changeErrorText(null);
   }
 
   function changeAudioFile() {
     changeStatus({ error: false, searching: true, success: false });
 
     setTimeout(() => {
-      DocumentPicker.pickSingle({ type: DocumentPicker.types.audio, mode: 'import', allowMultiSelection: false }).then(async (data) => {
-        if (data.uri && data.uri.includes('com.android.externalstorage') == false) {
+      DocumentPicker.getDocumentAsync({ type: ['audio/*'], multiple: false, copyToCacheDirectory: false }).then(async (data) => {
+        if (data.type == 'success') {
+
+          if (data.uri.includes('com.android.externalstorage')) {
+            changeErrorText('Selecione abrir de áudio');
+
+            changeStatus({ error: true, searching: false, success: false });
+            
+            return;
+          }
 
           const itemFile: historyItem = { isSelected: false, nameMusic: data.name ?? 'Música', uri: data.uri }
 
@@ -61,17 +71,14 @@ export default function ButtonTabs() {
 
           changeStatus({ error: false, searching: false, success: true });
 
-        } else {
+        } else if(data.type == 'cancel') {
           resetAll();
-          if (data.uri.includes('com.android.externalstorage')) {
-            // mensagem custom escolha audios da pasta audio (selecione de outra pasta - msg)
-          }
 
           changeStatus({ error: true, searching: false, success: false });
         }
 
       }
-      );
+      )
     }, 400);
   };
 
@@ -91,7 +98,7 @@ export default function ButtonTabs() {
     <>
       <>
         {status.searching && <LoadingAlert />}
-        {status.error && <ErrorAlert closeFunction={onCloseAlerts} />}
+        {status.error && <ErrorAlert closeFunction={onCloseAlerts} alertText={errorText}/>}
         {status.success && <SuccessAlert closeFunction={onCloseAlerts} />}
       </>
 
