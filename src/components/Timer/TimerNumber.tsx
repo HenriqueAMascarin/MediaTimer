@@ -3,6 +3,7 @@ import { Animated } from "react-native";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import TextAnimated from "../Texts/TextAnimated";
 
 interface TimerNumber {
     numberCountOpacity: Animated.Value,
@@ -15,8 +16,8 @@ export default function TimerNumber({ numberCountOpacity, number }: TimerNumber)
     const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { fontFamily: 'Roboto', position: "absolute", opacity: numberCountOpacity, color: stateTimer.isPaused ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>
+        <TextAnimated style={[timerStyle.listItem, { position: "absolute", opacity: numberCountOpacity, color: stateTimer.isPaused ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }]}>
             {number}
-        </Animated.Text>
+        </TextAnimated>
     )
 }

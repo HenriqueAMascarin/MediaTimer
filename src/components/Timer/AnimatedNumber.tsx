@@ -2,6 +2,7 @@ import { timerStyle } from "./styles/timerStyle";
 import { Animated } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
+import TextAnimated from "../Texts/TextAnimated";
 
 interface AnimatedNumber {
     itemIndex: number,
@@ -30,8 +31,8 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY }: Anima
     });
 
     return (
-        <Animated.Text style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }], color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>
+        <TextAnimated style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }], color: dataTheme.animatedValues.principalColor }]}>
             {itemNumber < 10 ? "0" + itemNumber : itemNumber}
-        </Animated.Text>
+        </TextAnimated>
     )
 }

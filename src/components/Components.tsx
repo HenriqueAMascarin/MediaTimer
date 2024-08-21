@@ -21,6 +21,7 @@ import { ADMOB_BANNERID } from '@env';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { PRODUCTION } from "./Utils/globalVars";
 import { stylesGeneral } from "./stylesComponents/stylesGeneral";
+import TextAnimated from "./Texts/TextAnimated";
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -92,7 +93,10 @@ export default function Components() {
                     <Buttons />
                 </View>
                 <Animated.View style={[stylesGeneral.containerAd, { borderColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
-                    <Animated.Text style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor, fontFamily: 'Roboto' }]}>Anúncio</Animated.Text>
+                    <TextAnimated
+                        style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor, fontFamily: 'Roboto' }]}>
+                        Anúncio
+                    </TextAnimated>
                     <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
                 </Animated.View>
             </Animated.View>

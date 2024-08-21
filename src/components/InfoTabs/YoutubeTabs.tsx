@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Animated } from "react-native";
+import { View, TouchableOpacity, TextInput, Animated } from "react-native";
 import SearchSvg from "@assets/images/search.svg";
 import { useEffect, useRef, useState } from "react";
 import { youtubeStyle } from "./styles/youtubeStyle";
@@ -13,6 +13,8 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeMusic } from "../Utils/buttons";
 import { SuccessAlert, LoadingAlert, CloseButton, ErrorAlert } from "@src/components/InfoTabs/Alerts/Components";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
+import TextDefault from "../Texts/TextDefault";
+import { globalTextStyle } from "../Texts/styles/GlobalTextStyle";
 
 export default function YoutubeTabs() {
 
@@ -98,13 +100,13 @@ export default function YoutubeTabs() {
 
                 <Animated.View style={[youtubeStyle.item, youtubeStyle.searchItem, { opacity: opacityModal }]}>
                     <CloseButton clickFunction={onClose} />
-                    <Text style={{ color: colorsStyle.principal.blue, fontSize: 20 }} allowFontScaling={false}>
+                    <TextDefault style={{ color: colorsStyle.principal.blue, fontSize: 20 }}>
                         Nome da música
-                    </Text>
+                    </TextDefault>
 
                     <View style={{ position: "relative", display: "flex", justifyContent: "center" }}>
                         <TextInput
-                            style={{ backgroundColor: colorsStyle.principal.white, paddingVertical: 1, borderRadius: 14, fontSize: 16, paddingLeft: 10, paddingRight: 30 }}
+                            style={[globalTextStyle.text, { backgroundColor: colorsStyle.principal.white, paddingVertical: 1, borderRadius: 14, fontSize: 16, paddingLeft: 10, paddingRight: 30 }]}
                             onChangeText={changeInput}
                             value={input}
                             aria-label="Campo para pesquisar a música"

@@ -15,6 +15,7 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import StateManagement from "./timerUtils/StateManagement";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TimerAlert from "./TimerAlert";
+import TextAnimated from "../Texts/TextAnimated";
 
 export default function Timer() {
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
@@ -60,7 +61,7 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>:</Animated.Text>
+          <TextAnimated style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>:</TextAnimated>
         </View>
 
         <View style={timerStyle.listContainer}>
@@ -72,7 +73,7 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <Animated.Text style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }]} allowFontScaling={false}>:</Animated.Text>
+          <TextAnimated style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor}]}>:</TextAnimated>
         </View>
 
         <View style={timerStyle.listContainer}>

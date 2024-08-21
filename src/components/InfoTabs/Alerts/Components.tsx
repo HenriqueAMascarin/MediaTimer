@@ -1,11 +1,12 @@
 import CorrectSvg from "@assets/images/correct.svg";
 import LoadingSvg from "@assets/images/loading.svg";
 import { alertsStyles } from "../styles/alertsStyles";
-import { Text, Animated, TouchableOpacity } from "react-native";
+import { Animated, TouchableOpacity } from "react-native";
 import WarningSvg from "@assets/images/warning.svg";
 import { animatedModalsOpacity } from "@src/components/Utils/animatedModalsOpacity";
 import { colorsStyle } from "@src/components/Utils/colorsStyle";
 import { CustomAnimatedSvg, closeSvgXml } from "../../Utils/svgsXml";
+import TextDefault from "@src/components/Texts/TextDefault";
 
 type CloseButtonType = {
   clickFunction: Function,
@@ -52,7 +53,7 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
 
       <CorrectSvg style={{ minWidth: 30 }} />
 
-      <Text allowFontScaling={false} style={{fontFamily: 'Roboto'}}>{alertText ?? "Música encontrada"}</Text>
+      <TextDefault>{alertText ?? "Música encontrada"}</TextDefault>
     </Animated.View>
   );
 }
@@ -66,7 +67,7 @@ export function ErrorAlert({ alertText, closeFunction }: { alertText?: string | 
 
       <WarningSvg style={{ minWidth: 30 }} />
 
-      <Text allowFontScaling={false} style={{fontFamily: 'Roboto'}}>{alertText ?? "Falha na busca"}</Text>
+      <TextDefault>{alertText ?? "Falha na busca"}</TextDefault>
     </Animated.View>
   );
 }
@@ -96,7 +97,7 @@ export function LoadingAlert({ alertText }: { alertText?: string }) {
         <LoadingSvg style={{ minWidth: 30 }} />
       </Animated.View>
 
-      <Text allowFontScaling={false} style={{fontFamily: 'Roboto'}}>{alertText ?? "Buscando a música"}</Text>
+      <TextDefault>{alertText ?? "Buscando a música"}</TextDefault>
     </Animated.View>
   );
 }

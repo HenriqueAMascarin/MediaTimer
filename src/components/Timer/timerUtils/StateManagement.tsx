@@ -200,15 +200,12 @@ export default function StateManagement(values: StateManagement) {
         stopTimerInterval();
 
         if (state == 'background') {
-          const newTimeNow = timeNow();
-
-          const timestampToAlert = newTimeNow + (timeLeftToAlert(newTimeNow));
+          // * 1000 to transform to ms
+          const timestampToAlert = timeLeftToAlert(timeNow()) * 1000;
 
           BackgroundTimer.runBackgroundTimer(async () => {
-            if (timeNow() == timestampToAlert) {
-              dispatch(changeIsPlay(false));
-            }
-          }, timeout);
+            dispatch(changeIsPlay(false));
+          }, timestampToAlert);
 
         } else if (state == 'active') {
           playTimerInternal();

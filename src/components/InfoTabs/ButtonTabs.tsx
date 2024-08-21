@@ -13,6 +13,7 @@ import { newHistoryArray } from "../Utils/historyArrayFunctions";
 import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
 import * as DocumentPicker from 'expo-document-picker';
+import TextAnimated from "../Texts/TextAnimated";
 
 export default function ButtonTabs() {
 
@@ -110,7 +111,7 @@ export default function ButtonTabs() {
                 <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem} aria-label={`Botão para escolher ${icon.label}`}>
                   <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
 
-                  <Animated.Text style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor, fontFamily: 'Roboto' }} allowFontScaling={false}>{icon.label}</Animated.Text>
+                  <TextAnimated style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor}}>{icon.label}</TextAnimated>
                 </TouchableOpacity>
               )
             })}

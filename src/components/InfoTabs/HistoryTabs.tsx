@@ -1,5 +1,5 @@
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { View, Text, TouchableOpacity, Animated, PermissionsAndroid } from 'react-native';
+import { View, TouchableOpacity, Animated, PermissionsAndroid } from 'react-native';
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -12,6 +12,7 @@ import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from 'html-entities';
 import RNFetchBlob from "rn-fetch-blob";
+import TextDefault from "../Texts/TextDefault";
 
 export default function HistoryTabs() {
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -137,8 +138,8 @@ export default function HistoryTabs() {
                             return (
                                 <View style={[historyStyle.item]} key={keyItem} aria-label={`Cartão ${keyItem + 1}, sobre o áudio salvo no histórico`}>
                                     <View style={{ width: 150 }}>
-                                        <Text allowFontScaling={false} style={{ fontFamily: 'Roboto' }}>{musicName(item.nameMusic)}</Text>
-                                        <Text allowFontScaling={false} style={{ fontFamily: 'Roboto' }}>{authorName(item)}</Text>
+                                        <TextDefault>{musicName(item.nameMusic)}</TextDefault>
+                                        <TextDefault>{authorName(item)}</TextDefault>
                                     </View>
                                     <TouchableOpacity onPress={() => changeItemSelected(item)} aria-label="Botão para selecionar o áudio">
                                         <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
