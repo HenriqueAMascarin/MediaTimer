@@ -37,11 +37,11 @@ export default function ButtonTabs() {
     animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
   }, []);
 
-  function changeFire() { changeMusic(stateMusic.pressBtn, { fire: true }, require('@assets/sounds/fire.wav')) };
+  function changeFire() { changeMusic(stateMusic.pressBtn, { fire: true }, require('@assets/sounds/fire.mp3')) };
 
-  function changeWaves() { changeMusic(stateMusic.pressBtn, { waves: true }, require('@assets/sounds/waves.wav')) };
+  function changeWaves() { changeMusic(stateMusic.pressBtn, { waves: true }, require('@assets/sounds/waves.mp3')) };
 
-  function changeForest() { changeMusic(stateMusic.pressBtn, { forest: true }, require('@assets/sounds/forest.wav')) };
+  function changeForest() { changeMusic(stateMusic.pressBtn, { forest: true }, require('@assets/sounds/forest.mp3')) };
 
   function resetAll() {
     changeMusic(stateMusic.pressBtn, { reset: true });

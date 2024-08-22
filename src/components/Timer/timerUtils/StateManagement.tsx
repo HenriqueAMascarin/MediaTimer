@@ -47,7 +47,7 @@ export default function StateManagement(values: StateManagement) {
           playThroughEarpieceAndroid: false,
         })
 
-        const { sound: timerClock } = await Audio.Sound.createAsync(require('@assets/sounds/timer.wav'));
+        const { sound: timerClock } = await Audio.Sound.createAsync(require('@assets/sounds/timer.mp3'));
         timerFinalSound.current = timerClock;
 
         timerFinalSound.current?.setOnPlaybackStatusUpdate(async (playbackStatus) => {
