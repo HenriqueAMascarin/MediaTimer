@@ -17,11 +17,9 @@ export default function HistoryButton() {
   const dispatch = useDispatch();
 
   function changeHistory() {
-    if (stateHistory.historyItems.length > 0) {
-      dispatch(changeIsSelectionYoutube(false));
-      dispatch(changeIsSelection(false));
-      dispatch(changeIsHistory(!stateHistory.isHistory));
-    }
+    dispatch(changeIsSelectionYoutube(false));
+    dispatch(changeIsSelection(false));
+    dispatch(changeIsHistory(!stateHistory.isHistory));
   }
 
   const hasItemSelected = useMemo(() => stateHistory.historyItems.find((el) => el.isSelected == true), [stateHistory.historyItems])

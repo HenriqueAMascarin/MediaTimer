@@ -29,7 +29,7 @@ export default function Buttons() {
                 <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
                     <MusicButton />
                     <PlayButton />
-                    {<HistoryButton />}
+                    <HistoryButton />
                 </Animated.View>
                 :
                 <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>

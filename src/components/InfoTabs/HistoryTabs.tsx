@@ -132,23 +132,27 @@ export default function HistoryTabs() {
     return (
         <View>
             {!status.searching ?
-                <Animated.ScrollView horizontal style={[{ maxHeight: 90, opacity: opacityModal }]}>
-                    <View style={[historyStyle.container]}>
-                        {stateHistory.historyItems.map((item, keyItem) => {
-                            return (
-                                <View style={[historyStyle.item]} key={keyItem} aria-label={`Cartão ${keyItem + 1}, sobre o áudio salvo no histórico`}>
-                                    <View style={{ width: 150 }}>
-                                        <TextDefault>{musicName(item.nameMusic)}</TextDefault>
-                                        <TextDefault>{authorName(item)}</TextDefault>
+                (stateHistory.historyItems.length > 0 ?
+                    <Animated.ScrollView horizontal style={[{ maxHeight: 90, opacity: opacityModal }]}>
+                        <View style={[historyStyle.container]}>
+                            {stateHistory.historyItems.map((item, keyItem) => {
+                                return (
+                                    <View style={[historyStyle.item]} key={keyItem} aria-label={`Cartão ${keyItem + 1}, sobre o áudio salvo no histórico`}>
+                                        <View style={{ width: 150 }}>
+                                            <TextDefault>{musicName(item.nameMusic)}</TextDefault>
+                                            <TextDefault>{authorName(item)}</TextDefault>
+                                        </View>
+                                        <TouchableOpacity onPress={() => changeItemSelected(item)} aria-label="Botão para selecionar o áudio">
+                                            <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
+                                        </TouchableOpacity>
                                     </View>
-                                    <TouchableOpacity onPress={() => changeItemSelected(item)} aria-label="Botão para selecionar o áudio">
-                                        <PlaySvg width={"35px"} height={"35px"} fill={item.isSelected ? colorsStyle.principal.blue : colorsStyle.principal.black} />
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        })}
-                    </View>
-                </Animated.ScrollView>
+                                )
+                            })}
+                        </View>
+                    </Animated.ScrollView>
+                    :
+                    <ErrorAlert closeFunction={onClose} alertText={'Histórico sem arquivo'}/>
+                )
 
                 :
 

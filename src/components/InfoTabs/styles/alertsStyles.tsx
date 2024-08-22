@@ -18,7 +18,7 @@ export const alertsStyles = StyleSheet.create(
             paddingHorizontal: 20,
             width: 250,
             minHeight: 52,
-            gap: 14,
+            gap: 10,
         },
     }
 )
