@@ -46,9 +46,19 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
                 const highPosToAdd = heightItem * (timerData.maxNumber - lastItemsBeforeUpdate);
 
                 // find how many times have the list of numbers duplicated
-                // if 2 means that can update
                 if(arrayNumbers.filter((value) => value == timerData.maxNumber).length == 2){
-                    console.log('helo')
+                    if(event.nativeEvent.contentOffset.y <= lowPosToAdd){
+                        console.log('toTop')
+                        const arrWithoutLast = [...arrayNumbers].slice(0, timerData.maxNumber - 1);
+
+                        changeArrayNumbers([...numberList(timerData.maxNumber) , ...arrWithoutLast]);
+                    }else if (event.nativeEvent.contentOffset.y >= highPosToAdd){
+                        console.log('toBottom')
+                        const arrWithoutInitial = [...arrayNumbers].slice(timerData.maxNumber - 1, arrayNumbers.length - 1);
+
+                        changeArrayNumbers([...arrWithoutInitial, ...numberList(timerData.maxNumber)]);
+
+                    }
                 }
             }
         },
