@@ -18,7 +18,7 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY }: Anima
     let numberTransform: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.8);
 
     const inputRange = [(itemIndex - 2) * heightItem, (itemIndex - 1) * heightItem, (itemIndex) * heightItem];
-
+    
     numberOpacity = scrollY.interpolate({
         inputRange,
         outputRange: [0.5, 1, 0.5],

@@ -85,7 +85,7 @@ export default function StateManagement(values: StateManagement) {
     const numberMinutes = Math.round(numbers.scrollTwo / heightItem) * 60;
     const numberSeconds = Math.round(numbers.scrollThree / heightItem);
     const timestampValue = numberHours + numberMinutes + numberSeconds;
-
+  
     dispatch(changeTotalValue(timestampValue));
     dispatch(changeRunningValueTimestamp(timestampValue));
     sequenceTimer(true);
