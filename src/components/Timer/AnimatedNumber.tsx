@@ -24,6 +24,7 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY }: Anima
         outputRange: [0.5, 1, 0.5],
         extrapolate: "clamp",
     });
+    
     numberTransform = scrollY.interpolate({
         inputRange,
         outputRange: [0.85, 1, 0.85],

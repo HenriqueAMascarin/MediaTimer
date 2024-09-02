@@ -1,9 +1,9 @@
 import AnimatedNumber from "./AnimatedNumber";
-import { Animated, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
+import { Animated, NativeSyntheticEvent, NativeScrollEvent, FlatList } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { numberList } from "./timerUtils/numberList";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 interface ListTimer {
     timerData: {
         maxNumber: number;
@@ -18,17 +18,21 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
 
     const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
-    let [isInverted, changeIsInverted] = useState(false);
+    let maxLengthOneArray = timerData.maxNumber + 1;
 
-    const [arrayNumbers, changeArrayNumbers] = useState(() => {
+    const [arrayNumbers] = useState(() => {
         let array = [];
 
-        for (let index = 1; index <= 2; index++) {
-            array.push(...numberList(timerData.maxNumber));
+        for (let index = 1; index <= 3; index++) {
+            const newArr = numberList(timerData.maxNumber);
+
+            array.push(...newArr);
         }
 
         return array;
     });
+
+    const refFlatlist = useRef<FlatList<typeof arrayNumbers[0]>>(null);
 
     function snapArray(list: number[]) {
         let array: number[] = [];
@@ -50,50 +54,24 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         ], {
         listener: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
             if (event.nativeEvent.contentOffset) {
-                const lastItemsBeforeUpdate = 15;
-
-                const invertedlastItemsBeforeUpdate = 9;
+                const lastItemsBeforeUpdate = 8;
 
                 const lowPosToAdd = heightItem * (lastItemsBeforeUpdate);
 
-                const invertedLowPosToAddBottom = heightItem * (invertedlastItemsBeforeUpdate);
-
                 const highPosToAdd = heightItem * ((arrayNumbers.length - lastItemsBeforeUpdate));
-                console.log(highPosToAdd, lowPosToAdd)
 
-                if ((!isInverted && event.nativeEvent.contentOffset.y <= lowPosToAdd) || (isInverted && event.nativeEvent.contentOffset.y >= highPosToAdd)) {
+                if (event.nativeEvent.contentOffset.y <= lowPosToAdd) {
+                    refFlatlist.current?.scrollToOffset({
+                        offset: event.nativeEvent.contentOffset.y + heightItem * maxLengthOneArray,
+                        animated: false,
+                    })
+                }
 
-                    console.log('toTop antes', event.nativeEvent.contentOffset.y, highPosToAdd, isInverted)
-
-                    changeArrayNumbers((oldArray) => {
-                        const oldInverted = isInverted;
-
-                        if(!isInverted){
-                            changeIsInverted(true);
-                        }
-
-                        return oldInverted ? [...oldArray, ...numberList(timerData.maxNumber).reverse()] : oldArray.reverse();
-                    });
-                    
-                    console.log('-----------------------------------------------------------------------------')
-
-                } 
-
-                if ((!isInverted && event.nativeEvent.contentOffset.y >= highPosToAdd) || (isInverted && event.nativeEvent.contentOffset.y <= invertedLowPosToAddBottom)) {
-
-                    console.log('toBottom antes', event.nativeEvent.contentOffset.y)
-
-                    changeArrayNumbers((oldArray) => {
-                        const oldInverted = isInverted;
-
-                        if(isInverted){
-                            isInverted = false;
-                        }
-
-                        return oldInverted ? oldArray.reverse() : [...oldArray, ...numberList(timerData.maxNumber)];
-                    });
-
-                    console.log('-----------------------------------------------------------------------------')
+                if ((event.nativeEvent.contentOffset.y >= highPosToAdd)) {
+                    refFlatlist.current?.scrollToOffset({
+                        offset: event.nativeEvent.contentOffset.y - heightItem * maxLengthOneArray,
+                        animated: false,
+                    })
                 }
 
             }
@@ -101,23 +79,22 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         useNativeDriver: false
     });
 
-    const renderNumber = ({ item, index }: { item: typeof arrayNumbers[0], index: number }) =>
+    const renderNumber = useCallback(({ item, index }: { item: typeof arrayNumbers[0], index: number }) =>
     (
         <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={timerData.animated.scrollY} key={index} />
-    );
+    ), []);
 
-    const getItemLayoutNumbers = (data: number[] | null | undefined, index: number) => (
+    const getItemLayoutNumbers = useCallback((data: number[] | null | undefined, index: number) => (
         { length: heightItem, offset: heightItem * index, index }
-    );
+    ), []);
 
-    useEffect(() => {
-        if(timerData.maxNumber < 40){
-            console.log(arrayNumbers)
-        }
-    }, [arrayNumbers])
+    const keyExtractorNumbers = useCallback((item: number, index: number) => (
+        index.toString()
+    ), []);
 
     return (
         <Animated.FlatList
+            ref={refFlatlist}
             style={{ opacity: opacityAnimated }}
             onScroll={handleScroll}
             data={arrayNumbers}
@@ -125,18 +102,12 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
             decelerationRate={"fast"}
             getItemLayout={getItemLayoutNumbers}
             initialScrollIndex={timerData.maxNumber}
+            keyExtractor={keyExtractorNumbers}
             snapToOffsets={snapArray(arrayNumbers)}
             scrollEventThrottle={0}
-            maintainVisibleContentPosition={{
-                minIndexForVisible: 0,
-                autoscrollToTopThreshold: 0
-            }}
-            initialNumToRender={60}
             bounces={false}
             showsVerticalScrollIndicator={false}
             scrollEnabled={stateTimer.isPlay ? false : true}
-            inverted={isInverted}
         />
-
     )
 }
