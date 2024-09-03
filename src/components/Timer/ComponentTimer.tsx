@@ -20,9 +20,10 @@ export default function Timer() {
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
   const { dataTheme } = useTheme();
 
-  const listOne = useRef({ maxNumber: 29, animated: { scrollY: new Animated.Value(0) } }).current;
-  const listTwo = useRef({ maxNumber: 59, animated: { scrollY: new Animated.Value(0) } }).current;
-  const listThree = useRef({ maxNumber: 59, animated: { scrollY: new Animated.Value(0) } }).current;
+  const listOne = useRef({ maxNumber: 29, currentNumber: useRef(0), animated: { scrollY: new Animated.Value(0) } });
+  const listTwo = useRef({ maxNumber: 59, currentNumber: useRef(0), animated: { scrollY: new Animated.Value(0) } });
+  const listThree = useRef({ maxNumber: 59, currentNumber: useRef(0), animated: { scrollY: new Animated.Value(0) } });
+
 
   const newHours = useMemo(() => {
     return (
@@ -48,11 +49,16 @@ export default function Timer() {
 
   return (
     <View>
-      <StateManagement listOneValue={listOne.animated.scrollY} listTwoValue={listTwo.animated.scrollY} listThreeValue={listThree.animated.scrollY} />
+      <StateManagement
+        listOneValue={listOne.current.currentNumber}
+        listTwoValue={listTwo.current.currentNumber}
+        listThreeValue={listThree.current.currentNumber}
+      />
+
       <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
         <PauseText />
         <View style={timerStyle.listContainer}>
-          <ListTimer timerData={listOne} opacityAnimated={listOpacity} />
+          <ListTimer timerData={listOne.current} opacityAnimated={listOpacity} />
 
           <TimerNumber numberCountOpacity={numberCountOpacity} number={newHours} />
         </View>
@@ -64,7 +70,7 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listContainer}>
-          <ListTimer timerData={listTwo} opacityAnimated={listOpacity} />
+          <ListTimer timerData={listTwo.current} opacityAnimated={listOpacity} />
 
           <TimerNumber numberCountOpacity={numberCountOpacity} number={newMinutes} />
         </View>
@@ -72,11 +78,11 @@ export default function Timer() {
         <View style={timerStyle.listLineContainer}>
           <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
 
-          <TextAnimated style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor}]}>:</TextAnimated>
+          <TextAnimated style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor }]}>:</TextAnimated>
         </View>
 
         <View style={timerStyle.listContainer}>
-          <ListTimer timerData={listThree} opacityAnimated={listOpacity} />
+          <ListTimer timerData={listThree.current} opacityAnimated={listOpacity} />
 
           <TimerNumber numberCountOpacity={numberCountOpacity} number={newSeconds} />
         </View>

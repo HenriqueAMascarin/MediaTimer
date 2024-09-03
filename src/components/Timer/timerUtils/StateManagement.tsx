@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { heightItem } from "../styles/timerStyle";
-import { Animated, AppState, NativeEventSubscription } from "react-native";
+import { AppState, NativeEventSubscription } from "react-native";
 
 import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
@@ -16,13 +15,13 @@ import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 
-interface StateManagement {
-  listOneValue: Animated.Value;
-  listTwoValue: Animated.Value;
-  listThreeValue: Animated.Value;
+type dataType = {
+  listOneValue: React.MutableRefObject<number>;
+  listTwoValue: React.MutableRefObject<number>;
+  listThreeValue: React.MutableRefObject<number>;
 }
 
-export default function StateManagement(values: StateManagement) {
+export default function StateManagement({ listOneValue, listTwoValue, listThreeValue }: dataType) {
 
   const [havePlayed, changeHavePlayed] = useState(false);
 
@@ -70,22 +69,13 @@ export default function StateManagement(values: StateManagement) {
 
   const dispatch = useDispatch();
 
-  const dataNumbers = (() => {
-    return ({
-      scrollOne: Number(JSON.stringify(values.listOneValue)),
-      scrollTwo: Number(JSON.stringify(values.listTwoValue)),
-      scrollThree: Number(JSON.stringify(values.listThreeValue))
-    })
-  })
+  function playTimer() {
 
-  function playTimer(heightItem: number) {
-    const numbers = dataNumbers();
-
-    const numberHours = Math.round(numbers.scrollOne / heightItem) * 3600;
-    const numberMinutes = Math.round(numbers.scrollTwo / heightItem) * 60;
-    const numberSeconds = Math.round(numbers.scrollThree / heightItem);
+    const numberHours = listOneValue.current * 3600;
+    const numberMinutes = listTwoValue.current * 60;
+    const numberSeconds = listThreeValue.current;
     const timestampValue = numberHours + numberMinutes + numberSeconds;
-  
+
     dispatch(changeTotalValue(timestampValue));
     dispatch(changeRunningValueTimestamp(timestampValue));
     sequenceTimer(true);
@@ -217,9 +207,8 @@ export default function StateManagement(values: StateManagement) {
 
   useEffect(() => {
     if (stateTimer.isPickingValue && !stateTimer.isPlay) {
-      const numbers = dataNumbers();
 
-      if (numbers.scrollOne != 0 || numbers.scrollTwo != 0 || numbers.scrollThree != 0) {
+      if (listOneValue.current != 0 || listTwoValue.current != 0 || listThreeValue.current != 0) {
         changeHavePlayed(true);
         dispatch(changeIsPlay(true));
       } else {
@@ -252,7 +241,7 @@ export default function StateManagement(values: StateManagement) {
             await soundRef.current.playAsync();
           }
 
-          const totalValue = playTimer(heightItem);
+          const totalValue = playTimer();
 
           await onDisplayNotification(totalValue);
         })();

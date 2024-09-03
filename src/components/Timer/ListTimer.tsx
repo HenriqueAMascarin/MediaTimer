@@ -1,5 +1,5 @@
 import AnimatedNumber from "./AnimatedNumber";
-import { Animated, NativeSyntheticEvent, NativeScrollEvent, FlatList } from "react-native";
+import { Animated, NativeSyntheticEvent, NativeScrollEvent, FlatList, ViewToken } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { numberList } from "./timerUtils/numberList";
@@ -7,6 +7,7 @@ import { useCallback, useRef, useState } from "react";
 interface ListTimer {
     timerData: {
         maxNumber: number;
+        currentNumber: React.MutableRefObject<number>;
         animated: {
             scrollY: Animated.Value;
         }
@@ -92,10 +93,22 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         index.toString()
     ), []);
 
+    const numbersViewabilityConfig = useRef({
+        itemVisiblePercentThreshold: 50,
+        waitForInteraction: false,
+        minimumViewTime: 0,
+    });
+
+    const viewableNumbersCallback = useCallback(({viewableItems}: {viewableItems: Array<ViewToken>}) => {
+        timerData.currentNumber.current = viewableItems?.[1]?.item ?? 0;
+    }, [])
+
     return (
         <Animated.FlatList
             ref={refFlatlist}
             style={{ opacity: opacityAnimated }}
+            onViewableItemsChanged={viewableNumbersCallback}
+            viewabilityConfig={numbersViewabilityConfig.current}
             onScroll={handleScroll}
             data={arrayNumbers}
             renderItem={renderNumber}
