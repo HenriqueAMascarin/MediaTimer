@@ -1,9 +1,8 @@
 import AnimatedNumber from "./AnimatedNumber";
-import { Animated, NativeSyntheticEvent, NativeScrollEvent, FlatList, ViewToken } from "react-native";
+import { Animated, NativeSyntheticEvent, NativeScrollEvent, View, ScrollView } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { numberList } from "./timerUtils/numberList";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 interface ListTimer {
     timerData: {
         maxNumber: number;
@@ -17,33 +16,32 @@ interface ListTimer {
 
 export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
 
+
     const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
     let maxLengthOneArray = timerData.maxNumber + 1;
 
-    const [arrayNumbers] = useState(() => {
-        let array = [];
+    const reflist = useRef<ScrollView>(null);
 
-        for (let index = 1; index <= 3; index++) {
-            const newArr = numberList(timerData.maxNumber);
-
-            array.push(...newArr);
-        }
-
-        return array;
-    });
-
-    const refFlatlist = useRef<FlatList<typeof arrayNumbers[0]>>(null);
-
-    function snapArray(list: number[]) {
+    const arrayNumbers = (() => {
         let array: number[] = [];
 
-        for (let i = 0; i < list.length - 1; i++) {
+        for (let i = 0; i <= timerData.maxNumber; i++) {
+            array.push(i);
+        }
+
+        return [...array, ...array, ...array];
+    })();
+
+    const arrayOffsets = (() => {
+        let array: number[] = [];
+
+        for (let i = 0; i < arrayNumbers.length - 1; i++) {
             array.push(i * heightItem);
         }
 
         return array;
-    }
+    })();
 
     const handleScroll = Animated.event(
         [
@@ -55,22 +53,30 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         ], {
         listener: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
             if (event.nativeEvent.contentOffset) {
-                const lastItemsBeforeUpdate = 8;
+
+                // + 1 BECAUSE, -1 AND THE LIST IS 1 NUMBER BELOW
+                const middleNumber = arrayNumbers[arrayOffsets.findIndex((offset => offset == Math.round(event.nativeEvent.contentOffset.y))) + 1]
+
+                if(middleNumber != timerData.currentNumber.current && middleNumber != null){
+                    timerData.currentNumber.current = middleNumber;
+                }
+
+                const lastItemsBeforeUpdate = 10;
 
                 const lowPosToAdd = heightItem * (lastItemsBeforeUpdate);
 
                 const highPosToAdd = heightItem * ((arrayNumbers.length - lastItemsBeforeUpdate));
 
                 if (event.nativeEvent.contentOffset.y <= lowPosToAdd) {
-                    refFlatlist.current?.scrollToOffset({
-                        offset: event.nativeEvent.contentOffset.y + heightItem * maxLengthOneArray,
+                    reflist.current?.scrollTo({
+                        y: event.nativeEvent.contentOffset.y + heightItem * maxLengthOneArray,
                         animated: false,
                     })
                 }
 
                 if ((event.nativeEvent.contentOffset.y >= highPosToAdd)) {
-                    refFlatlist.current?.scrollToOffset({
-                        offset: event.nativeEvent.contentOffset.y - heightItem * maxLengthOneArray,
+                    reflist.current?.scrollTo({
+                        y: event.nativeEvent.contentOffset.y - heightItem * maxLengthOneArray,
                         animated: false,
                     })
                 }
@@ -80,47 +86,48 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         useNativeDriver: false
     });
 
-    const renderNumber = useCallback(({ item, index }: { item: typeof arrayNumbers[0], index: number }) =>
-    (
-        <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={timerData.animated.scrollY} key={index} />
-    ), []);
+    // const renderNumber = useCallback(({ item, index }: { item: typeof arrayNumbers[0], index: number }) =>
+    // (
+    //     <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={timerData.animated.scrollY} key={index} />
+    // ), []);
 
-    const getItemLayoutNumbers = useCallback((data: number[] | null | undefined, index: number) => (
-        { length: heightItem, offset: heightItem * index, index }
-    ), []);
+    // const getItemLayoutNumbers = useCallback((data: number[] | null | undefined, index: number) => (
+    //     { length: heightItem, offset: heightItem * index, index }
+    // ), []);
 
-    const keyExtractorNumbers = useCallback((item: number, index: number) => (
-        index.toString()
-    ), []);
+    // const keyExtractorNumbers = useCallback((item: number, index: number) => (
+    //     index.toString()
+    // ), []);
 
-    const numbersViewabilityConfig = useRef({
-        itemVisiblePercentThreshold: 50,
-        waitForInteraction: false,
-        minimumViewTime: 0,
-    });
+    // const numbersViewabilityConfig = useRef({
+    //     itemVisiblePercentThreshold: 50,
+    //     waitForInteraction: false,
+    //     minimumViewTime: 5,
+    // });
 
-    const viewableNumbersCallback = useCallback(({viewableItems}: {viewableItems: Array<ViewToken>}) => {
-        timerData.currentNumber.current = viewableItems?.[1]?.item ?? 0;
-    }, [])
+    // const viewableNumbersCallback = useCallback(({ viewableItems }: { viewableItems: Array<ViewToken> }) => {
+    //     timerData.currentNumber.current = viewableItems?.[1]?.item ?? 0;
+    // }, [])
 
     return (
-        <Animated.FlatList
-            ref={refFlatlist}
-            style={{ opacity: opacityAnimated }}
-            onViewableItemsChanged={viewableNumbersCallback}
-            viewabilityConfig={numbersViewabilityConfig.current}
-            onScroll={handleScroll}
-            data={arrayNumbers}
-            renderItem={renderNumber}
-            decelerationRate={"fast"}
-            getItemLayout={getItemLayoutNumbers}
-            initialScrollIndex={timerData.maxNumber}
-            keyExtractor={keyExtractorNumbers}
-            snapToOffsets={snapArray(arrayNumbers)}
-            scrollEventThrottle={0}
-            bounces={false}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={stateTimer.isPlay ? false : true}
-        />
+        <View>
+            <Animated.ScrollView
+                ref={reflist}
+                style={{ opacity: opacityAnimated }}
+                onScroll={handleScroll}
+                decelerationRate={"fast"}
+                snapToOffsets={arrayOffsets}
+                scrollEventThrottle={0}
+                bounces={false}
+                overScrollMode="never"
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={stateTimer.isPlay ? false : true}
+                contentOffset={{ y: heightItem * timerData.maxNumber, x: 0 }}
+            >
+                {arrayNumbers.map((number, index: number) => {
+                    return (<AnimatedNumber itemIndex={index} itemNumber={number} scrollY={timerData.animated.scrollY} key={index} />)
+                })}
+            </Animated.ScrollView>
+        </View>
     )
 }

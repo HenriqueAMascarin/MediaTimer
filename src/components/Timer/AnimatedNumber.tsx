@@ -1,5 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
-import { Animated } from "react-native";
+import { Animated, Easing, View } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
@@ -18,22 +18,26 @@ export default function AnimatedNumber({ itemIndex, itemNumber, scrollY }: Anima
     let numberTransform: Animated.AnimatedInterpolation<string | number> | number = new Animated.Value(0.8);
 
     const inputRange = [(itemIndex - 2) * heightItem, (itemIndex - 1) * heightItem, (itemIndex) * heightItem];
-    
+
     numberOpacity = scrollY.interpolate({
         inputRange,
         outputRange: [0.5, 1, 0.5],
+        easing: Easing.ease,
         extrapolate: "clamp",
     });
-    
+
     numberTransform = scrollY.interpolate({
         inputRange,
         outputRange: [0.85, 1, 0.85],
+        easing: Easing.ease,
         extrapolate: "clamp",
     });
 
     return (
-        <TextAnimated style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }], color: dataTheme.animatedValues.principalColor }]}>
-            {itemNumber < 10 ? "0" + itemNumber : itemNumber}
-        </TextAnimated>
+        <View>
+            <TextAnimated style={[timerStyle.listItem, { opacity: numberOpacity, transform: [{ scale: numberTransform }], color: dataTheme.animatedValues.principalColor }]}>
+                {itemNumber < 10 ? "0" + itemNumber : itemNumber}
+            </TextAnimated>
+        </View>
     )
 }

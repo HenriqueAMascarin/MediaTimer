@@ -9,7 +9,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#149CFF"
     },
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "assetBundlePatterns": ["**/*"],
