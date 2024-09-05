@@ -1,4 +1,4 @@
-import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme, Linking } from "react-native";
+import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from "react-native";
 import { hamburguerStyles } from "./styles/hamburguerStyles";
 import { useEffect, useRef, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -6,9 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
 import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
-import Logo from '@assets/images/logo.svg';
 import { CloseButton } from "../InfoTabs/Alerts/Components";
-import TextDefault from "../Texts/TextDefault";
 import TextAnimated from "../Texts/TextAnimated";
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
@@ -68,10 +66,6 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
         }
     }
 
-    function openPortfolio() {
-        Linking.openURL('https://henriqueamascarin.vercel.app');
-    }
-
     return (
         <View style={hamburguerStyles.container}>
             <TouchableOpacity style={hamburguerStyles.hamburguerContainer} onPress={() => toggleModal()} aria-label="Botão para abrir as configurações de tema">
@@ -96,13 +90,6 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
                                 </TouchableOpacity>
                             )
                         })}
-                    </Animated.View>
-
-                    <Animated.View style={{ opacity: opacityModal, zIndex: 10, bottom: 0, position: 'absolute', alignSelf: 'center' }}>
-                        <TouchableOpacity onPress={() => openPortfolio()} style={{ display: 'flex', marginBottom: 30, flexDirection: "row", alignItems: 'center', gap: 14, justifyContent: 'center' }} aria-label="Botão para ver o portfólio do Henrique de Albuquerque Mascarin">
-                            <Logo width={'68px'} height={'68px'} aria-label="Ícone em formato de H" />
-                            <TextDefault style={{ maxWidth: 140, color: colorsStyle.principal.white, fontWeight: '600', fontSize: 26 }}>Henrique Mascarin</TextDefault>
-                        </TouchableOpacity>
                     </Animated.View>
 
                     <TouchableWithoutFeedback onPress={() => toggleModal()} >
