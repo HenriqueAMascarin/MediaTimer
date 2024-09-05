@@ -102,7 +102,6 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
                     }, 600);
                 }
 
-
             }
         },
         useNativeDriver: false
