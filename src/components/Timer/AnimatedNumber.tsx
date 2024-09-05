@@ -1,9 +1,9 @@
 import { timerStyle } from "./styles/timerStyle";
-import { Animated, Easing, View } from "react-native";
+import { Animated, View } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface AnimatedNumber {
     itemIndex: number,
