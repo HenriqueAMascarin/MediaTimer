@@ -2,7 +2,7 @@ import AnimatedNumber from "./AnimatedNumber";
 import { Animated, NativeSyntheticEvent, NativeScrollEvent, View, ScrollView } from "react-native";
 import { heightItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useRef, useState } from "react";
 interface ListTimer {
     timerData: {
         maxNumber: number;
@@ -16,12 +16,13 @@ interface ListTimer {
 
 export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
 
-
     const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
     let maxLengthOneArray = timerData.maxNumber + 1;
 
     const reflist = useRef<ScrollView>(null);
+
+    const [newScrollTransition, changeNewScrollTransition] = useState<null | number>(null);
 
     const arrayNumbers = (() => {
         let array: number[] = [];
@@ -54,10 +55,9 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         listener: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
             if (event.nativeEvent.contentOffset) {
 
-                // + 1 BECAUSE, -1 AND THE LIST IS 1 NUMBER BELOW
-                const middleNumber = arrayNumbers[arrayOffsets.findIndex((offset => offset == Math.round(event.nativeEvent.contentOffset.y))) + 1]
+                const middleNumber = arrayNumbers[arrayOffsets.findIndex((offset => offset == Math.round(event.nativeEvent.contentOffset.y))) + 1];;
 
-                if(middleNumber != timerData.currentNumber.current && middleNumber != null){
+                if (middleNumber != timerData.currentNumber.current && middleNumber != null) {
                     timerData.currentNumber.current = middleNumber;
                 }
 
@@ -67,47 +67,46 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
 
                 const highPosToAdd = heightItem * ((arrayNumbers.length - lastItemsBeforeUpdate));
 
-                if (event.nativeEvent.contentOffset.y <= lowPosToAdd) {
-                    reflist.current?.scrollTo({
-                        y: event.nativeEvent.contentOffset.y + heightItem * maxLengthOneArray,
-                        animated: false,
-                    })
+
+                const isTopInfinite = event.nativeEvent.contentOffset.y <= lowPosToAdd;
+                const isBottomInfinite = event.nativeEvent.contentOffset.y >= highPosToAdd;
+
+
+                if (isTopInfinite || isBottomInfinite) {
+                    if (isTopInfinite) {
+                        const newBottomY = event.nativeEvent.contentOffset.y + heightItem * maxLengthOneArray;
+
+                        changeNewScrollTransition(newBottomY);
+
+                        reflist.current?.scrollTo({
+                            y: newBottomY,
+                            animated: false,
+                        })
+
+                    }
+
+                    if (isBottomInfinite) {
+                        const newTopY = event.nativeEvent.contentOffset.y - heightItem * maxLengthOneArray;
+
+                        changeNewScrollTransition(newTopY);
+
+                        reflist.current?.scrollTo({
+                            y: newTopY,
+                            animated: false,
+                        })
+
+                    }
+
+                    setTimeout(() => {
+                        changeNewScrollTransition(null);
+                    }, 600);
                 }
 
-                if ((event.nativeEvent.contentOffset.y >= highPosToAdd)) {
-                    reflist.current?.scrollTo({
-                        y: event.nativeEvent.contentOffset.y - heightItem * maxLengthOneArray,
-                        animated: false,
-                    })
-                }
 
             }
         },
         useNativeDriver: false
     });
-
-    // const renderNumber = useCallback(({ item, index }: { item: typeof arrayNumbers[0], index: number }) =>
-    // (
-    //     <AnimatedNumber itemIndex={index} itemNumber={item} scrollY={timerData.animated.scrollY} key={index} />
-    // ), []);
-
-    // const getItemLayoutNumbers = useCallback((data: number[] | null | undefined, index: number) => (
-    //     { length: heightItem, offset: heightItem * index, index }
-    // ), []);
-
-    // const keyExtractorNumbers = useCallback((item: number, index: number) => (
-    //     index.toString()
-    // ), []);
-
-    // const numbersViewabilityConfig = useRef({
-    //     itemVisiblePercentThreshold: 50,
-    //     waitForInteraction: false,
-    //     minimumViewTime: 5,
-    // });
-
-    // const viewableNumbersCallback = useCallback(({ viewableItems }: { viewableItems: Array<ViewToken> }) => {
-    //     timerData.currentNumber.current = viewableItems?.[1]?.item ?? 0;
-    // }, [])
 
     return (
         <View>
@@ -125,7 +124,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
                 contentOffset={{ y: heightItem * timerData.maxNumber, x: 0 }}
             >
                 {arrayNumbers.map((number, index: number) => {
-                    return (<AnimatedNumber itemIndex={index} itemNumber={number} scrollY={timerData.animated.scrollY} key={index} />)
+                    return (<AnimatedNumber itemIndex={index} itemNumber={number} scrollY={timerData.animated.scrollY} key={index} transitionNewScroll={newScrollTransition} />)
                 })}
             </Animated.ScrollView>
         </View>
