@@ -41,7 +41,7 @@ export const timerStyle = StyleSheet.create({
     listLinePoints:{
         fontSize: 40,
         position: "relative",
-        fontWeight: "bold",
+        fontFamily: 'Roboto_700Bold',
         opacity: 0,
     },
     pauseText:{

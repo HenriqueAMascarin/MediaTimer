@@ -12,10 +12,8 @@
     "version": "1.0.5",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "assetBundlePatterns": ["**/*"],
     "ios": {
       "userInterfaceStyle": "automatic",
-
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch", "remote-notification"]
@@ -42,10 +40,24 @@
     },
     "updates": {
       "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/roboto/Roboto_300Light.ttf",
+            "node_modules/@expo-google-fonts/roboto/Roboto_400Regular.ttf",
+            "node_modules/@expo-google-fonts/roboto/Roboto_500Medium.ttf",
+            "node_modules/@expo-google-fonts/roboto/Roboto_700Bold.ttf",
+            "node_modules/@expo-google-fonts/roboto/Roboto_900Black.ttf"
+          ]
+        }
+      ]
+    ]
   },
   "react-native-google-mobile-ads": {
-      "android_app_id": "ca-app-pub-9467939863315972~4835534176",
-      "ios_app_id": "ca-app-pub-9467939863315972~4835534176"
-    }
+    "android_app_id": "ca-app-pub-9467939863315972~4835534176",
+    "ios_app_id": "ca-app-pub-9467939863315972~4835534176"
+  }
 }

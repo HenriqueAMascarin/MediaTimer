@@ -22,6 +22,9 @@ import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 import { PRODUCTION } from "./Utils/globalVars";
 import { stylesGeneral } from "./stylesComponents/stylesGeneral";
 import TextAnimated from "./Texts/TextAnimated";
+import { StatusBar } from "expo-status-bar";
+import { colorsStyle } from "./Utils/colorsStyle";
+import Constants from 'expo-constants';
 
 export default function Components() {
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -77,8 +80,9 @@ export default function Components() {
     }, [])
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Animated.View style={{ backgroundColor: dataTheme.animatedValues.backgroundColor, flex: 1, position: "relative" }}>
+        <SafeAreaView style={{ flex: 1, position: "relative" }}>
+            <StatusBar/>
+            <Animated.View style={{ backgroundColor: dataTheme.animatedValues.backgroundColor, flex: 1, position: "relative", marginTop: Constants.statusBarHeight }}>
                 <HamburguerMenu initialOption={dataTheme.selectedOption}></HamburguerMenu>
 
                 <ComponentTimer />
@@ -94,13 +98,12 @@ export default function Components() {
                 </View>
                 <Animated.View style={[stylesGeneral.containerAd, { borderColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
                     <TextAnimated
-                        style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor, fontFamily: 'Roboto' }]}>
+                        style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
                         Anúncio
                     </TextAnimated>
                     <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
                 </Animated.View>
             </Animated.View>
-
         </SafeAreaView>
     )
 }
