@@ -79,7 +79,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
 
                     <Animated.View style={[hamburguerStyles.modalContainer, { backgroundColor: dataTheme.animatedValues.backgroundColor }]} aria-label={"Modal para escolher tema"}>
                         <CloseButton clickFunction={() => toggleModal()} color={dataTheme.animatedValues.principalColor} customPos={{ top: 12, right: 12 }} />
-                        <TextAnimated style={{ fontSize: 24, fontFamily: 'Roboto_700Bold', marginBottom: 2, color: dataTheme.animatedValues.principalColor }}>Escolher tema</TextAnimated>
+                        <TextAnimated style={{ fontSize: 24, fontFamily: 'Roboto_500Medium', marginBottom: 2, color: dataTheme.animatedValues.principalColor }}>Escolher tema</TextAnimated>
                         {typesTheme.map((theme, keyTheme) => {
                             return (
                                 <TouchableOpacity onPress={() => onTheme(theme)} key={keyTheme} style={{ flexDirection: "row", alignItems: 'center', gap: 8 }} aria-label={`Botão para escolher o tema ${theme.label}`}>
