@@ -1,0 +1,7 @@
+{
+  "translation": {
+    "adTextAlt": "Anúncio",
+    "pauseText": {"text": "Pausado", "aria": "Temporizador pausado"},
+    "totalText": "Total"
+  }
+}

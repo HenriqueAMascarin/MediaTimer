@@ -54,9 +54,9 @@ export default function ButtonTabs() {
 
     setTimeout(() => {
       DocumentPicker.getDocumentAsync({ type: ['audio/*'], multiple: false, copyToCacheDirectory: false }).then(async (data) => {
-        if (data.type == 'success') {
+        if (data.assets) {
 
-          if (data.uri.includes('com.android.externalstorage')) {
+          if (data.assets[0].uri.includes('com.android.externalstorage')) {
             changeErrorText('Selecione abrir de áudio');
 
             changeStatus({ error: true, searching: false, success: false });
@@ -64,15 +64,15 @@ export default function ButtonTabs() {
             return;
           }
 
-          const itemFile: historyItem = { isSelected: false, nameMusic: data.name ?? 'Música', uri: data.uri }
+          const itemFile: historyItem = { isSelected: false, nameMusic: data.assets[0].name ?? 'Música', uri: data.assets[0].uri }
 
           await newHistoryArray(stateHistory.historyItems, itemFile);
 
-          await changeMusic(stateMusic.pressBtn, { audioFile: true }, data.uri);
+          await changeMusic(stateMusic.pressBtn, { audioFile: true }, data.assets[0].uri);
 
           changeStatus({ error: false, searching: false, success: true });
 
-        } else if(data.type == 'cancel') {
+        } else if(data.assets == null) {
           resetAll();
 
           changeStatus({ error: true, searching: false, success: false });

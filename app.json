@@ -16,7 +16,11 @@
       "userInterfaceStyle": "automatic",
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
       },
       "bundleIdentifier": "com.henriqueamascarin.mediatimer"
     },
@@ -40,7 +44,10 @@
     },
     "updates": {
       "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   },
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-9467939863315972~4835534176",

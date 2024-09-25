@@ -6,6 +6,7 @@ import mobileAds, { MaxAdContentRating } from "react-native-google-mobile-ads";
 import { Roboto_500Medium, Roboto_700Bold, Roboto_400Regular, Roboto_300Light, useFonts } from '@expo-google-fonts/roboto';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import 'i18n/i18nBuilder';
 
 SplashScreen.preventAutoHideAsync();
 

@@ -23,10 +23,11 @@ import { PRODUCTION } from "./Utils/globalVars";
 import { stylesGeneral } from "./stylesComponents/stylesGeneral";
 import TextAnimated from "./Texts/TextAnimated";
 import { StatusBar } from "expo-status-bar";
-import { colorsStyle } from "./Utils/colorsStyle";
+import { useTranslation } from "react-i18next";
 import Constants from 'expo-constants';
 
 export default function Components() {
+    const { t } = useTranslation();
     const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
     const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
     const { dataTheme } = useTheme();
@@ -83,7 +84,7 @@ export default function Components() {
         <SafeAreaView style={{ flex: 1, position: "relative" }}>
             <StatusBar/>
             <Animated.View style={{ backgroundColor: dataTheme.animatedValues.backgroundColor, flex: 1, position: "relative", marginTop: Constants.statusBarHeight }}>
-                <HamburguerMenu initialOption={dataTheme.selectedOption}></HamburguerMenu>
+                <HamburguerMenu initialOption={dataTheme.selectedOption}/>
 
                 <ComponentTimer />
 
@@ -99,7 +100,7 @@ export default function Components() {
                 <Animated.View style={[stylesGeneral.containerAd, { borderColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
                     <TextAnimated
                         style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
-                        Anúncio
+                        {t('adTextAlt')}
                     </TextAnimated>
                     <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
                 </Animated.View>

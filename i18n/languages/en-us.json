@@ -1,0 +1,20 @@
+{
+  "translation": {
+    "adTextAlt": "Banner ad",
+    "pauseText": { "text": "Paused", "aria": "Timer paused" },
+    "totalText": "Total",
+    "musicOptions": {
+      "none": "None",
+      "forest": "Forest",
+      "waves": "Waves",
+      "bonfire": "Bonfire",
+      "archive": "Archive"
+    },
+    "statusMessages": {
+      "music": { "searching": "Searching the music", "success": "Music found" },
+      "error": "Error on search"
+    },
+    "theme": {"title": "Select theme", "options": {"system": "Managed by system","white": "White", "black": "Black"}},
+    "notification": {}
+  }
+}
