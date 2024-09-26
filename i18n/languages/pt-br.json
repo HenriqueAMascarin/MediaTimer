@@ -4,6 +4,7 @@
     "pauseText": { "text": "Pausado", "aria": "Timer pausado" },
     "totalText": "Total",
     "musicOptions": {
+      "ariaBtn": "Botão para escolher",
       "none": "Nenhum",
       "forest": "Floresta",
       "waves": "Ondas",
@@ -17,11 +18,11 @@
       "history": { "dontHaveArchive": "Histórico sem arquivo" }
     },
     "theme": {
-      "title": "Escolher tema",
+      "selectTheme": "Escolher tema",
       "options": {
-        "system": "Gerenciado pelo sistema",
+        "managedBySystem": "Gerenciado pelo sistema",
         "white": "Branco",
-        "black": "Escuro"
+        "dark": "Escuro"
       }
     },
     "notification": {"dragToCancel": "Arraste para cancelar", "timerInProgress": "Timer em andamento", "timerIsPaused": "Timer Pausado"}

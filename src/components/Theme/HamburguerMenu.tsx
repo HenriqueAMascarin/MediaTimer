@@ -8,10 +8,13 @@ import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { CloseButton } from "../InfoTabs/Alerts/Components";
 import TextAnimated from "../Texts/TextAnimated";
+import { useTranslation } from "react-i18next";
 
 type typeItemTheme = ({ label: string, type: themesType | null, isActive: boolean });
 
 export default function HamburguerMenu({ initialOption }: { initialOption: themesType | null }) {
+    const { t } = useTranslation();
+
     const { dataTheme, changeTheme } = useTheme();
 
     const colorScheme = useColorScheme();
@@ -28,7 +31,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
         changeConfigModal(!configModal);
     }
 
-    const [typesTheme, changeTypesTheme] = useState<typeItemTheme[]>([{ label: 'Gerenciado pelo sistema', type: null, isActive: false }, { label: 'Branco', type: 'light', isActive: false }, { label: 'Escuro', type: 'dark', isActive: false }]);
+    const [typesTheme, changeTypesTheme] = useState<typeItemTheme[]>([{ label: t('theme.options.managedBySystem'), type: null, isActive: false }, { label: t('theme.options.white'), type: 'light', isActive: false }, { label:  t('theme.options.dark'), type: 'dark', isActive: false }]);
 
     function typesThemeDifference(differentElement: themesType | null) {
         let newTypesTheme = [...typesTheme];
@@ -79,7 +82,7 @@ export default function HamburguerMenu({ initialOption }: { initialOption: theme
 
                     <Animated.View style={[hamburguerStyles.modalContainer, { backgroundColor: dataTheme.animatedValues.backgroundColor }]} aria-label={"Modal para escolher tema"}>
                         <CloseButton clickFunction={() => toggleModal()} color={dataTheme.animatedValues.principalColor} customPos={{ top: 12, right: 12 }} />
-                        <TextAnimated style={{ fontSize: 24, fontFamily: 'Roboto_500Medium', marginBottom: 2, color: dataTheme.animatedValues.principalColor }}>Escolher tema</TextAnimated>
+                        <TextAnimated style={{ fontSize: 24, fontFamily: 'Roboto_500Medium', marginBottom: 2, color: dataTheme.animatedValues.principalColor }}>{t('theme.selectTheme')}</TextAnimated>
                         {typesTheme.map((theme, keyTheme) => {
                             return (
                                 <TouchableOpacity onPress={() => onTheme(theme)} key={keyTheme} style={{ flexDirection: "row", alignItems: 'center', gap: 8 }} aria-label={`Botão para escolher o tema ${theme.label}`}>

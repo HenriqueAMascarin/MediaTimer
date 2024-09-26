@@ -4,6 +4,7 @@
     "pauseText": { "text": "Paused", "aria": "Timer paused" },
     "totalText": "Total",
     "musicOptions": {
+      "ariaBtn": "Button to select",
       "none": "None",
       "forest": "Forest",
       "waves": "Waves",
@@ -17,11 +18,11 @@
       "history": { "dontHaveArchive": "Dont has archive" }
     },
     "theme": {
-      "title": "Select theme",
+      "selectTheme": "Select theme",
       "options": {
-        "system": "Managed by system",
+        "managedBySystem": "Managed by system",
         "white": "White",
-        "black": "Black"
+        "dark": "Dark"
       }
     },
     "notification": {"dragToCancel": "Drag to cancel", "timerInProgress": "Timer in progress", "timerIsPaused": "Timer is paused"}

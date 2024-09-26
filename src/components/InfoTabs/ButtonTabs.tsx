@@ -14,8 +14,11 @@ import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
 import * as DocumentPicker from 'expo-document-picker';
 import TextAnimated from "../Texts/TextAnimated";
+import { useTranslation } from "react-i18next";
 
 export default function ButtonTabs() {
+
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -60,7 +63,7 @@ export default function ButtonTabs() {
             changeErrorText('Selecione abrir de áudio');
 
             changeStatus({ error: true, searching: false, success: false });
-            
+
             return;
           }
 
@@ -72,7 +75,7 @@ export default function ButtonTabs() {
 
           changeStatus({ error: false, searching: false, success: true });
 
-        } else if(data.assets == null) {
+        } else if (data.assets == null) {
           resetAll();
 
           changeStatus({ error: true, searching: false, success: false });
@@ -88,18 +91,18 @@ export default function ButtonTabs() {
     dispatch(changeIsSelection(false));
   }
 
-  const ButtonsGroup = [{ svgXmlIcon: nothingSvgXml, onPressFunction: resetAll, stateActive: stateMusic.pressBtn.reset, label: 'Nenhum' },
-  { svgXmlIcon: forestSvgXml, onPressFunction: changeForest, stateActive: stateMusic.pressBtn.forest, label: 'Floresta' },
-  { svgXmlIcon: wavesSvgXml, onPressFunction: changeWaves, stateActive: stateMusic.pressBtn.waves, label: 'Ondas' },
-  { svgXmlIcon: fireSvgXml, onPressFunction: changeFire, stateActive: stateMusic.pressBtn.fire, label: 'Fogueira' },
-  { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.audioFile, label: 'Arquivo' },
+  const ButtonsGroup = [{ svgXmlIcon: nothingSvgXml, onPressFunction: resetAll, stateActive: stateMusic.pressBtn.reset, label: t('musicOptions.none') },
+  { svgXmlIcon: forestSvgXml, onPressFunction: changeForest, stateActive: stateMusic.pressBtn.forest, label: t('musicOptions.forest') },
+  { svgXmlIcon: wavesSvgXml, onPressFunction: changeWaves, stateActive: stateMusic.pressBtn.waves, label: t('musicOptions.waves') },
+  { svgXmlIcon: fireSvgXml, onPressFunction: changeFire, stateActive: stateMusic.pressBtn.fire, label: t('musicOptions.bonfire') },
+  { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.audioFile, label: t('musicOptions.archive') },
   ]
 
   return (
     <>
       <>
         {status.searching && <LoadingAlert />}
-        {status.error && <ErrorAlert closeFunction={onCloseAlerts} alertText={errorText}/>}
+        {status.error && <ErrorAlert closeFunction={onCloseAlerts} alertText={errorText} />}
         {status.success && <SuccessAlert closeFunction={onCloseAlerts} />}
       </>
 
@@ -108,19 +111,16 @@ export default function ButtonTabs() {
           <View style={infoStyles.container}>
             {ButtonsGroup.map((icon, keyItem) => {
               return (
-                <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem} aria-label={`Botão para escolher ${icon.label}`}>
+                <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem} aria-label={`${t('musicOptions.ariaBtn')} ${icon.label}`}>
                   <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
 
-                  <TextAnimated style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor}}>{icon.label}</TextAnimated>
+                  <TextAnimated style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }}>{icon.label}</TextAnimated>
                 </TouchableOpacity>
               )
             })}
           </View>
         </Animated.ScrollView>
       }
-
-
-
     </>
   );
 }
