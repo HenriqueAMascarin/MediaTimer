@@ -1,7 +1,30 @@
 {
   "translation": {
     "adTextAlt": "Anúncio",
-    "pauseText": {"text": "Pausado", "aria": "Temporizador pausado"},
-    "totalText": "Total"
+    "pauseText": { "text": "Pausado", "aria": "Timer pausado" },
+    "totalText": "Total",
+    "musicOptions": {
+      "none": "Nenhum",
+      "forest": "Floresta",
+      "waves": "Ondas",
+      "bonfire": "Fogueira",
+      "archive": "Arquivo"
+    },
+    "statusMessages": {
+      "music": { "searching": "Buscando a música", "success": "Música encontrada" },
+      "error": "Falha na busca",
+      "dontHasPermissions": "Falta de permissões",
+      "history": { "dontHaveArchive": "Histórico sem arquivo" }
+    },
+    "theme": {
+      "title": "Escolher tema",
+      "options": {
+        "system": "Gerenciado pelo sistema",
+        "white": "Branco",
+        "black": "Escuro"
+      }
+    },
+    "notification": {"dragToCancel": "Arraste para cancelar", "timerInProgress": "Timer em andamento", "timerIsPaused": "Timer Pausado"}
   }
 }
+

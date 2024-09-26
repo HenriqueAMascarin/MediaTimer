@@ -12,9 +12,18 @@
     },
     "statusMessages": {
       "music": { "searching": "Searching the music", "success": "Music found" },
-      "error": "Error on search"
+      "error": "Error on search",
+      "dontHasPermissions": "Dont has permissions",
+      "history": { "dontHaveArchive": "Dont has archive" }
     },
-    "theme": {"title": "Select theme", "options": {"system": "Managed by system","white": "White", "black": "Black"}},
-    "notification": {}
+    "theme": {
+      "title": "Select theme",
+      "options": {
+        "system": "Managed by system",
+        "white": "White",
+        "black": "Black"
+      }
+    },
+    "notification": {"dragToCancel": "Drag to cancel", "timerInProgress": "Timer in progress", "timerIsPaused": "Timer is paused"}
   }
 }
