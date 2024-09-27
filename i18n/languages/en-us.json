@@ -3,6 +3,12 @@
     "adTextAlt": "Banner ad",
     "pauseText": { "text": "Paused", "aria": "Timer paused" },
     "totalText": "Total",
+    "musicUnknown": "Music unknown",
+    "card": "Card",
+    "alert":{
+      "enable": "Click to enable the alert when the timer ends",
+      "disable": "Click to disable the alert when the timer ends"
+    },
     "musicOptions": {
       "ariaBtn": "Button to select",
       "none": "None",
@@ -12,19 +18,44 @@
       "archive": "Archive"
     },
     "statusMessages": {
-      "music": { "searching": "Searching the music", "success": "Music found" },
+      "music": {
+        "searching": "Searching the music",
+        "success": "Music found",
+        "storageInvalid": "Select open from audio"
+      },
       "error": "Error on search",
-      "dontHasPermissions": "Dont has permissions",
-      "history": { "dontHaveArchive": "Dont has archive" }
+      "dontHavePermissions": "Don't have permissions",
+      "closeBtnAria": "Button to close"
+    },
+    "buttonArias": {
+      "history": "Button to view history",
+      "audio": "Button to view audios",
+      "pause": "Button to pause the timer",
+      "play": "Button to start the timer",
+      "stop": "Button to stop the timer"
+    },
+    "history": {
+      "aboutSaved": "about the audio saved in history",
+      "dontHaveArchive": "Don't have archive",
+      "btnSelectAudio": "Button to select the audio"
     },
     "theme": {
+      "text": "Theme",
+      "notActive": "is not active",
+      "active": "is active",
       "selectTheme": "Select theme",
+      "btnConfigAria": "Button to open the configurations",
+      "selectBtnAria": "Button to select the theme",
       "options": {
         "managedBySystem": "Managed by system",
         "white": "White",
         "dark": "Dark"
       }
     },
-    "notification": {"dragToCancel": "Drag to cancel", "timerInProgress": "Timer in progress", "timerIsPaused": "Timer is paused"}
+    "notification": {
+      "dragToCancel": "Drag to cancel",
+      "timerInProgress": "Timer in progress",
+      "timerIsPaused": "Timer is paused"
+    }
   }
 }

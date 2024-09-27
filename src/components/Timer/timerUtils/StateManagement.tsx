@@ -5,7 +5,7 @@ import { AppState, NativeEventSubscription } from "react-native";
 import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
-import { changeIsSelection, changeIsSelectionYoutube } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 
@@ -15,6 +15,8 @@ import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 
+import { useTranslation } from "react-i18next";
+
 type dataType = {
   listOneValue: React.MutableRefObject<number>;
   listTwoValue: React.MutableRefObject<number>;
@@ -22,6 +24,8 @@ type dataType = {
 }
 
 export default function StateManagement({ listOneValue, listTwoValue, listThreeValue }: dataType) {
+
+  const { t } = useTranslation();
 
   const [havePlayed, changeHavePlayed] = useState(false);
 
@@ -115,11 +119,11 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
     timerPause(isPaused);
   }
 
-  async function createNotification(channelId: string, timestamp: number, customTitle: string = 'Timer em andamento', isPaused: boolean = false) {
+  async function createNotification(channelId: string, timestamp: number, customTitle: string = t('notification.timerInProgress'), isPaused: boolean = false) {
 
     await notifee.displayNotification({
       title: customTitle,
-      body: 'Arraste para cancelar',
+      body: t('notification.dragToCancel'),
       id: 'MediaTimer',
       android: {
         channelId,
@@ -226,8 +230,6 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
           dispatch(changeIsHistory(false));
 
-          dispatch(changeIsSelectionYoutube(false));
-
           if (stateMusic.musicLink != null) {
             const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
             soundRef.current = sound;
@@ -281,7 +283,7 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
           const channelId = await createChannelId();
 
-          createNotification(channelId, 0, 'Timer Pausado', true)
+          createNotification(channelId, 0, t('notification.timerIsPaused'), true)
         } else {
           onDisplayNotification(timerValues.runningValueTimestamp);
           await soundRef.current?.playAsync();

@@ -56,7 +56,9 @@ export default function Timer() {
       />
 
       <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
+
         <PauseText />
+
         <View style={timerStyle.listContainer}>
           <ListTimer timerData={listOne.current} opacityAnimated={listOpacity} />
 
@@ -64,7 +66,7 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listLineContainer}>
-          <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
+          <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}/>
 
           <TextAnimated style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor }]} allowFontScaling={false}>:</TextAnimated>
         </View>
@@ -76,7 +78,7 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listLineContainer}>
-          <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}></Animated.View>
+          <Animated.View style={[timerStyle.listLine, { height: lineAnimated.heightLine, opacity: lineAnimated.opacityLine }]}/>
 
           <TextAnimated style={[timerStyle.listLinePoints, { opacity: linePointsOpacity, color: dataTheme.animatedValues.principalColor }]}>:</TextAnimated>
         </View>
@@ -90,6 +92,7 @@ export default function Timer() {
         <TotalTimeText />
 
         <TimerAlert />
+        
       </Animated.View>
     </View>
   );

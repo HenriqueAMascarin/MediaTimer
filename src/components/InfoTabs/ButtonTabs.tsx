@@ -3,7 +3,7 @@ import { infoStyles } from "./styles/infoStyles";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
-import { changeIsSelection, changeIsSelectionYoutube } from "../Utils/Redux/features/statesMusic-slice";
+import { changeIsSelection } from "../Utils/Redux/features/statesMusic-slice";
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef, useState } from "react";
@@ -15,6 +15,7 @@ import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
 import * as DocumentPicker from 'expo-document-picker';
 import TextAnimated from "../Texts/TextAnimated";
 import { useTranslation } from "react-i18next";
+import { fileRegex } from "../Utils/globalVars";
 
 export default function ButtonTabs() {
 
@@ -28,11 +29,6 @@ export default function ButtonTabs() {
 
   const [status, changeStatus] = useState({ searching: false, success: false, error: false });
   const [errorText, changeErrorText] = useState<null | string>(null);
-
-  function changeYoutube() {
-    dispatch(changeIsSelection(false));
-    dispatch(changeIsSelectionYoutube(true));
-  };
 
   let opacityModal = useRef(new Animated.Value(0)).current;
 
@@ -60,14 +56,15 @@ export default function ButtonTabs() {
         if (data.assets) {
 
           if (data.assets[0].uri.includes('com.android.externalstorage')) {
-            changeErrorText('Selecione abrir de áudio');
-
+            changeErrorText(t('statusMessages.music.storageInvalid'));
+            
             changeStatus({ error: true, searching: false, success: false });
 
             return;
           }
+          const nameAudio = data.assets[0].name.replace(fileRegex, '');
 
-          const itemFile: historyItem = { isSelected: false, nameMusic: data.assets[0].name ?? 'Música', uri: data.assets[0].uri }
+          const itemFile: historyItem = { isSelected: false, nameMusic: nameAudio.length > 0 ? nameAudio : t('musicUnknown'), uri: data.assets[0].uri }
 
           await newHistoryArray(stateHistory.historyItems, itemFile);
 

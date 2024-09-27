@@ -3,6 +3,12 @@
     "adTextAlt": "Anúncio",
     "pauseText": { "text": "Pausado", "aria": "Timer pausado" },
     "totalText": "Total",
+    "unknownMusic": "Música desconhecida",
+    "card": "Cartão",
+    "alert":{
+      "enable": "Clique para ativar o alerta quando o temporizador finaliza",
+      "disable": "Clique para desativar o alerta quando o temporizador finaliza"
+    },
     "musicOptions": {
       "ariaBtn": "Botão para escolher",
       "none": "Nenhum",
@@ -12,20 +18,44 @@
       "archive": "Arquivo"
     },
     "statusMessages": {
-      "music": { "searching": "Buscando a música", "success": "Música encontrada" },
+      "music": {
+        "searching": "Buscando a música",
+        "success": "Música encontrada",
+        "storageInvalid": "Selecione abrir de áudio"
+      },
       "error": "Falha na busca",
-      "dontHasPermissions": "Falta de permissões",
-      "history": { "dontHaveArchive": "Histórico sem arquivo" }
+      "dontHavePermissions": "Falta de permissões",
+      "closeBtnAria": "Botão para fechar"
+    },
+    "buttonArias": {
+      "history": "Botão para ver o histórico",
+      "audio": "Botão para ver os áudios",
+      "pause": "Botão de pausar o timer", 
+      "play": "Botão de acionar o timer",
+      "stop": "Botão de parar o timer"
+    },
+    "history":{
+      "aboutSaved": "sobre o áudio salvo no histórico",
+      "dontHaveArchive": "Histórico sem arquivo",
+      "btnSelectAudio": "Botão para selecionar o áudio"
     },
     "theme": {
+      "text": "Tema",
+      "notActive": "não está ativo",
+      "active": "está ativo",
       "selectTheme": "Escolher tema",
+      "btnConfigAria": "Botão para abrir as configurações",
+      "selectBtnAria": "Botão para escolher o tema",
       "options": {
         "managedBySystem": "Gerenciado pelo sistema",
         "white": "Branco",
         "dark": "Escuro"
       }
     },
-    "notification": {"dragToCancel": "Arraste para cancelar", "timerInProgress": "Timer em andamento", "timerIsPaused": "Timer Pausado"}
+    "notification": {
+      "dragToCancel": "Arraste para cancelar",
+      "timerInProgress": "Timer em andamento",
+      "timerIsPaused": "Timer Pausado"
+    }
   }
 }
-

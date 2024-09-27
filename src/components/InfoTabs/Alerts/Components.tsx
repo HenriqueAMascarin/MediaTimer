@@ -7,6 +7,7 @@ import { animatedModalsOpacity } from "@src/components/Utils/animatedModalsOpaci
 import { colorsStyle } from "@src/components/Utils/colorsStyle";
 import { CustomAnimatedSvg, closeSvgXml } from "../../Utils/svgsXml";
 import TextDefault from "@src/components/Texts/TextDefault";
+import { useTranslation } from "react-i18next";
 
 type CloseButtonType = {
   clickFunction: Function,
@@ -24,6 +25,7 @@ function createOpacity(){
 }
 
 export function CloseButton({ clickFunction, color = colorsStyle.principal.black, customPos = { top: 6, right: 6 } }: CloseButtonType) {
+  const { t } = useTranslation();
 
   return (
     <TouchableOpacity
@@ -37,7 +39,7 @@ export function CloseButton({ clickFunction, color = colorsStyle.principal.black
         zIndex: 2,
       }}
       onPress={() => clickFunction()}
-      aria-label="Botão para fechar o elemento"
+      aria-label={t('statusMessages.closeBtnAria')}
     >
       <CustomAnimatedSvg xml={closeSvgXml} width={"16px"} height={"16px"} color={color} />
     </TouchableOpacity>
@@ -45,6 +47,8 @@ export function CloseButton({ clickFunction, color = colorsStyle.principal.black
 }
 
 export function SuccessAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
+  const { t } = useTranslation();
+
   let opacityModal = createOpacity();
 
   return (
@@ -53,12 +57,14 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
 
       <CorrectSvg style={{ minWidth: 30 }} />
 
-      <TextDefault>{alertText ?? "Música encontrada"}</TextDefault>
+      <TextDefault>{alertText ?? t('statusMessages.music.success')}</TextDefault>
     </Animated.View>
   );
 }
 
 export function ErrorAlert({ alertText, closeFunction }: { alertText?: string | null, closeFunction: Function }) {
+  const { t } = useTranslation();
+
   const opacityModal = createOpacity();
 
   return (
@@ -67,12 +73,14 @@ export function ErrorAlert({ alertText, closeFunction }: { alertText?: string | 
 
       <WarningSvg style={{ minWidth: 30 }} />
 
-      <TextDefault>{alertText ?? "Falha na busca"}</TextDefault>
+      <TextDefault>{alertText ?? t('statusMessages.error')}</TextDefault>
     </Animated.View>
   );
 }
 
 export function LoadingAlert({ alertText }: { alertText?: string }) {
+  const { t } = useTranslation();
+  
   let opacityModal = createOpacity();
 
   let spinValue = new Animated.Value(0);
@@ -97,7 +105,7 @@ export function LoadingAlert({ alertText }: { alertText?: string }) {
         <LoadingSvg style={{ minWidth: 30 }} />
       </Animated.View>
 
-      <TextDefault>{alertText ?? "Buscando a música"}</TextDefault>
+      <TextDefault>{alertText ?? t('statusMessages.music.searching')}</TextDefault>
     </Animated.View>
   );
 }

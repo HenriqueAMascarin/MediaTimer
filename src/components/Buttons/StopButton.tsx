@@ -7,11 +7,16 @@ import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeIsPlay } from "../Utils/Redux/features/stateTimer-slice";
 
+import { useTranslation } from "react-i18next";
+
+
 export default function StopButton() {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPlay(false))} aria-label="Botão de parar o timer">
+    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPlay(false))} aria-label={t('buttonArias.stop')}>
       <StopSvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />
     </TouchableOpacity>
   );
