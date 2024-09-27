@@ -12,21 +12,10 @@
     "version": "1.0.6",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "ios": {
-      "userInterfaceStyle": "automatic",
-      "supportsTablet": true,
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "location",
-          "fetch",
-          "remote-notification"
-        ]
-      },
-      "bundleIdentifier": "com.henriqueamascarin.mediatimer"
-    },
     "android": {
       "userInterfaceStyle": "automatic",
       "targetSdkVersion": 34,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptativeIcon.png",
         "backgroundColor": "#ffffff"
