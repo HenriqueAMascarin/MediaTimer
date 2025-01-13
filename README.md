@@ -30,7 +30,7 @@ Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native.
 
 ![](./assets/reviewImage.jpg)
 
-- Baixar demonstração atual: [clique aqui](https://henriqueamascarin.vercel.app/#projetos/MediaTimer).
+- Baixar demonstração atual: [clique aqui](https://henriqueamascarin.vercel.app/#projects/mediatimer).
 
 📙 Passo a passo 📙
 
