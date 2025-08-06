@@ -16,28 +16,41 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 
 export default function TimerAlert() {
+  const { t } = useTranslation();
 
-    const { t } = useTranslation();
+  const { dataTheme } = useTheme();
 
-    const { dataTheme } = useTheme();
+  const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
 
-    const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  async function changeTimerAlert() {
+    const statusAlert = JSON.stringify(!stateAlert.isAlert);
 
-    async function changeTimerAlert() {
-        const statusAlert = JSON.stringify(!stateAlert.isAlert);
+    AsyncStorage.setItem(alertLocalKey, statusAlert);
 
-        AsyncStorage.setItem(alertLocalKey, statusAlert);
+    dispatch(changeIsAlert(!stateAlert.isAlert));
+  }
 
-        dispatch(changeIsAlert(!stateAlert.isAlert));
-    }
-
-    return (
-        <Animated.View style={[timerStyle.timerAlertSvg, { opacity: timerAlertOpacity }]}>
-            <TouchableOpacity onPress={() => changeTimerAlert()} aria-label={t(stateAlert.isAlert ? 'alert.disable' : 'alert.enable')}>
-                <CustomAnimatedSvg width={"24px"} height={"24px"} xml={alertSvgXml} color={stateAlert.isAlert ? colorsStyle.principal.blue : dataTheme.animatedValues.secondaryColor} />
-            </TouchableOpacity>
-        </Animated.View>
-    );
+  return (
+    <Animated.View
+      style={[timerStyle.timerAlertSvg, { opacity: timerAlertOpacity }]}
+    >
+      <TouchableOpacity
+        onPress={() => changeTimerAlert()}
+        aria-label={t(stateAlert.isAlert ? "alert.disable" : "alert.enable")}
+      >
+        <CustomAnimatedSvg
+          width={"24px"}
+          height={"24px"}
+          xml={alertSvgXml}
+          color={
+            stateAlert.isAlert
+              ? colorsStyle.principal.blue
+              : dataTheme.animatedValues.secondaryColor
+          }
+        />
+      </TouchableOpacity>
+    </Animated.View>
+  );
 }

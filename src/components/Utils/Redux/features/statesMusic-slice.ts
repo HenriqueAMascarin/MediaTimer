@@ -48,9 +48,6 @@ export const stateMusicSlice = createSlice({
   },
 });
 
-export const {
-  changeIsSelection,
-  changePressBtn,
-  changeMusicLink,
-} = stateMusicSlice.actions;
+export const { changeIsSelection, changePressBtn, changeMusicLink } =
+  stateMusicSlice.actions;
 export const stateMusicReducer = stateMusicSlice.reducer;

@@ -9,13 +9,13 @@
       "resizeMode": "cover",
       "backgroundColor": "#149CFF"
     },
-    "version": "1.0.6",
-    "runtimeVersion": "1.0.6",
+    "version": "1.0.7",
+    "runtimeVersion": "1.0.7",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "android": {
       "userInterfaceStyle": "automatic",
-      "targetSdkVersion": 34,
+      "targetSdkVersion": 35,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptativeIcon.png",
         "backgroundColor": "#ffffff"

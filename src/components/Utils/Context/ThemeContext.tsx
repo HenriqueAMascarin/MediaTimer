@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Animated, useColorScheme } from "react-native";
 import { colorsStyle } from "../colorsStyle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,146 +16,157 @@ export type themesType = "light" | "dark";
 const inputRange = [0, 1];
 
 const animatedValues = {
-    backgroundAnimated: new Animated.Value(0),
-    principalAnimated: new Animated.Value(0),
-    secondaryAnimated: new Animated.Value(0),
+  backgroundAnimated: new Animated.Value(0),
+  principalAnimated: new Animated.Value(0),
+  secondaryAnimated: new Animated.Value(0),
 };
 
 const ThemeContext = createContext<{
-    dataTheme: {
-        animatedValues: {
-            backgroundColor: Animated.AnimatedInterpolation<string | number>;
-            principalColor: Animated.AnimatedInterpolation<string | number>;
-            secondaryColor: Animated.AnimatedInterpolation<string | number>;
-        },
-        selectedOption: null | themesType
-    }, changeTheme: React.Dispatch<React.SetStateAction<themesType>>
+  dataTheme: {
+    animatedValues: {
+      backgroundColor: Animated.AnimatedInterpolation<string | number>;
+      principalColor: Animated.AnimatedInterpolation<string | number>;
+      secondaryColor: Animated.AnimatedInterpolation<string | number>;
+    };
+    selectedOption: null | themesType;
+  };
+  changeTheme: React.Dispatch<React.SetStateAction<themesType>>;
 }>({
-    dataTheme: {
-        animatedValues: {
-            backgroundColor: animatedValues.backgroundAnimated.interpolate({
-                inputRange,
-                outputRange: [
-                    colorsStyle.lightTheme.background,
-                    colorsStyle.darkTheme.background,
-                ],
-            }),
-            principalColor: animatedValues.principalAnimated.interpolate({
-                inputRange,
-                outputRange: [
-                    colorsStyle.lightTheme.principal,
-                    colorsStyle.darkTheme.principal,
-                ],
-            }),
-            secondaryColor: animatedValues.secondaryAnimated.interpolate({
-                inputRange,
-                outputRange: [
-                    colorsStyle.lightTheme.secondary,
-                    colorsStyle.darkTheme.secondary,
-                ],
-            })
-        },
-        selectedOption: null
-    }, changeTheme: useState
+  dataTheme: {
+    animatedValues: {
+      backgroundColor: animatedValues.backgroundAnimated.interpolate({
+        inputRange,
+        outputRange: [
+          colorsStyle.lightTheme.background,
+          colorsStyle.darkTheme.background,
+        ],
+      }),
+      principalColor: animatedValues.principalAnimated.interpolate({
+        inputRange,
+        outputRange: [
+          colorsStyle.lightTheme.principal,
+          colorsStyle.darkTheme.principal,
+        ],
+      }),
+      secondaryColor: animatedValues.secondaryAnimated.interpolate({
+        inputRange,
+        outputRange: [
+          colorsStyle.lightTheme.secondary,
+          colorsStyle.darkTheme.secondary,
+        ],
+      }),
+    },
+    selectedOption: null,
+  },
+  changeTheme: useState,
 });
 
 type items = {
-    children?: JSX.Element | JSX.Element[];
-}
+  children?: ReactElement | ReactElement[];
+};
 
 export default function ThemeProvider({ children }: items) {
+  const [themeType, changeThemeType] = useState<themesType>("light");
 
+  const colorScheme = useColorScheme();
 
-    const [themeType, changeThemeType] = useState<themesType>('light');
+  const [themeOption, changeThemeOption] = useState<themesType | null>(null);
 
-    const colorScheme = useColorScheme();
+  async function currentTheme() {
+    let localTheme = await AsyncStorage.getItem(themeLocalKey);
+    let theme = colorScheme || "light";
+    let newThemeOption: typeof themeOption = null;
 
-    const [themeOption, changeThemeOption] = useState<themesType | null>(null);
+    if (localTheme == "dark" || localTheme == "light") {
+      theme = localTheme;
+      newThemeOption = localTheme;
+    }
 
-    const currentTheme = async () => {
-        let localTheme = await AsyncStorage.getItem(themeLocalKey);
-        let theme = colorScheme || "light";
-        let newThemeOption: typeof themeOption = null;
+    return { theme, newThemeOption };
+  }
 
-        if (localTheme == 'dark' || localTheme == 'light') {
-            theme = localTheme;
-            newThemeOption = localTheme;
-        }
+  useEffect(() => {
+    (async () =>
+      await currentTheme().then(({ theme, newThemeOption }) => {
+        changeThemeOption(newThemeOption);
+        changeThemeType(theme);
+      }))();
+  }, [colorScheme, themeType]);
 
-        return { theme, newThemeOption };
-    };
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(animatedValues.backgroundAnimated, {
+        toValue: themeType == "dark" ? 1 : 0,
+        delay: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animatedValues.principalAnimated, {
+        toValue: themeType == "dark" ? 1 : 0,
+        delay: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(animatedValues.secondaryAnimated, {
+        toValue: themeType == "dark" ? 1 : 0,
+        delay: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  }, [themeType]);
 
-    useEffect(() => {
-        currentTheme().then(({ theme, newThemeOption }) => {
-            changeThemeOption(newThemeOption);
-            changeThemeType(theme);
+  const backgroundColor = animatedValues.backgroundAnimated.interpolate({
+    inputRange,
+    extrapolate: "clamp",
+    outputRange: [
+      colorsStyle.lightTheme.background,
+      colorsStyle.darkTheme.background,
+    ],
+  });
 
-        })
-    }, [colorScheme, themeType])
+  const principalColor = animatedValues.principalAnimated.interpolate({
+    inputRange,
+    extrapolate: "clamp",
+    outputRange: [
+      colorsStyle.lightTheme.principal,
+      colorsStyle.darkTheme.principal,
+    ],
+  });
 
-    useEffect(() => {
-        Animated.parallel([
-            Animated.timing(animatedValues.backgroundAnimated, {
-                toValue: themeType == "dark" ? 1 : 0,
-                delay: 1,
-                duration: 300,
-                useNativeDriver: false,
-            }),
-            Animated.timing(animatedValues.principalAnimated, {
-                toValue: themeType == "dark" ? 1 : 0,
-                delay: 1,
-                duration: 300,
-                useNativeDriver: false,
-            }),
-            Animated.timing(animatedValues.secondaryAnimated, {
-                toValue: themeType == "dark" ? 1 : 0,
-                delay: 1,
-                duration: 300,
-                useNativeDriver: false,
-            }),
-        ]).start();
-    }, [themeType]);
+  const secondaryColor = animatedValues.secondaryAnimated.interpolate({
+    inputRange,
+    extrapolate: "clamp",
+    outputRange: [
+      colorsStyle.lightTheme.secondary,
+      colorsStyle.darkTheme.secondary,
+    ],
+  });
 
-    const themes = useRef({
-        backgroundColor: animatedValues.backgroundAnimated.interpolate({
-            inputRange,
-            extrapolate: "clamp",
-            outputRange: [
-                colorsStyle.lightTheme.background,
-                colorsStyle.darkTheme.background,
-            ],
-        }),
-        principalColor: animatedValues.principalAnimated.interpolate({
-            inputRange,
-            extrapolate: "clamp",
-            outputRange: [
-                colorsStyle.lightTheme.principal,
-                colorsStyle.darkTheme.principal,
-            ],
-        }),
-        secondaryColor: animatedValues.secondaryAnimated.interpolate({
-            inputRange,
-            extrapolate: "clamp",
-            outputRange: [
-                colorsStyle.lightTheme.secondary,
-                colorsStyle.darkTheme.secondary,
-            ],
-        })
-    }).current;
+  const themes = useRef({
+    backgroundColor,
+    principalColor,
+    secondaryColor,
+  });
 
-    return (
-        <ThemeContext.Provider
-            value={{
-                dataTheme: { animatedValues: themes, selectedOption: themeOption, },
-                changeTheme: changeThemeType,
-            }}>
-            {children}
-        </ThemeContext.Provider>
-    )
+  return (
+    <ThemeContext.Provider
+      value={{
+        dataTheme: {
+          animatedValues: themes.current,
+          selectedOption: themeOption,
+        },
+        changeTheme: changeThemeType,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {
-    const context = useContext(ThemeContext);
-    const { dataTheme, changeTheme } = context;
-    return { dataTheme, changeTheme };
+  const context = useContext(ThemeContext);
+  const { dataTheme, changeTheme } = context;
+
+  return { dataTheme, changeTheme };
 }

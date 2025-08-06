@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type historyItem = { nameMusic: string; authorMusic?: string, isSelected: boolean, uri?: string };
+export type historyItem = {
+  nameMusic: string;
+  authorMusic?: string;
+  isSelected: boolean;
+  uri?: string;
+};
 
 type initialTypeHistory = {
   isHistory: boolean;
@@ -16,14 +21,21 @@ export const stateHistorySlice = createSlice({
   name: "stateHistory",
   initialState,
   reducers: {
-    changeIsHistory: (state, action: PayloadAction<initialTypeHistory["isHistory"]>) => {
+    changeIsHistory: (
+      state,
+      action: PayloadAction<initialTypeHistory["isHistory"]>
+    ) => {
       state.isHistory = action.payload;
     },
-    changeHistoryArray: (state, action: PayloadAction<initialTypeHistory["historyItems"]>) => {
+    changeHistoryArray: (
+      state,
+      action: PayloadAction<initialTypeHistory["historyItems"]>
+    ) => {
       state.historyItems = action.payload;
     },
   },
 });
 
-export const { changeHistoryArray, changeIsHistory } = stateHistorySlice.actions;
+export const { changeHistoryArray, changeIsHistory } =
+  stateHistorySlice.actions;
 export const stateHistoryReducer = stateHistorySlice.reducer;

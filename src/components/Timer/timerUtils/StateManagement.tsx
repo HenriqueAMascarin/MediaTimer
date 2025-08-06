@@ -2,15 +2,25 @@ import { useEffect, useRef, useState } from "react";
 
 import { AppState, NativeEventSubscription } from "react-native";
 
-import { changeIsPaused, changeIsPickingValue, changeIsPlay } from "../../Utils/Redux/features/stateTimer-slice";
+import {
+  changeIsPaused,
+  changeIsPickingValue,
+  changeIsPlay,
+} from "../../Utils/Redux/features/stateTimer-slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../Utils/Redux/reduxHookCustom";
 import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
-import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
-import BackgroundTimer from 'react-native-background-timer';
+import notifee, {
+  AndroidImportance,
+  AndroidVisibility,
+} from "@notifee/react-native";
+import BackgroundTimer from "react-native-background-timer";
 
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { changeRunningValueTimestamp, changeTotalValue } from "@src/components/Utils/Redux/features/timerValues-slice";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import {
+  changeRunningValueTimestamp,
+  changeTotalValue,
+} from "@src/components/Utils/Redux/features/timerValues-slice";
 import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
@@ -18,22 +28,35 @@ import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHisto
 import { useTranslation } from "react-i18next";
 
 type dataType = {
-  listOneValue: React.MutableRefObject<number>;
-  listTwoValue: React.MutableRefObject<number>;
-  listThreeValue: React.MutableRefObject<number>;
-}
+  listOneValue: React.RefObject<number>;
+  listTwoValue: React.RefObject<number>;
+  listThreeValue: React.RefObject<number>;
+};
 
-export default function StateManagement({ listOneValue, listTwoValue, listThreeValue }: dataType) {
+export default function StateManagement({
+  listOneValue,
+  listTwoValue,
+  listThreeValue,
+}: dataType) {
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
+  const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+
+  const timerValues = useAppSelector(({ timerValues }) => timerValues);
+
+  const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
+
+  const dispatch = useDispatch();
 
   const { t } = useTranslation();
 
   const [havePlayed, changeHavePlayed] = useState(false);
 
-  const soundRef = useRef<Audio.Sound>();
+  const soundRef = useRef<Audio.Sound>(undefined);
 
-  const timerFinalSound = useRef<Audio.Sound>();
+  const timerFinalSound = useRef<Audio.Sound>(undefined);
 
-  let refAppListener = useRef<NativeEventSubscription>();
+  let refAppListener = useRef<NativeEventSubscription>(undefined);
 
   let inAppTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -48,33 +71,25 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
           shouldDuckAndroid: true,
           interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
           playThroughEarpieceAndroid: false,
-        })
-
-        const { sound: timerClock } = await Audio.Sound.createAsync(require('@assets/sounds/timer.mp3'));
-        timerFinalSound.current = timerClock;
-
-        timerFinalSound.current?.setOnPlaybackStatusUpdate(async (playbackStatus) => {
-          if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
-            timerFinalSound.current?.stopAsync();
-          }
         });
 
+        const { sound: timerClock } = await Audio.Sound.createAsync(
+          require("@assets/sounds/timer.mp3")
+        );
+        timerFinalSound.current = timerClock;
+
+        timerFinalSound.current?.setOnPlaybackStatusUpdate(
+          async (playbackStatus) => {
+            if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
+              timerFinalSound.current?.stopAsync();
+            }
+          }
+        );
       })();
     }
-  }, [timerFinalSound])
-
-  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
-
-  const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
-
-  const timerValues = useAppSelector(({ timerValues }) => timerValues);
-
-  const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
-
-  const dispatch = useDispatch();
+  }, [timerFinalSound]);
 
   function playTimer() {
-
     const numberHours = listOneValue.current * 3600;
     const numberMinutes = listTwoValue.current * 60;
     const numberSeconds = listThreeValue.current;
@@ -119,45 +134,48 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
     timerPause(isPaused);
   }
 
-  async function createNotification(channelId: string, timestamp: number, customTitle: string = t('notification.timerInProgress'), isPaused: boolean = false) {
-
+  async function createNotification(
+    channelId: string,
+    timestamp: number,
+    customTitle: string = t("notification.timerInProgress"),
+    isPaused: boolean = false
+  ) {
     await notifee.displayNotification({
       title: customTitle,
-      body: t('notification.dragToCancel'),
-      id: 'MediaTimer',
+      body: t("notification.dragToCancel"),
+      id: "MediaTimer",
       android: {
         channelId,
         autoCancel: false,
         importance: AndroidImportance.LOW,
         pressAction: {
-          id: 'default',
+          id: "default",
         },
-        smallIcon: 'ic_media_timer',
-        color: '#149CFF',
+        smallIcon: "ic_media_timer",
+        color: "#149CFF",
         visibility: AndroidVisibility.PUBLIC,
         showChronometer: !isPaused && true,
-        chronometerDirection: 'down',
+        chronometerDirection: "down",
         // timestamp * 1000 convertion to utc
-        timestamp: isPaused ? undefined : (Date.now() + (timestamp * 1000)),
+        timestamp: isPaused ? undefined : Date.now() + timestamp * 1000,
       },
     });
   }
 
   async function createChannelId() {
     const channelId = await notifee.createChannel({
-      id: 'Timer Channel',
-      name: 'Timer Channel',
+      id: "Timer Channel",
+      name: "Timer Channel",
       importance: AndroidImportance.LOW,
       vibration: false,
       bypassDnd: false,
-      visibility: AndroidVisibility.PUBLIC
+      visibility: AndroidVisibility.PUBLIC,
     });
 
     return channelId;
   }
 
   async function onDisplayNotification(newTotalValue: number) {
-
     await notifee.requestPermission();
 
     const channelId = await createChannelId();
@@ -166,17 +184,17 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
     const timeNow = () => {
       return Math.round(Date.now() / 1000);
-    }
+    };
 
     const timeNowToAlert = (newTimeNow = timeNow()) => {
-      return (newTimeNow + newTotalValue);
+      return newTimeNow + newTotalValue;
     };
 
     const initialTimeToAlert = timeNowToAlert();
 
     const timeLeftToAlert = (newTimeNow = timeNow()) => {
       return initialTimeToAlert - newTimeNow;
-    }
+    };
 
     const timeout = 1000;
 
@@ -188,31 +206,31 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
     playTimerInternal();
 
-    refAppListener.current = AppState.addEventListener('change', (state) => {
-
+    refAppListener.current = AppState.addEventListener("change", (state) => {
       if (stateTimer.isPlay && stateTimer.isPaused == false) {
         stopTimerInterval();
 
-        if (state == 'background') {
+        if (state == "background") {
           // * 1000 to transform to ms
           const timestampToAlert = timeLeftToAlert(timeNow()) * 1000;
 
           BackgroundTimer.runBackgroundTimer(async () => {
             dispatch(changeIsPlay(false));
           }, timestampToAlert);
-
-        } else if (state == 'active') {
+        } else if (state == "active") {
           playTimerInternal();
         }
-
       }
     });
   }
 
   useEffect(() => {
     if (stateTimer.isPickingValue && !stateTimer.isPlay) {
-
-      if (listOneValue.current != 0 || listTwoValue.current != 0 || listThreeValue.current != 0) {
+      if (
+        listOneValue.current != 0 ||
+        listTwoValue.current != 0 ||
+        listThreeValue.current != 0
+      ) {
         changeHavePlayed(true);
         dispatch(changeIsPlay(true));
       } else {
@@ -223,7 +241,6 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
   useEffect(() => {
     if (havePlayed) {
-
       if (stateTimer.isPlay) {
         (async function play() {
           dispatch(changeIsSelection(false));
@@ -231,7 +248,11 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
           dispatch(changeIsHistory(false));
 
           if (stateMusic.musicLink != null) {
-            const { sound } = await Audio.Sound.createAsync(typeof stateMusic.musicLink == 'string' ? { uri: stateMusic.musicLink } : stateMusic.musicLink);
+            const { sound } = await Audio.Sound.createAsync(
+              typeof stateMusic.musicLink == "string"
+                ? { uri: stateMusic.musicLink }
+                : stateMusic.musicLink
+            );
             soundRef.current = sound;
           } else {
             soundRef.current = undefined;
@@ -247,9 +268,7 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
           await onDisplayNotification(totalValue);
         })();
-
       } else {
-
         if (soundRef.current != undefined) {
           soundRef.current.stopAsync();
 
@@ -283,12 +302,16 @@ export default function StateManagement({ listOneValue, listTwoValue, listThreeV
 
           const channelId = await createChannelId();
 
-          createNotification(channelId, 0, t('notification.timerIsPaused'), true)
+          createNotification(
+            channelId,
+            0,
+            t("notification.timerIsPaused"),
+            true
+          );
         } else {
           onDisplayNotification(timerValues.runningValueTimestamp);
           await soundRef.current?.playAsync();
         }
-
       }
     })();
   }, [stateTimer.isPaused]);

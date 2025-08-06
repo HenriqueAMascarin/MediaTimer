@@ -6,90 +6,96 @@ import ButtonTabs from "./InfoTabs/ButtonTabs";
 import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 import { alertLocalKey } from "./Utils/globalVars";
 import { useEffect } from "react";
-import { useDispatch } from 'react-redux';
-import { changeIsPlay } from '@src/components/Utils/Redux/features/stateTimer-slice';
-import notifee, { Event, EventType } from '@notifee/react-native';
+import { useDispatch } from "react-redux";
+import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
+import notifee, { Event, EventType } from "@notifee/react-native";
 import HistoryTabs from "./InfoTabs/HistoryTabs";
 import { changeLocalHistoryArray } from "./Utils/historyArrayFunctions";
 import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
-import { ADMOB_BANNERID } from '@env';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-import { PRODUCTION } from "./Utils/globalVars";
 import { stylesGeneral } from "./stylesComponents/stylesGeneral";
 import TextAnimated from "./Texts/TextAnimated";
 import { StatusBar } from "expo-status-bar";
 import { useTranslation } from "react-i18next";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 
 export default function Components() {
-    const { t } = useTranslation();
-    const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
-    const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
-    const { dataTheme } = useTheme();
+  const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
 
-    const eventNotifee = async ({ type, detail }: Event) => {
-        const { notification } = detail;
-        if (type === EventType.DISMISSED) {
+  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
-            if (notification?.id) {
-                await notifee.cancelNotification(notification.id);
-                dispatch(changeIsPlay(false));
-            }
+  const { dataTheme } = useTheme();
 
-        }
+  const dispatch = useDispatch();
+
+  const eventNotifee = async ({ type, detail }: Event) => {
+    const { notification } = detail;
+    if (type === EventType.DISMISSED) {
+      if (notification?.id) {
+        await notifee.cancelNotification(notification.id);
+        dispatch(changeIsPlay(false));
+      }
     }
+  };
 
+  async function BootData() {
     notifee.onBackgroundEvent(eventNotifee);
     notifee.onForegroundEvent(eventNotifee);
 
-    useEffect(() => {
+    await changeLocalHistoryArray();
 
-        notifee.cancelAllNotifications();
-        notifee.getChannels().then((res) => res.forEach(async (el) => await notifee.deleteChannel(el.id)));
+    await (async function initialAlertConfig() {
+      const jsonValue = await AsyncStorage.getItem(alertLocalKey);
 
-        changeLocalHistoryArray();
+      if (!jsonValue) {
+        AsyncStorage.setItem(alertLocalKey, "true");
+      } else {
+        dispatch(changeIsAlert(jsonValue == "true" ? true : false));
+      }
+    })();
 
-        (async function initialAlertConfig() {
-            const jsonValue = await AsyncStorage.getItem(alertLocalKey);
+  }
 
-            if (!jsonValue) {
-                AsyncStorage.setItem(alertLocalKey, 'true');
-            } else {
-                dispatch(changeIsAlert(jsonValue == 'true' ? true : false));
-            }
-        })();
+  useEffect(() => {
+    if (dataTheme != null) {
+       BootData();
+    }
+  }, [dataTheme]);
 
-    }, [])
+  return (
+    <SafeAreaView style={{ flex: 1, position: "relative" }}>
+      <StatusBar />
 
-    return (
-        <SafeAreaView style={{ flex: 1, position: "relative" }}>
-            <StatusBar/>
-            <Animated.View style={{ backgroundColor: dataTheme.animatedValues.backgroundColor, flex: 1, position: "relative", marginTop: Constants.statusBarHeight }}>
-                <HamburguerMenu initialOption={dataTheme.selectedOption}/>
+      <Animated.View
+        style={{
+          backgroundColor: dataTheme.animatedValues.backgroundColor,
+          flex: 1,
+          position: "relative",
+          marginTop: Constants.statusBarHeight,
+        }}
+      >
+        <HamburguerMenu initialOption={dataTheme.selectedOption} />
 
-                <ComponentTimer />
+        <ComponentTimer />
 
-                <View style={buttonsStyle.container}>
-                    <Animated.View style={{ minHeight: 90, 'backgroundColor': dataTheme.animatedValues.backgroundColor }}>
-                        {stateMusic.isSelection && <ButtonTabs />}
-                        {stateHistory.isHistory && <HistoryTabs />}
-                    </Animated.View>
+        <View style={buttonsStyle.container}>
+          <Animated.View
+            style={{
+              minHeight: 90,
+              backgroundColor: dataTheme.animatedValues.backgroundColor,
+            }}
+          >
+            {stateMusic.isSelection && <ButtonTabs />}
+            {stateHistory.isHistory && <HistoryTabs />}
+          </Animated.View>
 
-                    <Buttons />
-                </View>
-                <Animated.View style={[stylesGeneral.containerAd, { borderColor: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
-                    <TextAnimated
-                        style={[stylesGeneral.textAd, { borderColor: dataTheme.animatedValues.principalColor, color: dataTheme.animatedValues.principalColor, backgroundColor: dataTheme.animatedValues.backgroundColor }]}>
-                        {t('adTextAlt')}
-                    </TextAnimated>
-                    <BannerAd unitId={PRODUCTION ? ADMOB_BANNERID : TestIds.BANNER} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
-                </Animated.View>
-            </Animated.View>
-        </SafeAreaView>
-    )
+          <Buttons />
+        </View>
+      </Animated.View>
+    </SafeAreaView>
+  );
 }
