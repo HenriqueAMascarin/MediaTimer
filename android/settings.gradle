@@ -16,12 +16,12 @@ pluginManagement {
   ).absolutePath
   includeBuild(expoPluginsPath)
 }
- 
+
 plugins {
   id("com.facebook.react.settings")
   id("expo-autolinking-settings")
 }
- 
+
 extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   if (System.getenv('EXPO_USE_COMMUNITY_AUTOLINKING') == '1') {
     ex.autolinkLibrariesFromCommand()

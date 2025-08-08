@@ -4,11 +4,6 @@
     "slug": "media-timer",
     "description": "This is an timer music app",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splashScreen.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#149CFF"
-    },
     "version": "1.0.7",
     "runtimeVersion": "1.0.7",
     "orientation": "portrait",
@@ -32,7 +27,14 @@
       "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
     },
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#149CFF",
+          "image": "./assets/icon.png"
+        }
+      ]
     ]
   },
   "react-native-google-mobile-ads": {
