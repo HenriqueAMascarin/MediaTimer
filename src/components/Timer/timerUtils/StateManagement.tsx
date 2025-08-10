@@ -52,44 +52,43 @@ export default function StateManagement({
 
   const [havePlayed, changeHavePlayed] = useState(false);
 
-  const soundRef = useRef<AudioPlayer>(undefined);
+  const soundRef = useAudioPlayer();
 
-  const timerFinalSound = useRef<AudioPlayer>(undefined);
+  const timerFinalSound = useAudioPlayer(require("@assets/sounds/timer.mp3"));
 
   let refAppListener = useRef<NativeEventSubscription>(undefined);
 
   let inAppTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (timerFinalSound.current == undefined) {
-      (async function initial() {
-        await setAudioModeAsync({
-          shouldPlayInBackground: true,
-          interruptionMode: "doNotMix",
-          playsInSilentMode: true,
-          interruptionModeAndroid: "doNotMix",
-          allowsRecording: false,
-          shouldRouteThroughEarpiece: false,
-        });
+    (async function initial() {
+      await setAudioModeAsync({
+        shouldPlayInBackground: true,
+        interruptionMode: "doNotMix",
+        playsInSilentMode: true,
+        interruptionModeAndroid: "doNotMix",
+        allowsRecording: false,
+        shouldRouteThroughEarpiece: false,
+      });
+    })();
+  }, []);
 
-        const timerClock = useAudioPlayer(require("@assets/sounds/timer.mp3"));
-        timerFinalSound.current = timerClock;
+  useEffect(() => {
+    if (stateAlert.isAlert) {
+      timerFinalSound.addListener(
+        "playbackStatusUpdate",
+        async (playbackStatus) => {
+          if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
+            timerFinalSound.removeAllListeners("playbackStatusUpdate");
 
-        timerFinalSound.current.addListener(
-          "playbackStatusUpdate",
-          async (playbackStatus) => {
-            if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
-              timerFinalSound.current?.removeAllListeners(
-                "playbackStatusUpdate"
-              );
+            timerFinalSound.pause();
 
-              timerFinalSound.current?.remove();
-            }
+            timerFinalSound.seekTo(0);
           }
-        );
-      })();
+        }
+      );
     }
-  }, [timerFinalSound]);
+  }, [stateAlert.isAlert]);
 
   function playTimer() {
     const numberHours = listOneValue.current * 3600;
@@ -250,25 +249,23 @@ export default function StateManagement({
           dispatch(changeIsHistory(false));
 
           if (stateMusic.musicLink != null) {
-            const sound = useAudioPlayer(
+            const sound =
               typeof stateMusic.musicLink == "string"
                 ? { uri: stateMusic.musicLink }
-                : stateMusic.musicLink
+                : stateMusic.musicLink;
+
+            soundRef.replace(sound);
+
+            soundRef.addListener(
+              "playbackStatusUpdate",
+              ({ didJustFinish }) => {
+                if (didJustFinish == true) {
+                  soundRef.seekTo(0);
+                }
+              }
             );
 
-            soundRef.current = sound;
-          } else {
-            soundRef.current = undefined;
-          }
-
-          if (soundRef.current) {
-            soundRef.current?.addListener('playbackStatusUpdate', ({didJustFinish}) => {
-              if(didJustFinish == true){
-                soundRef.current?.seekTo(0);
-              }
-            })
-
-            soundRef.current.play();
+            soundRef.play();
           }
 
           const totalValue = playTimer();
@@ -276,20 +273,20 @@ export default function StateManagement({
           await onDisplayNotification(totalValue);
         })();
       } else {
-        if (soundRef.current != undefined) {
-          soundRef.current.removeAllListeners('playbackStatusUpdate');
+        soundRef.removeAllListeners("playbackStatusUpdate");
 
-          soundRef.current.remove();
+        soundRef.pause();
 
-          soundRef.current = useAudioPlayer();
-        }
+        soundRef.seekTo(0);
 
         notifee.cancelAllNotifications();
 
         stopTimer();
 
-        if (timerFinalSound.current && stateAlert.isAlert) {
-          timerFinalSound.current.play();
+        if (stateAlert.isAlert) {
+          timerFinalSound.seekTo(0);
+
+          timerFinalSound.play();
         }
       }
     }
@@ -301,7 +298,7 @@ export default function StateManagement({
         pauseTimerAnimation();
 
         if (stateTimer.isPaused) {
-          soundRef.current?.pause();
+          soundRef.pause();
 
           stopTimerInterval();
 
@@ -317,7 +314,7 @@ export default function StateManagement({
           );
         } else {
           onDisplayNotification(timerValues.runningValueTimestamp);
-          soundRef.current?.play();
+          soundRef.play();
         }
       }
     })();
