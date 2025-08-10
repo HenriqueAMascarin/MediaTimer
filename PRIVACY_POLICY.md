@@ -18,6 +18,6 @@ A lista de permissões listadas a baixo são encontradas aqui no [AndroidManifes
 | `android.permission.READ_EXTERNAL_STORAGE` `android.permission.WRITE_EXTERNAL_STORAGE` `android.permission.READ_MEDIA_AUDIO`| Utilizados para ler áudios que a pessoa seleciona do seu dispositivo ou que estão salvos no histórico. |
 | `android.permission.SYSTEM_ALERT_WINDOW` | Utilizado para mostrar as notificações do aplicativo, quando está executando o temporizador. |
 | `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION` | Utilizado para encontrar o local do arquivo selecionado na aba de histórico. |
-| `android.permission.MODIFY_AUDIO_SETTINGS` | Utilizado com a tecnologia EXPO AV, para configurar os áudios usados no aplicativo. |
+| `android.permission.MODIFY_AUDIO_SETTINGS` | Utilizado com a tecnologia EXPO Audio, para configurar os áudios usados no aplicativo. |
 
 Caso tenha visto alguma permissão que não esteja listada aqui ou sobre qualquer dúvida de segurança, se sinta livre em mandar uma mensagem ao e-mail: henriqueamascarin@gmail.com

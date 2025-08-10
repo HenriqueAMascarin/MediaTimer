@@ -57,7 +57,7 @@ Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native.
 - React SVG + SVG Transformer
 - React Native Dotenv
 - Expo
-- Expo AV
+- Expo audio
 - Expo File System
 - Axios
 - Typescript

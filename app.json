@@ -35,11 +35,8 @@
           "image": "./assets/icon.png",
           "imageWidth": 240
         }
-      ]
+      ],
+      "expo-audio"
     ]
-  },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-9467939863315972~4835534176",
-    "ios_app_id": "ca-app-pub-9467939863315972~4835534176"
   }
 }

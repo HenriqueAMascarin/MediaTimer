@@ -16,7 +16,7 @@ import notifee, {
 } from "@notifee/react-native";
 import BackgroundTimer from "react-native-background-timer";
 
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { setAudioModeAsync, AudioPlayer, useAudioPlayer } from "expo-audio";
 import {
   changeRunningValueTimestamp,
   changeTotalValue,
@@ -52,9 +52,9 @@ export default function StateManagement({
 
   const [havePlayed, changeHavePlayed] = useState(false);
 
-  const soundRef = useRef<Audio.Sound>(undefined);
+  const soundRef = useRef<AudioPlayer>(undefined);
 
-  const timerFinalSound = useRef<Audio.Sound>(undefined);
+  const timerFinalSound = useRef<AudioPlayer>(undefined);
 
   let refAppListener = useRef<NativeEventSubscription>(undefined);
 
@@ -63,25 +63,27 @@ export default function StateManagement({
   useEffect(() => {
     if (timerFinalSound.current == undefined) {
       (async function initial() {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          staysActiveInBackground: true,
-          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-          playsInSilentModeIOS: true,
-          shouldDuckAndroid: true,
-          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
-          playThroughEarpieceAndroid: false,
+        await setAudioModeAsync({
+          shouldPlayInBackground: true,
+          interruptionMode: "doNotMix",
+          playsInSilentMode: true,
+          interruptionModeAndroid: "doNotMix",
+          allowsRecording: false,
+          shouldRouteThroughEarpiece: false,
         });
 
-        const { sound: timerClock } = await Audio.Sound.createAsync(
-          require("@assets/sounds/timer.mp3")
-        );
+        const timerClock = useAudioPlayer(require("@assets/sounds/timer.mp3"));
         timerFinalSound.current = timerClock;
 
-        timerFinalSound.current?.setOnPlaybackStatusUpdate(
+        timerFinalSound.current.addListener(
+          "playbackStatusUpdate",
           async (playbackStatus) => {
             if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
-              timerFinalSound.current?.stopAsync();
+              timerFinalSound.current?.removeAllListeners(
+                "playbackStatusUpdate"
+              );
+
+              timerFinalSound.current?.remove();
             }
           }
         );
@@ -248,20 +250,25 @@ export default function StateManagement({
           dispatch(changeIsHistory(false));
 
           if (stateMusic.musicLink != null) {
-            const { sound } = await Audio.Sound.createAsync(
+            const sound = useAudioPlayer(
               typeof stateMusic.musicLink == "string"
                 ? { uri: stateMusic.musicLink }
                 : stateMusic.musicLink
             );
+
             soundRef.current = sound;
           } else {
             soundRef.current = undefined;
           }
 
           if (soundRef.current) {
-            await soundRef.current.setIsLoopingAsync(true);
+            soundRef.current?.addListener('playbackStatusUpdate', ({didJustFinish}) => {
+              if(didJustFinish == true){
+                soundRef.current?.seekTo(0);
+              }
+            })
 
-            await soundRef.current.playAsync();
+            soundRef.current.play();
           }
 
           const totalValue = playTimer();
@@ -270,11 +277,11 @@ export default function StateManagement({
         })();
       } else {
         if (soundRef.current != undefined) {
-          soundRef.current.stopAsync();
+          soundRef.current.removeAllListeners('playbackStatusUpdate');
 
-          soundRef.current.unloadAsync();
+          soundRef.current.remove();
 
-          soundRef.current = new Audio.Sound();
+          soundRef.current = useAudioPlayer();
         }
 
         notifee.cancelAllNotifications();
@@ -282,7 +289,7 @@ export default function StateManagement({
         stopTimer();
 
         if (timerFinalSound.current && stateAlert.isAlert) {
-          timerFinalSound.current.playAsync();
+          timerFinalSound.current.play();
         }
       }
     }
@@ -294,7 +301,7 @@ export default function StateManagement({
         pauseTimerAnimation();
 
         if (stateTimer.isPaused) {
-          await soundRef.current?.pauseAsync();
+          soundRef.current?.pause();
 
           stopTimerInterval();
 
@@ -310,7 +317,7 @@ export default function StateManagement({
           );
         } else {
           onDisplayNotification(timerValues.runningValueTimestamp);
-          await soundRef.current?.playAsync();
+          soundRef.current?.play();
         }
       }
     })();

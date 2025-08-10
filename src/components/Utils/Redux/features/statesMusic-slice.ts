@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AVPlaybackSource } from "expo-av";
+import { AudioSource } from 'expo-audio';
 
 export type statesMusicType = {
   isSelection: boolean;
@@ -11,7 +11,7 @@ export type statesMusicType = {
     fire: boolean;
     audioFile: boolean;
   };
-  musicLink: AVPlaybackSource | string | null;
+  musicLink: AudioSource | string | null;
 };
 
 const initialState: statesMusicType = {
