@@ -9,9 +9,11 @@ import { changeIsHistory } from "../Utils/Redux/features/stateHistory-slice";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeIsSelection } from "../Utils/Redux/features/statesMusic-slice";
 import { useMemo } from "react";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function HistoryButton() {
+  const { translateText } = useTextTranslation();
+
   const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const dispatch = useDispatch();

@@ -9,9 +9,11 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useDispatch } from "react-redux";
 import { changeIsAlert } from "../Utils/Redux/features/stateAlert-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function TimerAlert() {
+  const { translateText } = useTextTranslation();
+
   const { dataTheme } = useTheme();
 
   const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);

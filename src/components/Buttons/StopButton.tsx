@@ -4,9 +4,11 @@ import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeIsPlay } from "../Utils/Redux/features/stateTimer-slice";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function StopButton() {
+  const { translateText } = useTextTranslation();
+
   const dispatch = useDispatch();
 
   return (

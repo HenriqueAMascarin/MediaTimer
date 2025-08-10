@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
 import { AppState, NativeEventSubscription } from "react-native";
-
 import {
   changeIsPaused,
   changeIsPickingValue,
@@ -15,7 +13,6 @@ import notifee, {
   AndroidVisibility,
 } from "@notifee/react-native";
 import BackgroundTimer from "react-native-background-timer";
-
 import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import {
   changeRunningValueTimestamp,
@@ -24,8 +21,7 @@ import {
 import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
-
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 type dataType = {
   listOneValue: React.RefObject<number>;
@@ -38,6 +34,8 @@ export default function StateManagement({
   listTwoValue,
   listThreeValue,
 }: dataType) {
+  const { translateText } = useTextTranslation();
+
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
 
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);

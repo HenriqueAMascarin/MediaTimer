@@ -2,9 +2,11 @@ import { timerStyle } from "./styles/timerStyle";
 import { textOpacity } from "./TimerAnimations/TimerPause";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function PauseText() {
+  const { translateText } = useTextTranslation();
+
   const { dataTheme } = useTheme();
 
   return (

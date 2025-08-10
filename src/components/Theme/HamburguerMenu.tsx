@@ -14,7 +14,7 @@ import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { CloseButton } from "../InfoTabs/Alerts/Components";
 import TextAnimated from "../Texts/TextAnimated";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 type typeItemTheme = {
   label: string;
@@ -27,6 +27,8 @@ export default function HamburguerMenu({
 }: {
   initialOption: themesType | null;
 }) {
+  const { translateText } = useTextTranslation();
+
   const { dataTheme, changeTheme } = useTheme();
 
   const colorScheme = useColorScheme();

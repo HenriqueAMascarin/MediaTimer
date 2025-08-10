@@ -7,9 +7,11 @@ import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
 import { changeIsPickingValue } from "../Utils/Redux/features/stateTimer-slice";
 
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function PlayButton() {
+  const { translateText } = useTextTranslation();
+
   const dispatch = useDispatch();
 
   return (

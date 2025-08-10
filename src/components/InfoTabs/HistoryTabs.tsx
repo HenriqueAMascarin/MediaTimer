@@ -26,9 +26,11 @@ import { decode } from "html-entities";
 import RNFetchBlob from "rn-fetch-blob";
 import TextDefault from "../Texts/TextDefault";
 import { fileRegex } from "../Utils/globalVars";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function HistoryTabs() {
+  const { translateText } = useTextTranslation();
+
   const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);

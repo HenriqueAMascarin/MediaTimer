@@ -22,11 +22,15 @@ import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
 import * as DocumentPicker from "expo-document-picker";
 import TextAnimated from "../Texts/TextAnimated";
 import { fileRegex } from "../Utils/globalVars";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function ButtonTabs() {
+  const { translateText } = useTextTranslation();
+
   const dispatch = useDispatch();
+
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
   const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const { dataTheme } = useTheme();

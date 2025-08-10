@@ -14,6 +14,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "i18n/i18nBuilder";
 import notifee from "@notifee/react-native";
+import TranslationProvider from "@src/components/Utils/Context/TranslationContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -48,10 +49,12 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider>
-      <Provider store={store}>
-        <Components />
-      </Provider>
-    </ThemeProvider>
+    <TranslationProvider>
+      <ThemeProvider>
+        <Provider store={store}>
+          <Components />
+        </Provider>
+      </ThemeProvider>
+    </TranslationProvider>
   );
 }

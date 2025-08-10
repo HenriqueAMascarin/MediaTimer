@@ -7,7 +7,7 @@ import { animatedModalsOpacity } from "@src/components/Utils/animatedModalsOpaci
 import { colorsStyle } from "@src/components/Utils/colorsStyle";
 import { CustomAnimatedSvg, closeSvgXml } from "../../Utils/svgsXml";
 import TextDefault from "@src/components/Texts/TextDefault";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 type CloseButtonType = {
   clickFunction: Function;
@@ -29,6 +29,8 @@ export function CloseButton({
   color = colorsStyle.principal.black,
   customPos = { top: 6, right: 6 },
 }: CloseButtonType) {
+  const { translateText } = useTextTranslation();
+
   return (
     <TouchableOpacity
       style={{
@@ -60,6 +62,8 @@ export function SuccessAlert({
   alertText?: string;
   closeFunction: Function;
 }) {
+  const { translateText } = useTextTranslation();
+
   let opacityModal = createOpacity();
 
   return (
@@ -82,6 +86,8 @@ export function ErrorAlert({
   alertText?: string | null;
   closeFunction: Function;
 }) {
+  const { translateText } = useTextTranslation();
+
   const opacityModal = createOpacity();
 
   return (
@@ -98,6 +104,8 @@ export function ErrorAlert({
 }
 
 export function LoadingAlert({ alertText }: { alertText?: string }) {
+  const { translateText } = useTextTranslation();
+
   let opacityModal = createOpacity();
 
   let spinValue = new Animated.Value(0);

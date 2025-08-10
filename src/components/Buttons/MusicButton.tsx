@@ -7,9 +7,11 @@ import { changeIsSelection } from "../Utils/Redux/features/statesMusic-slice";
 import { useMemo } from "react";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeIsHistory } from "../Utils/Redux/features/stateHistory-slice";
-import { translateText } from "i18n/translateText";
+import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
 export default function MusicButton() {
+  const { translateText } = useTextTranslation();
+
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
   const dispatch = useDispatch();
 
