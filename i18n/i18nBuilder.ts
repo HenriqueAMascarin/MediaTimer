@@ -7,7 +7,7 @@ import pt from "./languages/pt-br.json";
 const deviceLanguage = getLocales()[0].languageCode;
 
 i18n.use(initReactI18next).init({
-  compatibilityJSON: 'v3',
+  compatibilityJSON: "v3",
   resources: {
     en,
     pt,

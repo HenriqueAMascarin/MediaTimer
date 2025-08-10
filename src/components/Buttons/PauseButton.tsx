@@ -8,16 +8,14 @@ import PlaySvg from "../../../assets/images/play.svg";
 import { useDispatch } from "react-redux";
 import { changeIsPaused } from "../Utils/Redux/features/stateTimer-slice";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { useTranslation } from "react-i18next";
+import { translateText } from 'i18n/translateText';
 
 export default function PauseButton() {
-  const { t } = useTranslation();
-
   const stateTimer = useAppSelector(({stateTimer}) => stateTimer);
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPaused(!stateTimer.isPaused))} aria-label={t('buttonArias.pause')}>
+    <TouchableOpacity style={[buttonsStyle.buttons, buttonsStyle.principalButton, buttonsStyle.playStateButtons]} onPress={() => dispatch(changeIsPaused(!stateTimer.isPaused))} aria-label={translateText('buttonArias.pause')}>
       {stateTimer.isPaused ? <PlaySvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} /> : <PauseSvg width={"35px"} height={"35px"} fill={colorsStyle.principal.white} />}
     </TouchableOpacity>
   );

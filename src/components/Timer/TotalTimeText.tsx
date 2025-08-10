@@ -3,10 +3,9 @@ import { totalTimeOpacity } from "./TimerAnimations/TimerSequence";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 export default function TotalTimeText() {
-  const { t } = useTranslation();
   const timerValues = useAppSelector(({ timerValues }) => timerValues);
   const { dataTheme } = useTheme();
 
@@ -30,7 +29,7 @@ export default function TotalTimeText() {
         },
       ]}
     >
-      {t("totalText")} {hours}:{minutes}:{seconds}{" "}
+      {translateText("totalText")} {hours}:{minutes}:{seconds}{" "}
     </TextAnimated>
   );
 }

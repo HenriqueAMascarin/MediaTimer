@@ -5,7 +5,7 @@
     "totalText": "Total",
     "musicUnknown": "Music unknown",
     "card": "Card",
-    "alert":{
+    "alert": {
       "enable": "Click to enable the alert when the timer ends",
       "disable": "Click to disable the alert when the timer ends"
     },

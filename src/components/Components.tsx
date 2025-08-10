@@ -15,15 +15,10 @@ import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
-import { stylesGeneral } from "./stylesComponents/stylesGeneral";
-import TextAnimated from "./Texts/TextAnimated";
 import { StatusBar } from "expo-status-bar";
-import { useTranslation } from "react-i18next";
 import Constants from "expo-constants";
 
 export default function Components() {
-  const { t } = useTranslation();
-
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
 
   const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
@@ -54,15 +49,16 @@ export default function Components() {
       if (!jsonValue) {
         AsyncStorage.setItem(alertLocalKey, "true");
       } else {
-        dispatch(changeIsAlert(jsonValue == "true" ? true : false));
+        if (jsonValue == "false") {
+          dispatch(changeIsAlert(false));
+        }
       }
     })();
-
   }
 
   useEffect(() => {
     if (dataTheme != null) {
-       BootData();
+      BootData();
     }
   }, [dataTheme]);
 

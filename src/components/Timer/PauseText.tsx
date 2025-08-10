@@ -2,10 +2,9 @@ import { timerStyle } from "./styles/timerStyle";
 import { textOpacity } from "./TimerAnimations/TimerPause";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 export default function PauseText() {
-  const { t } = useTranslation();
   const { dataTheme } = useTheme();
 
   return (
@@ -17,9 +16,9 @@ export default function PauseText() {
           color: dataTheme.animatedValues.principalColor,
         },
       ]}
-      aria-label={t("pauseText.aria")}
+      aria-label={translateText("pauseText.aria")}
     >
-      {t("pauseText.text")}
+      {translateText("pauseText.text")}
     </TextAnimated>
   );
 }

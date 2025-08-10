@@ -7,15 +7,15 @@ import { animatedModalsOpacity } from "@src/components/Utils/animatedModalsOpaci
 import { colorsStyle } from "@src/components/Utils/colorsStyle";
 import { CustomAnimatedSvg, closeSvgXml } from "../../Utils/svgsXml";
 import TextDefault from "@src/components/Texts/TextDefault";
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 type CloseButtonType = {
-  clickFunction: Function,
-  color?: string | Animated.AnimatedInterpolation<string | number>,
-  customPos?: { top: number, right: number }
-}
+  clickFunction: Function;
+  color?: string | Animated.AnimatedInterpolation<string | number>;
+  customPos?: { top: number; right: number };
+};
 
-function createOpacity(){
+function createOpacity() {
   let opacityModal = new Animated.Value(0);
 
   opacityModal.setValue(0);
@@ -24,9 +24,11 @@ function createOpacity(){
   return opacityModal;
 }
 
-export function CloseButton({ clickFunction, color = colorsStyle.principal.black, customPos = { top: 6, right: 6 } }: CloseButtonType) {
-  const { t } = useTranslation();
-
+export function CloseButton({
+  clickFunction,
+  color = colorsStyle.principal.black,
+  customPos = { top: 6, right: 6 },
+}: CloseButtonType) {
   return (
     <TouchableOpacity
       style={{
@@ -39,16 +41,25 @@ export function CloseButton({ clickFunction, color = colorsStyle.principal.black
         zIndex: 2,
       }}
       onPress={() => clickFunction()}
-      aria-label={t('statusMessages.closeBtnAria')}
+      aria-label={translateText("statusMessages.closeBtnAria")}
     >
-      <CustomAnimatedSvg xml={closeSvgXml} width={"16px"} height={"16px"} color={color} />
+      <CustomAnimatedSvg
+        xml={closeSvgXml}
+        width={"16px"}
+        height={"16px"}
+        color={color}
+      />
     </TouchableOpacity>
-  )
+  );
 }
 
-export function SuccessAlert({ alertText, closeFunction }: { alertText?: string, closeFunction: Function }) {
-  const { t } = useTranslation();
-
+export function SuccessAlert({
+  alertText,
+  closeFunction,
+}: {
+  alertText?: string;
+  closeFunction: Function;
+}) {
   let opacityModal = createOpacity();
 
   return (
@@ -57,14 +68,20 @@ export function SuccessAlert({ alertText, closeFunction }: { alertText?: string,
 
       <CorrectSvg style={{ minWidth: 30 }} />
 
-      <TextDefault>{alertText ?? t('statusMessages.music.success')}</TextDefault>
+      <TextDefault>
+        {alertText ?? translateText("statusMessages.music.success")}
+      </TextDefault>
     </Animated.View>
   );
 }
 
-export function ErrorAlert({ alertText, closeFunction }: { alertText?: string | null, closeFunction: Function }) {
-  const { t } = useTranslation();
-
+export function ErrorAlert({
+  alertText,
+  closeFunction,
+}: {
+  alertText?: string | null;
+  closeFunction: Function;
+}) {
   const opacityModal = createOpacity();
 
   return (
@@ -73,14 +90,14 @@ export function ErrorAlert({ alertText, closeFunction }: { alertText?: string | 
 
       <WarningSvg style={{ minWidth: 30 }} />
 
-      <TextDefault>{alertText ?? t('statusMessages.error')}</TextDefault>
+      <TextDefault>
+        {alertText ?? translateText("statusMessages.error")}
+      </TextDefault>
     </Animated.View>
   );
 }
 
 export function LoadingAlert({ alertText }: { alertText?: string }) {
-  const { t } = useTranslation();
-  
   let opacityModal = createOpacity();
 
   let spinValue = new Animated.Value(0);
@@ -105,7 +122,9 @@ export function LoadingAlert({ alertText }: { alertText?: string }) {
         <LoadingSvg style={{ minWidth: 30 }} />
       </Animated.View>
 
-      <TextDefault>{alertText ?? t('statusMessages.music.searching')}</TextDefault>
+      <TextDefault>
+        {alertText ?? translateText("statusMessages.music.searching")}
+      </TextDefault>
     </Animated.View>
   );
 }

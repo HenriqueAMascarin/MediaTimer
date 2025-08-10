@@ -7,9 +7,9 @@ import React, {
   useState,
 } from "react";
 import { Animated, useColorScheme } from "react-native";
-import { colorsStyle } from "../colorsStyle";
+import { colorsStyle } from "@src/components/Utils/colorsStyle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { themeLocalKey } from "../globalVars";
+import { themeLocalKey } from "@src/components/Utils/globalVars";
 
 export type themesType = "light" | "dark";
 

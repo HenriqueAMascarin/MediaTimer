@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AudioSource } from 'expo-audio';
+import { AudioSource } from "expo-audio";
 
 export type statesMusicType = {
   isSelection: boolean;

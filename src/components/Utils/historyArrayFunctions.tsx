@@ -43,11 +43,6 @@ export async function changeLocalHistoryArray() {
   if (jsonValue) historyValue = JSON.parse(jsonValue);
 
   if (historyValue != null) {
-    // validations
-    historyValue = historyValue.filter(
-      (item) => item.uri?.includes("com.android.externalstorage") == false
-    );
-
     dispatch(changeHistoryArray(historyValue));
   }
 }

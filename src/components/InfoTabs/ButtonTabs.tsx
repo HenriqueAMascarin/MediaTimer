@@ -7,27 +7,35 @@ import { changeIsSelection } from "../Utils/Redux/features/statesMusic-slice";
 import { changeMusic } from "../Utils/buttons";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import React, { useEffect, useRef, useState } from "react";
-import { audioFileSvgXml, CustomAnimatedSvg, fireSvgXml, forestSvgXml, nothingSvgXml, wavesSvgXml } from "../Utils/svgsXml";
+import {
+  audioFileSvgXml,
+  CustomAnimatedSvg,
+  fireSvgXml,
+  forestSvgXml,
+  nothingSvgXml,
+  wavesSvgXml,
+} from "../Utils/svgsXml";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { newHistoryArray } from "../Utils/historyArrayFunctions";
 import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
 import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from "expo-document-picker";
 import TextAnimated from "../Texts/TextAnimated";
-import { useTranslation } from "react-i18next";
 import { fileRegex } from "../Utils/globalVars";
+import { translateText } from "i18n/translateText";
 
 export default function ButtonTabs() {
-
-  const { t } = useTranslation();
-
   const dispatch = useDispatch();
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
   const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const { dataTheme } = useTheme();
 
-  const [status, changeStatus] = useState({ searching: false, success: false, error: false });
+  const [status, changeStatus] = useState({
+    searching: false,
+    success: false,
+    error: false,
+  });
   const [errorText, changeErrorText] = useState<null | string>(null);
 
   let opacityModal = useRef(new Animated.Value(0)).current;
@@ -36,11 +44,29 @@ export default function ButtonTabs() {
     animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
   }, []);
 
-  function changeFire() { changeMusic(stateMusic.pressBtn, { fire: true }, require('@assets/sounds/fire.mp3')) };
+  function changeFire() {
+    changeMusic(
+      stateMusic.pressBtn,
+      { fire: true },
+      require("@assets/sounds/fire.mp3")
+    );
+  }
 
-  function changeWaves() { changeMusic(stateMusic.pressBtn, { waves: true }, require('@assets/sounds/waves.mp3')) };
+  function changeWaves() {
+    changeMusic(
+      stateMusic.pressBtn,
+      { waves: true },
+      require("@assets/sounds/waves.mp3")
+    );
+  }
 
-  function changeForest() { changeMusic(stateMusic.pressBtn, { forest: true }, require('@assets/sounds/forest.mp3')) };
+  function changeForest() {
+    changeMusic(
+      stateMusic.pressBtn,
+      { forest: true },
+      require("@assets/sounds/forest.mp3")
+    );
+  }
 
   function resetAll() {
     changeMusic(stateMusic.pressBtn, { reset: true });
@@ -52,72 +78,134 @@ export default function ButtonTabs() {
     changeStatus({ error: false, searching: true, success: false });
 
     setTimeout(() => {
-      DocumentPicker.getDocumentAsync({ type: ['audio/*'], multiple: false, copyToCacheDirectory: false }).then(async (data) => {
+      DocumentPicker.getDocumentAsync({
+        type: ["audio/*"],
+        multiple: false,
+        copyToCacheDirectory: false,
+      }).then(async (data) => {
         if (data.assets) {
+          if (data.assets[0].uri.includes("com.android.externalstorage")) {
+            changeErrorText(
+              translateText("statusMessages.music.storageInvalid")
+            );
 
-          if (data.assets[0].uri.includes('com.android.externalstorage')) {
-            changeErrorText(t('statusMessages.music.storageInvalid'));
-            
             changeStatus({ error: true, searching: false, success: false });
 
             return;
           }
-          const nameAudio = data.assets[0].name.replace(fileRegex, '');
+          const nameAudio = data.assets[0].name.replace(fileRegex, "");
 
-          const itemFile: historyItem = { isSelected: false, nameMusic: nameAudio.length > 0 ? nameAudio : t('musicUnknown'), uri: data.assets[0].uri }
+          const itemFile: historyItem = {
+            isSelected: false,
+            nameMusic:
+              nameAudio.length > 0 ? nameAudio : translateText("musicUnknown"),
+            uri: data.assets[0].uri,
+          };
 
           await newHistoryArray(stateHistory.historyItems, itemFile);
 
-          await changeMusic(stateMusic.pressBtn, { audioFile: true }, data.assets[0].uri);
+          await changeMusic(
+            stateMusic.pressBtn,
+            { audioFile: true },
+            data.assets[0].uri
+          );
 
           changeStatus({ error: false, searching: false, success: true });
-
         } else if (data.assets == null) {
           resetAll();
 
           changeStatus({ error: true, searching: false, success: false });
         }
-
-      }
-      )
+      });
     }, 400);
-  };
+  }
 
   const onCloseAlerts = () => {
     changeStatus({ error: false, searching: false, success: false });
     dispatch(changeIsSelection(false));
-  }
+  };
 
-  const ButtonsGroup = [{ svgXmlIcon: nothingSvgXml, onPressFunction: resetAll, stateActive: stateMusic.pressBtn.reset, label: t('musicOptions.none') },
-  { svgXmlIcon: forestSvgXml, onPressFunction: changeForest, stateActive: stateMusic.pressBtn.forest, label: t('musicOptions.forest') },
-  { svgXmlIcon: wavesSvgXml, onPressFunction: changeWaves, stateActive: stateMusic.pressBtn.waves, label: t('musicOptions.waves') },
-  { svgXmlIcon: fireSvgXml, onPressFunction: changeFire, stateActive: stateMusic.pressBtn.fire, label: t('musicOptions.bonfire') },
-  { svgXmlIcon: audioFileSvgXml, onPressFunction: changeAudioFile, stateActive: stateMusic.pressBtn.audioFile, label: t('musicOptions.archive') },
-  ]
+  const ButtonsGroup = [
+    {
+      svgXmlIcon: nothingSvgXml,
+      onPressFunction: resetAll,
+      stateActive: stateMusic.pressBtn.reset,
+      label: translateText("musicOptions.none"),
+    },
+    {
+      svgXmlIcon: forestSvgXml,
+      onPressFunction: changeForest,
+      stateActive: stateMusic.pressBtn.forest,
+      label: translateText("musicOptions.forest"),
+    },
+    {
+      svgXmlIcon: wavesSvgXml,
+      onPressFunction: changeWaves,
+      stateActive: stateMusic.pressBtn.waves,
+      label: translateText("musicOptions.waves"),
+    },
+    {
+      svgXmlIcon: fireSvgXml,
+      onPressFunction: changeFire,
+      stateActive: stateMusic.pressBtn.fire,
+      label: translateText("musicOptions.bonfire"),
+    },
+    {
+      svgXmlIcon: audioFileSvgXml,
+      onPressFunction: changeAudioFile,
+      stateActive: stateMusic.pressBtn.audioFile,
+      label: translateText("musicOptions.archive"),
+    },
+  ];
 
   return (
     <>
       <>
         {status.searching && <LoadingAlert />}
-        {status.error && <ErrorAlert closeFunction={onCloseAlerts} alertText={errorText} />}
+        {status.error && (
+          <ErrorAlert closeFunction={onCloseAlerts} alertText={errorText} />
+        )}
         {status.success && <SuccessAlert closeFunction={onCloseAlerts} />}
       </>
 
-      {(!status.error && !status.searching && !status.success) &&
+      {!status.error && !status.searching && !status.success && (
         <Animated.ScrollView horizontal style={{ opacity: opacityModal }}>
           <View style={infoStyles.container}>
             {ButtonsGroup.map((icon, keyItem) => {
               return (
-                <TouchableOpacity style={infoStyles.buttonsInfo} onPress={icon.onPressFunction} key={keyItem} aria-label={`${t('musicOptions.ariaBtn')} ${icon.label}`}>
-                  <CustomAnimatedSvg xml={icon.svgXmlIcon} color={icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor} style={infoStyles.buttonsInfo} />
+                <TouchableOpacity
+                  style={infoStyles.buttonsInfo}
+                  onPress={icon.onPressFunction}
+                  key={keyItem}
+                  aria-label={`${translateText("musicOptions.ariaBtn")} ${
+                    icon.label
+                  }`}
+                >
+                  <CustomAnimatedSvg
+                    xml={icon.svgXmlIcon}
+                    color={
+                      icon.stateActive
+                        ? colorsStyle.principal.blue
+                        : dataTheme.animatedValues.principalColor
+                    }
+                    style={infoStyles.buttonsInfo}
+                  />
 
-                  <TextAnimated style={{ color: icon.stateActive ? colorsStyle.principal.blue : dataTheme.animatedValues.principalColor }}>{icon.label}</TextAnimated>
+                  <TextAnimated
+                    style={{
+                      color: icon.stateActive
+                        ? colorsStyle.principal.blue
+                        : dataTheme.animatedValues.principalColor,
+                    }}
+                  >
+                    {icon.label}
+                  </TextAnimated>
                 </TouchableOpacity>
-              )
+              );
             })}
           </View>
         </Animated.ScrollView>
-      }
+      )}
     </>
   );
 }

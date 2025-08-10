@@ -4,20 +4,14 @@ import { useTheme } from "../Utils/Context/ThemeContext";
 import { timerAlertOpacity } from "./TimerAnimations/TimerSequence";
 import { timerStyle } from "./styles/timerStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
-
 import { alertLocalKey } from "../Utils/globalVars";
-
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useDispatch } from "react-redux";
-
 import { changeIsAlert } from "../Utils/Redux/features/stateAlert-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 export default function TimerAlert() {
-  const { t } = useTranslation();
-
   const { dataTheme } = useTheme();
 
   const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
@@ -38,7 +32,9 @@ export default function TimerAlert() {
     >
       <TouchableOpacity
         onPress={() => changeTimerAlert()}
-        aria-label={t(stateAlert.isAlert ? "alert.disable" : "alert.enable")}
+        aria-label={translateText(
+          stateAlert.isAlert ? "alert.disable" : "alert.enable"
+        )}
       >
         <CustomAnimatedSvg
           width={"24px"}

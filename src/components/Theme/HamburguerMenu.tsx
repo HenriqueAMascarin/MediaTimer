@@ -14,7 +14,7 @@ import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { CloseButton } from "../InfoTabs/Alerts/Components";
 import TextAnimated from "../Texts/TextAnimated";
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 type typeItemTheme = {
   label: string;
@@ -27,8 +27,6 @@ export default function HamburguerMenu({
 }: {
   initialOption: themesType | null;
 }) {
-  const { t } = useTranslation();
-
   const { dataTheme, changeTheme } = useTheme();
 
   const colorScheme = useColorScheme();
@@ -49,9 +47,21 @@ export default function HamburguerMenu({
   }
 
   const [typesTheme, changeTypesTheme] = useState<typeItemTheme[]>([
-    { label: t("theme.options.managedBySystem"), type: null, isActive: false },
-    { label: t("theme.options.white"), type: "light", isActive: false },
-    { label: t("theme.options.dark"), type: "dark", isActive: false },
+    {
+      label: translateText("theme.options.managedBySystem"),
+      type: null,
+      isActive: false,
+    },
+    {
+      label: translateText("theme.options.white"),
+      type: "light",
+      isActive: false,
+    },
+    {
+      label: translateText("theme.options.dark"),
+      type: "dark",
+      isActive: false,
+    },
   ]);
 
   function typesThemeDifference(differentElement: themesType | null) {
@@ -93,7 +103,7 @@ export default function HamburguerMenu({
       <TouchableOpacity
         style={hamburguerStyles.hamburguerContainer}
         onPress={() => toggleModal()}
-        aria-label={t("theme.btnConfigAria")}
+        aria-label={translateText("theme.btnConfigAria")}
       >
         <Animated.View
           style={[
@@ -137,7 +147,7 @@ export default function HamburguerMenu({
                 color: dataTheme.animatedValues.principalColor,
               }}
             >
-              {t("theme.selectTheme")}
+              {translateText("theme.selectTheme")}
             </TextAnimated>
             {typesTheme.map((theme, keyTheme) => {
               return (
@@ -145,7 +155,9 @@ export default function HamburguerMenu({
                   onPress={() => onTheme(theme)}
                   key={keyTheme}
                   style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
-                  aria-label={`${t("theme.selectBtnAria")} ${theme.label}`}
+                  aria-label={`${translateText("theme.selectBtnAria")} ${
+                    theme.label
+                  }`}
                 >
                   <Animated.View
                     style={{
@@ -157,8 +169,12 @@ export default function HamburguerMenu({
                       padding: 2,
                       borderColor: dataTheme.animatedValues.principalColor,
                     }}
-                    aria-label={`${t("theme.text")} ${theme.label} ${
-                      !theme.isActive ? t("theme.notActive") : t("theme.active")
+                    aria-label={`${translateText("theme.text")} ${
+                      theme.label
+                    } ${
+                      !theme.isActive
+                        ? translateText("theme.notActive")
+                        : translateText("theme.active")
                     }`}
                   >
                     {theme.isActive && (

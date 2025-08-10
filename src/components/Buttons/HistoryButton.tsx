@@ -9,12 +9,9 @@ import { changeIsHistory } from "../Utils/Redux/features/stateHistory-slice";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { changeIsSelection } from "../Utils/Redux/features/statesMusic-slice";
 import { useMemo } from "react";
-
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 export default function HistoryButton() {
-  const { t } = useTranslation();
-
   const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const dispatch = useDispatch();
@@ -24,11 +21,33 @@ export default function HistoryButton() {
     dispatch(changeIsHistory(!stateHistory.isHistory));
   }
 
-  const hasItemSelected = useMemo(() => stateHistory.historyItems.find((el) => el.isSelected == true), [stateHistory.historyItems])
+  const hasItemSelected = useMemo(
+    () => stateHistory.historyItems.find((el) => el.isSelected == true),
+    [stateHistory.historyItems]
+  );
 
   return (
-    <TouchableOpacity style={[buttonsStyle.buttons, { backgroundColor: hasItemSelected ? colorsStyle.principal.blue : colorsStyle.principal.gray }]} onPress={() => changeHistory()} aria-label={t('buttonArias.history')}>
-      <HistorySvg width={"35px"} height={"35px"} fill={hasItemSelected ? colorsStyle.principal.white : colorsStyle.principal.black} />
+    <TouchableOpacity
+      style={[
+        buttonsStyle.buttons,
+        {
+          backgroundColor: hasItemSelected
+            ? colorsStyle.principal.blue
+            : colorsStyle.principal.gray,
+        },
+      ]}
+      onPress={() => changeHistory()}
+      aria-label={translateText("buttonArias.history")}
+    >
+      <HistorySvg
+        width={"35px"}
+        height={"35px"}
+        fill={
+          hasItemSelected
+            ? colorsStyle.principal.white
+            : colorsStyle.principal.black
+        }
+      />
     </TouchableOpacity>
   );
 }

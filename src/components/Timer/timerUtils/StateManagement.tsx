@@ -16,7 +16,7 @@ import notifee, {
 } from "@notifee/react-native";
 import BackgroundTimer from "react-native-background-timer";
 
-import { setAudioModeAsync, AudioPlayer, useAudioPlayer } from "expo-audio";
+import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import {
   changeRunningValueTimestamp,
   changeTotalValue,
@@ -25,7 +25,7 @@ import { sequenceTimer } from "../TimerAnimations/TimerSequence";
 import { timerPause } from "../TimerAnimations/TimerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 
-import { useTranslation } from "react-i18next";
+import { translateText } from "i18n/translateText";
 
 type dataType = {
   listOneValue: React.RefObject<number>;
@@ -47,8 +47,6 @@ export default function StateManagement({
   const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
 
   const dispatch = useDispatch();
-
-  const { t } = useTranslation();
 
   const [havePlayed, changeHavePlayed] = useState(false);
 
@@ -138,12 +136,12 @@ export default function StateManagement({
   async function createNotification(
     channelId: string,
     timestamp: number,
-    customTitle: string = t("notification.timerInProgress"),
+    customTitle: string = translateText("notification.timerInProgress"),
     isPaused: boolean = false
   ) {
     await notifee.displayNotification({
       title: customTitle,
-      body: t("notification.dragToCancel"),
+      body: translateText("notification.dragToCancel"),
       id: "MediaTimer",
       android: {
         channelId,
@@ -309,7 +307,7 @@ export default function StateManagement({
           createNotification(
             channelId,
             0,
-            t("notification.timerIsPaused"),
+            translateText("notification.timerIsPaused"),
             true
           );
         } else {

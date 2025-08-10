@@ -8,35 +8,44 @@ import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 
 import { buttonsStyle } from "./styles/buttonsStyle";
-import appersButtons, { opacityInitialButtons, opacityOtherButtons } from "./ButtonsAnimations/ButtonsAnimations";
+import appersButtons, {
+  opacityInitialButtons,
+  opacityOtherButtons,
+} from "./ButtonsAnimations/ButtonsAnimations";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 
 export default function Buttons() {
+  const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
-    const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+  useEffect(() => {
+    appersButtons(stateTimer.isPlay);
+  }, [stateTimer.isPlay]);
 
-    useEffect(() => {
-
-        appersButtons(stateTimer.isPlay);
-
-    }, [stateTimer.isPlay])
-
-    return (
-        <View style={buttonsStyle.buttonsContainer}>
-            {!stateTimer.isPlay
-                ?
-                <Animated.View style={[buttonsStyle.containerInitialButtons, { opacity: opacityInitialButtons }]}>
-                    <MusicButton />
-                    <PlayButton />
-                    <HistoryButton />
-                </Animated.View>
-                :
-                <Animated.View style={[buttonsStyle.containerPlayStateButtons, { opacity: opacityOtherButtons }]}>
-                    <StopButton />
-                    <PauseButton />
-                </Animated.View>
-            }
-        </View>
-    )
+  return (
+    <View style={buttonsStyle.buttonsContainer}>
+      {!stateTimer.isPlay ? (
+        <Animated.View
+          style={[
+            buttonsStyle.containerInitialButtons,
+            { opacity: opacityInitialButtons },
+          ]}
+        >
+          <MusicButton />
+          <PlayButton />
+          <HistoryButton />
+        </Animated.View>
+      ) : (
+        <Animated.View
+          style={[
+            buttonsStyle.containerPlayStateButtons,
+            { opacity: opacityOtherButtons },
+          ]}
+        >
+          <StopButton />
+          <PauseButton />
+        </Animated.View>
+      )}
+    </View>
+  );
 }
