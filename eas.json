@@ -14,9 +14,6 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      },
-      "env": {
-        "ANDROID_SDK_ROOT": "E:\\Programas\\Programador\\Android-Coisas\\AndroidSdk"
       }
     },
     "preview2": {
