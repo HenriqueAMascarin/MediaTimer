@@ -99,18 +99,6 @@ export default function StateManagement({
     return timestampValue;
   }
 
-  function stopTimer() {
-    stopTimerInterval();
-    stopStateAppListener();
-
-    dispatch(changeIsPickingValue(false));
-    dispatch(changeIsPaused(false));
-    dispatch(changeTotalValue(0));
-
-    sequenceTimer(false);
-    timerPause(false);
-  }
-
   function stopTimerInterval() {
     BackgroundTimer.stopBackgroundTimer();
 
@@ -126,6 +114,26 @@ export default function StateManagement({
     refAppListener.current = undefined;
   }
 
+  function stopTimer() {
+    soundRef.removeAllListeners("playbackStatusUpdate");
+
+    soundRef.pause();
+
+    soundRef.seekTo(0);
+
+    notifee.cancelAllNotifications();
+
+    stopTimerInterval();
+    stopStateAppListener();
+
+    dispatch(changeIsPickingValue(false));
+    dispatch(changeIsPaused(false));
+    dispatch(changeTotalValue(0));
+
+    sequenceTimer(false);
+    timerPause(false);
+  }
+
   function pauseTimerAnimation() {
     const isPaused = stateTimer.isPaused;
     timerPause(isPaused);
@@ -137,26 +145,32 @@ export default function StateManagement({
     customTitle: string = translateText("notification.timerInProgress"),
     isPaused: boolean = false
   ) {
-    await notifee.displayNotification({
-      title: customTitle,
-      body: translateText("notification.dragToCancel"),
-      id: "MediaTimer",
-      android: {
-        channelId,
-        autoCancel: false,
-        importance: AndroidImportance.LOW,
-        pressAction: {
-          id: "default",
+    await notifee
+      .displayNotification({
+        title: customTitle,
+        body: translateText("notification.dragToCancel"),
+        id: "MediaTimer",
+        android: {
+          channelId,
+          autoCancel: false,
+          importance: AndroidImportance.LOW,
+          pressAction: {
+            id: "default",
+          },
+          smallIcon: "ic_media_timer",
+          color: "#149CFF",
+          visibility: AndroidVisibility.PUBLIC,
+          showChronometer: !isPaused && true,
+          chronometerDirection: "down",
+          // timestamp * 1000 convertion to utc
+          timestamp: isPaused ? undefined : Date.now() + timestamp * 1000,
         },
-        smallIcon: "ic_media_timer",
-        color: "#149CFF",
-        visibility: AndroidVisibility.PUBLIC,
-        showChronometer: !isPaused && true,
-        chronometerDirection: "down",
-        // timestamp * 1000 convertion to utc
-        timestamp: isPaused ? undefined : Date.now() + timestamp * 1000,
-      },
-    });
+      })
+      .catch((error) => {
+        if (error != null) {
+          dispatch(changeIsPlay(false));
+        }
+      });
   }
 
   async function createChannelId() {
@@ -269,14 +283,6 @@ export default function StateManagement({
           await onDisplayNotification(totalValue);
         })();
       } else {
-        soundRef.removeAllListeners("playbackStatusUpdate");
-
-        soundRef.pause();
-
-        soundRef.seekTo(0);
-
-        notifee.cancelAllNotifications();
-
         stopTimer();
 
         if (stateAlert.isAlert) {

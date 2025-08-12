@@ -32,7 +32,9 @@ export default function Buttons() {
           ]}
         >
           <MusicButton />
+
           <PlayButton />
+
           <HistoryButton />
         </Animated.View>
       ) : (
@@ -43,6 +45,7 @@ export default function Buttons() {
           ]}
         >
           <StopButton />
+          
           <PauseButton />
         </Animated.View>
       )}
