@@ -35,4 +35,4 @@ jobs:
         run: npm ci  
 
       - name: 🚀 Create eas local build to test all app state
-        run: eas build --platform android --profile production
+        run: eas build --platform android --profile production --local
