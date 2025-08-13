@@ -1,0 +1,33 @@
+name: Build Submit Android Eas Expo
+
+on:
+  release:
+   types: [published]
+
+jobs:
+  build_android:
+    if: github.event.release.target_commitish == 'main'
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: npm
+          
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: npm ci  
+
+      - name: 🚀 Create eas production build and submit to play store
+        run: eas build --platform android --profile production --auto-submit
