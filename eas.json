@@ -32,7 +32,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "E:/Programas/json-playstore/henrique-playstore-apps-ec2dde840e23"
+        "serviceAccountKeyPath": "E:/Programas/playStore_Json&Expo_Token/json-playstorehenrique-playstore-apps-ec2dde840e23"
       }
     }
   }
