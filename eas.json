@@ -30,10 +30,6 @@
     }
   },
   "submit": {
-    "production": {
-      "android": {
-        "serviceAccountKeyPath": "E:/Programas/jsonPlaystore/henrique-playstore-apps-ec2dde840e23"
-      }
-    }
+    "production": {}
   }
 }
