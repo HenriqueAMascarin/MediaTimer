@@ -116,37 +116,31 @@ export default function ThemeProvider({ children }: items) {
     ]).start();
   }, [themeType]);
 
-  const backgroundColor = animatedValues.backgroundAnimated.interpolate({
-    inputRange,
-    extrapolate: "clamp",
-    outputRange: [
-      colorsStyle.lightTheme.background,
-      colorsStyle.darkTheme.background,
-    ],
-  });
-
-  const principalColor = animatedValues.principalAnimated.interpolate({
-    inputRange,
-    extrapolate: "clamp",
-    outputRange: [
-      colorsStyle.lightTheme.principal,
-      colorsStyle.darkTheme.principal,
-    ],
-  });
-
-  const secondaryColor = animatedValues.secondaryAnimated.interpolate({
-    inputRange,
-    extrapolate: "clamp",
-    outputRange: [
-      colorsStyle.lightTheme.secondary,
-      colorsStyle.darkTheme.secondary,
-    ],
-  });
-
   const themes = useRef({
-    backgroundColor,
-    principalColor,
-    secondaryColor,
+    backgroundColor: animatedValues.backgroundAnimated.interpolate({
+      inputRange,
+      extrapolate: "clamp",
+      outputRange: [
+        colorsStyle.lightTheme.background,
+        colorsStyle.darkTheme.background,
+      ],
+    }),
+    principalColor: animatedValues.principalAnimated.interpolate({
+      inputRange,
+      extrapolate: "clamp",
+      outputRange: [
+        colorsStyle.lightTheme.principal,
+        colorsStyle.darkTheme.principal,
+      ],
+    }),
+    secondaryColor: animatedValues.secondaryAnimated.interpolate({
+      inputRange,
+      extrapolate: "clamp",
+      outputRange: [
+        colorsStyle.lightTheme.secondary,
+        colorsStyle.darkTheme.secondary,
+      ],
+    }),
   });
 
   return (

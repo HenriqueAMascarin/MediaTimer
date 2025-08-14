@@ -276,6 +276,9 @@ export default function StateManagement({
             );
 
             soundRef.play();
+          } else {
+            // set no audio for soundRef
+            soundRef.replace("");
           }
 
           const totalValue = playTimer();
@@ -316,6 +319,7 @@ export default function StateManagement({
           );
         } else {
           onDisplayNotification(timerValues.runningValueTimestamp);
+
           soundRef.play();
         }
       }
