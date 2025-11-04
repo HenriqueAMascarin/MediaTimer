@@ -11,7 +11,7 @@ const dispatch = store.dispatch;
 export async function changeMusic(
   musicStates: statesMusicType["pressBtn"],
   changeBtn?: {} | null,
-  musicLink: statesMusicType["musicLink"] = null,
+  musicLink: statesMusicType['music']['musicLink'] = null,
   changeHistory = true
 ) {
   if (changeHistory) {

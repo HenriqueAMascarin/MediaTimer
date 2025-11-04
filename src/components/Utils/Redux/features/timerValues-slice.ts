@@ -1,8 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { NativeEventSubscription } from "react-native";
 
-const initialState = {
+export type timerValuesType = {
+  totalValue: number;
+  runningValueTimestamp: number;
+  timerInterval: NodeJS.Timeout | null;
+  appStateListener: NativeEventSubscription | null;
+};
+
+const initialState: timerValuesType = {
   totalValue: 0,
   runningValueTimestamp: 0,
+  timerInterval: null,
+  appStateListener: null,
 };
 
 export const timerValuesSlice = createSlice({
@@ -18,9 +28,25 @@ export const timerValuesSlice = createSlice({
     ) => {
       state.runningValueTimestamp = action.payload;
     },
+    changeTimerInterval: (
+      state,
+      action: PayloadAction<timerValuesType["timerInterval"]>
+    ) => {
+      state.timerInterval = action.payload;
+    },
+    changeAppStateListener: (
+      state,
+      action: PayloadAction<timerValuesType["appStateListener"]>
+    ) => {
+      state.appStateListener = action.payload;
+    },
   },
 });
 
-export const { changeTotalValue, changeRunningValueTimestamp } =
-  timerValuesSlice.actions;
+export const {
+  changeTotalValue,
+  changeRunningValueTimestamp,
+  changeTimerInterval,
+  changeAppStateListener
+} = timerValuesSlice.actions;
 export const timerValuesReducer = timerValuesSlice.reducer;

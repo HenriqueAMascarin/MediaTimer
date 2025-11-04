@@ -78,7 +78,7 @@ export default function StateManagement({
             timerFinalSound.removeAllListeners("playbackStatusUpdate");
 
             timerFinalSound.pause();
-
+            regoierjgoierjgouierjhgoerjjioj
             timerFinalSound.seekTo(0);
           }
         }
@@ -258,11 +258,11 @@ export default function StateManagement({
 
           dispatch(changeIsHistory(false));
 
-          if (stateMusic.musicLink != null) {
+          if (stateMusic.music.link != null) {
             const sound =
-              typeof stateMusic.musicLink == "string"
-                ? { uri: stateMusic.musicLink }
-                : stateMusic.musicLink;
+              typeof stateMusic.music.link == "string"
+                ? { uri: stateMusic.music.link }
+                : stateMusic.music.link;
 
             soundRef.replace(sound);
 
