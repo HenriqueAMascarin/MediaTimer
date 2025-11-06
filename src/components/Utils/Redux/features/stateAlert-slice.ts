@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useAudioPlayer } from 'expo-audio';
 
 const initialState = {
   isAlert: true,
+  alertSound: useAudioPlayer(require("@assets/sounds/timer.mp3"))
 };
 
 export const stateAlertSlice = createSlice({

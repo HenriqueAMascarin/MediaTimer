@@ -9,7 +9,7 @@ import {
   numberCountOpacity,
   listOpacity,
   gapList,
-} from "./TimerAnimations/TimerSequence";
+} from "./TimerAnimations/timerSequence";
 
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";

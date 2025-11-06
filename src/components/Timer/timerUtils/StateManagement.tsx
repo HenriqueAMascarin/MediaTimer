@@ -18,8 +18,8 @@ import {
   changeRunningValueTimestamp,
   changeTotalValue,
 } from "@src/components/Utils/Redux/features/timerValues-slice";
-import { sequenceTimer } from "../TimerAnimations/TimerSequence";
-import { timerPause } from "../TimerAnimations/TimerPause";
+import { sequenceTimer } from "../TimerAnimations/timerSequence";
+import { timerPause } from "../TimerAnimations/timerPause";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 
@@ -69,22 +69,22 @@ export default function StateManagement({
     })();
   }, []);
 
-  useEffect(() => {
-    if (stateAlert.isAlert) {
-      timerFinalSound.addListener(
-        "playbackStatusUpdate",
-        async (playbackStatus) => {
-          if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
-            timerFinalSound.removeAllListeners("playbackStatusUpdate");
+  // useEffect(() => {
+  //   if (stateAlert.isAlert) {
+  //     timerFinalSound.addListener(
+  //       "playbackStatusUpdate",
+  //       async (playbackStatus) => {
+  //         if (playbackStatus.isLoaded && playbackStatus.didJustFinish) {
+  //           timerFinalSound.removeAllListeners("playbackStatusUpdate");
 
-            timerFinalSound.pause();
-            regoierjgoierjgouierjhgoerjjioj
-            timerFinalSound.seekTo(0);
-          }
-        }
-      );
-    }
-  }, [stateAlert.isAlert]);
+  //           timerFinalSound.pause();
+
+  //           timerFinalSound.seekTo(0);
+  //         }
+  //       }
+  //     );
+  //   }
+  // }, [stateAlert.isAlert]);
 
   function playTimer() {
     const numberHours = listOneValue.current * 3600;

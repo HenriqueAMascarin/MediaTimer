@@ -1,4 +1,4 @@
-import { sequenceTimer } from "@src/components/Timer/TimerAnimations/TimerSequence";
+import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 import {
   changeIsSelection,
@@ -9,7 +9,7 @@ import {
   changeTotalValue,
 } from "@src/components/Utils/Redux/features/timerValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
-import { startNotificationAndTimer } from './startNotificationAndTimer';
+import { startNotificationAndTimer } from "./startNotificationAndTimer";
 
 type playTimerType = {
   firstListValue: number;
@@ -40,9 +40,11 @@ function closeMenus() {
 
 export async function initializeTimer(
   { firstListValue, secondListValue, thirdListValue }: playTimerType,
-  { musicLink, audioPlayerState }: statesMusicType["music"]
+  musicLink: statesMusicType["music"]["musicLink"]
 ) {
   if (firstListValue != 0 || secondListValue != 0 || thirdListValue != 0) {
+    const { audioPlayerState } = store.getState().stateMusic.music;
+
     const { timestampValue } = formatTimestampTimer({
       firstListValue,
       secondListValue,

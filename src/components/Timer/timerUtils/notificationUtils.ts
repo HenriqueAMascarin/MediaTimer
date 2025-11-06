@@ -7,10 +7,9 @@ import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-sl
 import { store } from "@src/components/Utils/Redux/store";
 
 type displayTimerNotificationType = {
-  channelId: string;
   totalTimerTimestamp: number;
-  customTitle?: string;
   isPaused?: boolean;
+  customTitle?: string;
 };
 
 const { translateText } = useTextTranslation();
@@ -31,14 +30,21 @@ async function returnChannelId() {
 }
 
 async function displayTimerNotification({
-  channelId,
   totalTimerTimestamp,
-  customTitle = translateText("notification.timerInProgress"),
   isPaused = false,
+  customTitle,
 }: displayTimerNotificationType) {
+  const channelId = await returnChannelId();
+
+  let newCustomTitle = customTitle
+    ? customTitle
+    : isPaused
+    ? translateText("notification.timerIsPaused")
+    : translateText("notification.timerInProgress");
+
   await notifee
     .displayNotification({
-      title: customTitle,
+      title: newCustomTitle,
       body: translateText("notification.dragToCancel"),
       id: "MediaTimer",
       android: {
@@ -66,12 +72,16 @@ async function displayTimerNotification({
     });
 }
 
-export async function requestPermissionAndShowNotification(
-  totalTimerTimestamp: number
-) {
+export async function requestPermissionAndShowNotification({
+  totalTimerTimestamp,
+  isPaused,
+  customTitle,
+}: displayTimerNotificationType) {
   await notifee.requestPermission();
 
-  const channelId = await returnChannelId();
-
-  await displayTimerNotification({ channelId, totalTimerTimestamp });
+  await displayTimerNotification({
+    totalTimerTimestamp,
+    isPaused,
+    customTitle,
+  });
 }

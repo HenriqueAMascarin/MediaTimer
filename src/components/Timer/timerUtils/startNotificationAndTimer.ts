@@ -7,12 +7,15 @@ import { requestPermissionAndShowNotification } from "@src/components/Timer/time
 import { store } from "@src/components/Utils/Redux/store";
 import { AppState } from "react-native";
 import BackgroundTimer from "react-native-background-timer";
-import { stopTimerInterval } from "@src/components/Timer/timerUtils/stopTimerInterval";
+import {
+  stopIntervalTimer,
+  stopTimer,
+} from "@src/components/Timer/timerUtils/stopTimerUtils";
 
 const dispatch = store.dispatch;
 
 export async function startNotificationAndTimer(totalTimerTimestamp: number) {
-  await requestPermissionAndShowNotification(totalTimerTimestamp);
+  await requestPermissionAndShowNotification({ totalTimerTimestamp });
 
   const timeNow = () => {
     return Math.round(Date.now() / 1000);
@@ -33,6 +36,7 @@ export async function startNotificationAndTimer(totalTimerTimestamp: number) {
           const newTimeLeftToAlert = timeLeftToAlert();
 
           if (newTimeLeftToAlert <= 0) {
+            stopTimer();
           } else {
             dispatch(changeRunningValueTimestamp(newTimeLeftToAlert));
           }
@@ -46,17 +50,17 @@ export async function startNotificationAndTimer(totalTimerTimestamp: number) {
   dispatch(
     changeAppStateListener(
       AppState.addEventListener("change", (state) => {
-        const { stateTimer } = store.getState();
+        const { isPlay } = store.getState().stateTimer;
 
-        if (stateTimer.isPlay) {
-          stopTimerInterval();
+        if (isPlay) {
+          stopIntervalTimer();
 
           if (state == "background") {
             // * 1000 to transform to ms
             const timestampToAlert = timeLeftToAlert() * 1000;
 
             BackgroundTimer.runBackgroundTimer(async () => {
-              dispatch(changeIsPlay(false));
+              stopTimer();
             }, timestampToAlert);
           } else if (state == "active") {
             playTimerInternal();

@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
+import { setAudioModeAsync } from 'expo-audio';
 
 export default function Components() {
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -40,6 +41,15 @@ export default function Components() {
   async function BootData() {
     notifee.onBackgroundEvent(eventNotifee);
     notifee.onForegroundEvent(eventNotifee);
+
+    await setAudioModeAsync({
+      shouldPlayInBackground: true,
+      interruptionMode: "doNotMix",
+      playsInSilentMode: true,
+      interruptionModeAndroid: "doNotMix",
+      allowsRecording: false,
+      shouldRouteThroughEarpiece: false,
+    });
 
     await changeLocalHistoryArray();
 

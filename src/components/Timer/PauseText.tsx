@@ -1,5 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
-import { textOpacity } from "./TimerAnimations/TimerPause";
+import { textOpacity } from "./TimerAnimations/timerPause";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
