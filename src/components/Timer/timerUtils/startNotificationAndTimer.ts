@@ -14,7 +14,11 @@ import {
 
 const dispatch = store.dispatch;
 
-export async function startNotificationAndTimer(totalTimerTimestamp: number) {
+export type startNotificationAndTimerType = {
+  totalTimerTimestamp: number
+}
+
+export async function startNotificationAndTimer({totalTimerTimestamp}: startNotificationAndTimerType) {
   await requestPermissionAndShowNotification({ totalTimerTimestamp });
 
   const timeNow = () => {

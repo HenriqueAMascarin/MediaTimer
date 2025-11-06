@@ -9,7 +9,7 @@ import {
   changeTotalValue,
 } from "@src/components/Utils/Redux/features/timerValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
-import { startNotificationAndTimer } from "./startNotificationAndTimer";
+import { startNotificationAndTimer } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
 
 type playTimerType = {
   firstListValue: number;
@@ -27,9 +27,9 @@ function formatTimestampTimer({
   const numberHours = firstListValue * 3600;
   const numberMinutes = secondListValue * 60;
   const numberSeconds = thirdListValue;
-  const timestampValue = numberHours + numberMinutes + numberSeconds;
+  const totalTimerTimestamp = numberHours + numberMinutes + numberSeconds;
 
-  return { timestampValue };
+  return { totalTimerTimestamp };
 }
 
 function closeMenus() {
@@ -45,7 +45,7 @@ export async function initializeTimer(
   if (firstListValue != 0 || secondListValue != 0 || thirdListValue != 0) {
     const { audioPlayerState } = store.getState().stateMusic.music;
 
-    const { timestampValue } = formatTimestampTimer({
+    const { totalTimerTimestamp } = formatTimestampTimer({
       firstListValue,
       secondListValue,
       thirdListValue,
@@ -57,30 +57,30 @@ export async function initializeTimer(
       const sound =
         typeof musicLink == "string" ? { uri: musicLink } : musicLink;
 
-      audioPlayerState.replace(sound);
+      audioPlayerState?.replace(sound);
 
       // Loop for audio on finish
-      audioPlayerState.addListener(
+      audioPlayerState?.addListener(
         "playbackStatusUpdate",
         ({ didJustFinish }) => {
           if (didJustFinish == true) {
-            audioPlayerState.seekTo(0);
+            audioPlayerState?.seekTo(0);
           }
         }
       );
 
-      audioPlayerState.play();
+      audioPlayerState?.play();
     } else {
       // set no audio for audioPlayerState
-      audioPlayerState.replace("");
+      audioPlayerState?.replace("");
     }
 
-    dispatch(changeTotalValue(timestampValue));
+    dispatch(changeTotalValue(totalTimerTimestamp));
 
-    dispatch(changeRunningValueTimestamp(timestampValue));
+    dispatch(changeRunningValueTimestamp(totalTimerTimestamp));
 
     sequenceTimer(true);
 
-    await startNotificationAndTimer(timestampValue);
+    await startNotificationAndTimer({totalTimerTimestamp});
   }
 }

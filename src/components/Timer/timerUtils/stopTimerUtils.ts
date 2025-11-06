@@ -9,7 +9,7 @@ import {
   changeIsPaused,
   changeIsPlay,
 } from "@src/components/Utils/Redux/features/stateTimer-slice";
-import { timerPause } from "@src/components/Timer/TimerAnimations/timerPause";
+import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
 import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
 
@@ -30,11 +30,11 @@ export function stopIntervalTimer() {
 export function stopTimer() {
   const { stateMusic, stateAlert } = store.getState();
 
-  stateMusic.music.audioPlayerState.removeAllListeners("playbackStatusUpdate");
+  stateMusic.music.audioPlayerState?.removeAllListeners("playbackStatusUpdate");
 
-  stateMusic.music.audioPlayerState.pause();
+  stateMusic.music.audioPlayerState?.pause();
 
-  stateMusic.music.audioPlayerState.seekTo(0);
+  stateMusic.music.audioPlayerState?.seekTo(0);
 
   notifee.cancelAllNotifications();
 
@@ -45,8 +45,8 @@ export function stopTimer() {
   dispatch(changeIsPlay(false));
   dispatch(changeTotalValue(0));
 
+  timerPauseOrResume({isGoingToPause: false});
   sequenceTimer(false);
-  timerPause(false);
 
   if (stateAlert.isAlert) {
     stateAlert.alertSound.seekTo(0);
