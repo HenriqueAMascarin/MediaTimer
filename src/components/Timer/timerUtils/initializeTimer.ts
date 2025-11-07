@@ -7,7 +7,7 @@ import {
 import {
   changeRunningValueTimestamp,
   changeTotalValue,
-} from "@src/components/Utils/Redux/features/timerValues-slice";
+} from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
 import { startNotificationAndTimer } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
 
@@ -81,6 +81,6 @@ export async function initializeTimer(
 
     sequenceTimer(true);
 
-    await startNotificationAndTimer({totalTimerTimestamp});
+    await startNotificationAndTimer({ totalTimerTimestamp });
   }
 }

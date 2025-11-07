@@ -17,12 +17,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
-import { setAudioModeAsync } from 'expo-audio';
+import { setAudioModeAsync } from "expo-audio";
 
 export default function Components() {
-  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
-
-  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+  const { stateMusic, stateHistory } = useAppSelector(
+    ({ stateMusic, stateHistory }) => {
+      return { stateMusic, stateHistory };
+    }
+  );
 
   const { dataTheme } = useTheme();
 

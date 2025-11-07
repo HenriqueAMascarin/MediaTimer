@@ -29,9 +29,11 @@ export default function ButtonTabs() {
 
   const dispatch = useDispatch();
 
-  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
-
-  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
+  const { stateMusic, stateHistory } = useAppSelector(
+    ({ stateMusic, stateHistory }) => {
+      return { stateMusic, stateHistory };
+    }
+  );
 
   const { dataTheme } = useTheme();
 
@@ -73,7 +75,7 @@ export default function ButtonTabs() {
   }
 
   function resetAll() {
-    changeMusic(stateMusic.pressBtn, );
+    changeMusic(stateMusic.pressBtn);
 
     changeErrorText(null);
   }

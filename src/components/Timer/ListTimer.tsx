@@ -9,10 +9,13 @@ import {
 import { heightItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { changeListOneCurrentNumber } from "@src/components/Utils/Redux/features/listTimerCurrentValues-slice";
 interface ListTimer {
   timerData: {
     maxNumber: number;
-    currentNumber: React.MutableRefObject<number>;
+    currentNumber: number;
+    dispatchFunction: typeof changeListOneCurrentNumber;
     animated: {
       scrollY: Animated.Value;
     };
@@ -22,6 +25,8 @@ interface ListTimer {
 
 export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+
+  const dispatch = useDispatch();
 
   let maxLengthOneArray = timerData.maxNumber + 1;
 
@@ -70,11 +75,8 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
               ) + 1
             ];
 
-          if (
-            middleNumber != timerData.currentNumber.current &&
-            middleNumber != null
-          ) {
-            timerData.currentNumber.current = middleNumber;
+          if (middleNumber != timerData.currentNumber && middleNumber != null) {
+            dispatch(timerData.dispatchFunction(middleNumber));
           }
 
           const lastItemsBeforeUpdate = 10;

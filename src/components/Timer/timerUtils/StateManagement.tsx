@@ -17,7 +17,7 @@ import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import {
   changeRunningValueTimestamp,
   changeTotalValue,
-} from "@src/components/Utils/Redux/features/timerValues-slice";
+} from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { sequenceTimer } from "../TimerAnimations/timerSequence";
 import { timerPause } from "../TimerAnimations/timerPauseOrResume";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
@@ -297,34 +297,34 @@ export default function StateManagement({
   //   }
   // }, [stateTimer.isPlay]);
 
-  useEffect(() => {
-    (async () => {
-      if (stateTimer.isPlay && havePlayed) {
-        pauseTimerAnimation();
+  // useEffect(() => {
+  //   (async () => {
+  //     if (stateTimer.isPlay && havePlayed) {
+  //       pauseTimerAnimation();
 
-        if (stateTimer.isPaused) {
-          soundRef.pause();
+  //       if (stateTimer.isPaused) {
+  //         soundRef.pause();
 
-          stopTimerInterval();
+  //         stopTimerInterval();
 
-          stopStateAppListener();
+  //         stopStateAppListener();
 
-          const channelId = await createChannelId();
+  //         const channelId = await createChannelId();
 
-          createNotification(
-            channelId,
-            0,
-            translateText("notification.timerIsPaused"),
-            true
-          );
-        } else {
-          onDisplayNotification(timerValues.runningValueTimestamp);
+  //         createNotification(
+  //           channelId,
+  //           0,
+  //           translateText("notification.timerIsPaused"),
+  //           true
+  //         );
+  //       } else {
+  //         onDisplayNotification(timerValues.runningValueTimestamp);
 
-          soundRef.play();
-        }
-      }
-    })();
-  }, [stateTimer.isPaused]);
+  //         soundRef.play();
+  //       }
+  //     }
+  //   })();
+  // }, [stateTimer.isPaused]);
 
   // useEffect(() => {
   //   if (havePlayed) {

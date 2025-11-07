@@ -15,8 +15,8 @@ const initialState: timerValuesType = {
   appStateListener: null,
 };
 
-export const timerValuesSlice = createSlice({
-  name: "timerValues",
+export const timerRunningValuesSlice = createSlice({
+  name: "timerRunningValues",
   initialState,
   reducers: {
     changeTotalValue: (state, action: PayloadAction<number>) => {
@@ -47,6 +47,6 @@ export const {
   changeTotalValue,
   changeRunningValueTimestamp,
   changeTimerInterval,
-  changeAppStateListener
-} = timerValuesSlice.actions;
-export const timerValuesReducer = timerValuesSlice.reducer;
+  changeAppStateListener,
+} = timerRunningValuesSlice.actions;
+export const timerRunningValuesReducer = timerRunningValuesSlice.reducer;

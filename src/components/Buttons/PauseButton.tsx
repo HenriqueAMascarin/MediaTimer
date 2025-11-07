@@ -14,6 +14,7 @@ export default function PauseButton() {
   const { translateText } = useTextTranslation();
 
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+  
   const dispatch = useDispatch();
 
   return (

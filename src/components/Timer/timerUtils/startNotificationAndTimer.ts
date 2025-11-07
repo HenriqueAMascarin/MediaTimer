@@ -2,7 +2,7 @@ import {
   changeAppStateListener,
   changeRunningValueTimestamp,
   changeTimerInterval,
-} from "@src/components/Utils/Redux/features/timerValues-slice";
+} from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { requestPermissionAndShowNotification } from "@src/components/Timer/timerUtils/notificationUtils";
 import { store } from "@src/components/Utils/Redux/store";
 import { AppState } from "react-native";
@@ -11,14 +11,17 @@ import {
   stopIntervalTimer,
   stopTimer,
 } from "@src/components/Timer/timerUtils/stopTimerUtils";
+import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
 
 const dispatch = store.dispatch;
 
 export type startNotificationAndTimerType = {
-  totalTimerTimestamp: number
-}
+  totalTimerTimestamp: number;
+};
 
-export async function startNotificationAndTimer({totalTimerTimestamp}: startNotificationAndTimerType) {
+export async function startNotificationAndTimer({
+  totalTimerTimestamp,
+}: startNotificationAndTimerType) {
   await requestPermissionAndShowNotification({ totalTimerTimestamp });
 
   const timeNow = () => {
@@ -73,4 +76,6 @@ export async function startNotificationAndTimer({totalTimerTimestamp}: startNoti
       })
     )
   );
+
+  dispatch(changeIsPlay(true));
 }

@@ -4,20 +4,28 @@ import PlaySvg from "../../../assets/images/play.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 
-import { useDispatch } from "react-redux";
-import { changeIsPickingValue } from "../Utils/Redux/features/stateTimer-slice";
-
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import { initializeTimer } from "@src/components/Timer/timerUtils/initializeTimer";
+import { useAppSelector } from "@src/components/Utils/Redux/reduxHookCustom";
+import { formatRunningValuesTimestamp } from "@src/components/Timer/timerUtils/formatRunningValuesTimestamp";
 
 export default function PlayButton() {
   const { translateText } = useTextTranslation();
 
-  const dispatch = useDispatch();
+  const timerValues = useAppSelector(({ timerValues }) => timerValues);
+
+  function onPlay() {
+    const { newHours, newMinutes, newSeconds } = formatRunningValuesTimestamp(
+      timerValues.runningValueTimestamp
+    );
+
+    initializeTimer({firstListValue: newHours, secondListValue: newMinutes, thirdListValue: newSeconds});
+  }
 
   return (
     <TouchableOpacity
       style={[buttonsStyle.buttons, buttonsStyle.principalButton]}
-      onPress={() => dispatch(changeIsPickingValue(true))}
+      onPress={onPlay}
       aria-label={translateText("buttonArias.play")}
     >
       <PlaySvg

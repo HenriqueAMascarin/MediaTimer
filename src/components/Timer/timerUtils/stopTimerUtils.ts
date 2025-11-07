@@ -1,7 +1,7 @@
 import {
   changeTimerInterval,
   changeTotalValue,
-} from "@src/components/Utils/Redux/features/timerValues-slice";
+} from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
 import BackgroundTimer from "react-native-background-timer";
 import notifee from "@notifee/react-native";
@@ -45,7 +45,7 @@ export function stopTimer() {
   dispatch(changeIsPlay(false));
   dispatch(changeTotalValue(0));
 
-  timerPauseOrResume({isGoingToPause: false});
+  timerPauseOrResume({ isGoingToPause: false });
   sequenceTimer(false);
 
   if (stateAlert.isAlert) {

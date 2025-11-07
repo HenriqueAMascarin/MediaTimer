@@ -17,57 +17,67 @@ import PauseText from "./PauseText";
 import TotalTimeText from "./TotalTimeText";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import StateManagement from "./timerUtils/StateManagement";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TimerAlert from "./TimerAlert";
 import TextAnimated from "../Texts/TextAnimated";
+import { changeListOneCurrentNumber, changeListThreeCurrentNumber, changeListTwoCurrentNumber } from '@src/components/Utils/Redux/features/listTimerCurrentValues-slice';
 
 export default function Timer() {
-  const timerValues = useAppSelector(({ timerValues }) => timerValues);
+  const { listTimerCurrentValues, timerValues } = useAppSelector(
+    ({ timerValues, listTimerCurrentValues }) => {
+      return { timerValues, listTimerCurrentValues };
+    }
+  );
+  
   const { dataTheme } = useTheme();
 
   const listOne = useRef({
     maxNumber: 29,
-    currentNumber: useRef(0),
+    currentNumber: listTimerCurrentValues.listOneCurrentNumber,
+    dispatchFunction: changeListOneCurrentNumber,
     animated: { scrollY: new Animated.Value(0) },
   });
+
   const listTwo = useRef({
     maxNumber: 59,
-    currentNumber: useRef(0),
+    currentNumber: listTimerCurrentValues.listTwoCurrentNumber,
+    dispatchFunction: changeListTwoCurrentNumber,
     animated: { scrollY: new Animated.Value(0) },
   });
+
   const listThree = useRef({
     maxNumber: 59,
-    currentNumber: useRef(0),
+    currentNumber: listTimerCurrentValues.listThreeCurrentNumber,
+    dispatchFunction: changeListThreeCurrentNumber,
     animated: { scrollY: new Animated.Value(0) },
   });
 
-  const newHours = useMemo(() => {
-    return Math.floor(timerValues.runningValueTimestamp / 3600)
+  const timerFormatedValues = useMemo(() => {
+    const newHours = Math.floor(timerValues.runningValueTimestamp / 3600)
       .toString()
       .padStart(2, "0");
-  }, [timerValues.runningValueTimestamp]);
 
-  const newMinutes = useMemo(() => {
-    return Math.floor((timerValues.runningValueTimestamp % 3600) / 60)
+    const newMinutes = Math.floor(
+      (timerValues.runningValueTimestamp % 3600) / 60
+    )
       .toString()
       .padStart(2, "0");
-  }, [timerValues.runningValueTimestamp]);
 
-  const newSeconds = useMemo(() => {
-    return Math.floor((timerValues.runningValueTimestamp % 3600) % 60)
+    const newSeconds = Math.floor(
+      (timerValues.runningValueTimestamp % 3600) % 60
+    )
       .toString()
       .padStart(2, "0");
+
+    return {
+      newHours,
+      newMinutes,
+      newSeconds,
+    };
   }, [timerValues.runningValueTimestamp]);
 
   return (
     <View>
-      <StateManagement
-        listOneValue={listOne.current.currentNumber}
-        listTwoValue={listTwo.current.currentNumber}
-        listThreeValue={listThree.current.currentNumber}
-      />
-
       <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
         <PauseText />
 
@@ -79,7 +89,7 @@ export default function Timer() {
 
           <TimerNumber
             numberCountOpacity={numberCountOpacity}
-            number={newHours}
+            number={timerFormatedValues.newHours}
           />
         </View>
 
@@ -116,7 +126,7 @@ export default function Timer() {
 
           <TimerNumber
             numberCountOpacity={numberCountOpacity}
-            number={newMinutes}
+            number={timerFormatedValues.newMinutes}
           />
         </View>
 
@@ -152,7 +162,7 @@ export default function Timer() {
 
           <TimerNumber
             numberCountOpacity={numberCountOpacity}
-            number={newSeconds}
+            number={timerFormatedValues.newSeconds}
           />
         </View>
 
