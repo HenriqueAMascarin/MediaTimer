@@ -7,19 +7,28 @@ import { colorsStyle } from "../Utils/colorsStyle";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 import { initializeTimer } from "@src/components/Timer/timerUtils/initializeTimer";
 import { useAppSelector } from "@src/components/Utils/Redux/reduxHookCustom";
-import { formatRunningValuesTimestamp } from "@src/components/Timer/timerUtils/formatRunningValuesTimestamp";
 
 export default function PlayButton() {
   const { translateText } = useTextTranslation();
 
-  const timerValues = useAppSelector(({ timerValues }) => timerValues);
+  const { listTimerCurrentValues, stateMusic } = useAppSelector(
+    ({ listTimerCurrentValues, stateMusic }) => {
+      return { listTimerCurrentValues, stateMusic };
+    }
+  );
 
   function onPlay() {
-    const { newHours, newMinutes, newSeconds } = formatRunningValuesTimestamp(
-      timerValues.runningValueTimestamp
+    initializeTimer(
+      {
+        firstListValue: listTimerCurrentValues.listOneCurrentNumber,
+        secondListValue: listTimerCurrentValues.listTwoCurrentNumber,
+        thirdListValue: listTimerCurrentValues.listThreeCurrentNumber,
+      },
+      {
+        audioPlayerState: stateMusic.music.audioPlayerState,
+        musicLink: stateMusic.music.musicLink,
+      }
     );
-
-    initializeTimer({firstListValue: newHours, secondListValue: newMinutes, thirdListValue: newSeconds});
   }
 
   return (

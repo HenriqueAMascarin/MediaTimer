@@ -16,19 +16,19 @@ import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-sl
 const dispatch = store.dispatch;
 
 export type startNotificationAndTimerType = {
-  totalTimerTimestamp: number;
+  timerTimestamp: number;
 };
 
 export async function startNotificationAndTimer({
-  totalTimerTimestamp,
+  timerTimestamp,
 }: startNotificationAndTimerType) {
-  await requestPermissionAndShowNotification({ totalTimerTimestamp });
+  await requestPermissionAndShowNotification({ timerTimestamp });
 
   const timeNow = () => {
     return Math.round(Date.now() / 1000);
   };
 
-  const initialTimeToAlert = timeNow() + totalTimerTimestamp;
+  const initialTimeToAlert = timeNow() + timerTimestamp;
 
   const timeLeftToAlert = () => {
     const newTimeNow = timeNow();

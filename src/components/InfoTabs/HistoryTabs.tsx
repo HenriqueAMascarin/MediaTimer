@@ -31,9 +31,11 @@ import { useTextTranslation } from "@src/components/Utils/Context/TranslationCon
 export default function HistoryTabs() {
   const { translateText } = useTextTranslation();
 
-  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
-
-  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+  const { stateMusic, stateHistory } = useAppSelector(
+    ({ stateMusic, stateHistory }) => {
+      return { stateMusic, stateHistory };
+    }
+  );
 
   const [status, changeStatus] = useState({
     searching: false,

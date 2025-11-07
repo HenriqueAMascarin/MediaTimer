@@ -40,11 +40,9 @@ function closeMenus() {
 
 export async function initializeTimer(
   { firstListValue, secondListValue, thirdListValue }: playTimerType,
-  musicLink: statesMusicType["music"]["musicLink"]
+  { audioPlayerState, musicLink }: statesMusicType["music"]
 ) {
   if (firstListValue != 0 || secondListValue != 0 || thirdListValue != 0) {
-    const { audioPlayerState } = store.getState().stateMusic.music;
-
     const { totalTimerTimestamp } = formatTimestampTimer({
       firstListValue,
       secondListValue,
@@ -81,6 +79,6 @@ export async function initializeTimer(
 
     sequenceTimer(true);
 
-    await startNotificationAndTimer({ totalTimerTimestamp });
+    await startNotificationAndTimer({ timerTimestamp: totalTimerTimestamp });
   }
 }

@@ -1,21 +1,16 @@
 import { TouchableOpacity } from "react-native";
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
-
 import PauseSvg from "../../../assets/images/pause.svg";
-import PlaySvg from "../../../assets/images/play.svg";
-
-import { useDispatch } from "react-redux";
-import { changeIsPaused } from "../Utils/Redux/features/stateTimer-slice";
-import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import { pauseTimer } from "@src/components/Timer/timerUtils/pauseTimer";
 
 export default function PauseButton() {
   const { translateText } = useTextTranslation();
 
-  const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
-  
-  const dispatch = useDispatch();
+  function onPause() {
+    pauseTimer();
+  }
 
   return (
     <TouchableOpacity
@@ -24,22 +19,14 @@ export default function PauseButton() {
         buttonsStyle.principalButton,
         buttonsStyle.playStateButtons,
       ]}
-      onPress={() => dispatch(changeIsPaused(!stateTimer.isPaused))}
+      onPress={onPause}
       aria-label={translateText("buttonArias.pause")}
     >
-      {stateTimer.isPaused ? (
-        <PlaySvg
-          width={"35px"}
-          height={"35px"}
-          fill={colorsStyle.principal.white}
-        />
-      ) : (
-        <PauseSvg
-          width={"35px"}
-          height={"35px"}
-          fill={colorsStyle.principal.white}
-        />
-      )}
+      <PauseSvg
+        width={"35px"}
+        height={"35px"}
+        fill={colorsStyle.principal.white}
+      />
     </TouchableOpacity>
   );
 }

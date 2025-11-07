@@ -10,12 +10,12 @@ import { heightItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeListOneCurrentNumber } from "@src/components/Utils/Redux/features/listTimerCurrentValues-slice";
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 interface ListTimer {
   timerData: {
     maxNumber: number;
     currentNumber: number;
-    dispatchFunction: typeof changeListOneCurrentNumber;
+    dispatchFunction: ActionCreatorWithPayload<number>;
     animated: {
       scrollY: Animated.Value;
     };

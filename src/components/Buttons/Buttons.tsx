@@ -14,6 +14,7 @@ import appersButtons, {
 } from "./ButtonsAnimations/ButtonsAnimations";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import ResumeButton from "@src/components/Buttons/ResumeButton";
 
 export default function Buttons() {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
@@ -45,8 +46,8 @@ export default function Buttons() {
           ]}
         >
           <StopButton />
-          
-          <PauseButton />
+
+          {stateTimer.isPaused ? <ResumeButton /> : <PauseButton />}
         </Animated.View>
       )}
     </View>

@@ -3,13 +3,15 @@ import StopSvg from "../../../assets/images/stop.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { useDispatch } from "react-redux";
-import { changeIsPlay } from "../Utils/Redux/features/stateTimer-slice";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import { stopTimer } from '@src/components/Timer/timerUtils/stopTimerUtils';
 
 export default function StopButton() {
   const { translateText } = useTextTranslation();
 
-  const dispatch = useDispatch();
+  function onStop(){
+    stopTimer();
+  }
 
   return (
     <TouchableOpacity
@@ -18,7 +20,7 @@ export default function StopButton() {
         buttonsStyle.principalButton,
         buttonsStyle.playStateButtons,
       ]}
-      onPress={() => dispatch(changeIsPlay(false))}
+      onPress={onStop}
       aria-label={translateText("buttonArias.stop")}
     >
       <StopSvg

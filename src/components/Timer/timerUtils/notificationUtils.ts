@@ -7,7 +7,7 @@ import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-sl
 import { store } from "@src/components/Utils/Redux/store";
 
 type displayTimerNotificationType = {
-  totalTimerTimestamp: number;
+  timerTimestamp: number;
   isPaused?: boolean;
   customTitle?: string;
 };
@@ -30,7 +30,7 @@ async function returnChannelId() {
 }
 
 async function displayTimerNotification({
-  totalTimerTimestamp,
+  timerTimestamp,
   isPaused = false,
   customTitle,
 }: displayTimerNotificationType) {
@@ -62,7 +62,7 @@ async function displayTimerNotification({
         // timestamp * 1000 convertion to utc
         timestamp: isPaused
           ? undefined
-          : Date.now() + totalTimerTimestamp * 1000,
+          : Date.now() + timerTimestamp * 1000,
       },
     })
     .catch((error) => {
@@ -73,14 +73,14 @@ async function displayTimerNotification({
 }
 
 export async function requestPermissionAndShowNotification({
-  totalTimerTimestamp,
+  timerTimestamp,
   isPaused,
   customTitle,
 }: displayTimerNotificationType) {
   await notifee.requestPermission();
 
   await displayTimerNotification({
-    totalTimerTimestamp,
+    timerTimestamp,
     isPaused,
     customTitle,
   });

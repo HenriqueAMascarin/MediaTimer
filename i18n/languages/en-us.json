@@ -32,7 +32,8 @@
       "audio": "Button to view audios",
       "pause": "Button to pause the timer",
       "play": "Button to start the timer",
-      "stop": "Button to stop the timer"
+      "stop": "Button to stop the timer",
+      "resume": "Button to resume the timer"
     },
     "history": {
       "aboutSaved": "about the audio saved in history",
