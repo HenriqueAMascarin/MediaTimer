@@ -12,7 +12,7 @@ type displayTimerNotificationType = {
   customTitle?: string;
 };
 
-const { translateText } = useTextTranslation();
+// const { translateText } = useTextTranslation();
 
 const dispatch = store.dispatch;
 
@@ -39,13 +39,13 @@ async function displayTimerNotification({
   let newCustomTitle = customTitle
     ? customTitle
     : isPaused
-    ? translateText("notification.timerIsPaused")
-    : translateText("notification.timerInProgress");
+    ? 'translateText("notification.timerIsPaused")'
+    : 'translateText("notification.timerInProgress");'
 
   await notifee
     .displayNotification({
       title: newCustomTitle,
-      body: translateText("notification.dragToCancel"),
+      body: 'translateText("notification.dragToCancel")',
       id: "MediaTimer",
       android: {
         channelId,

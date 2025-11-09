@@ -14,17 +14,19 @@ import { changeLocalHistoryArray } from "./Utils/historyArrayFunctions";
 import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { changeIsAlert } from "./Utils/Redux/features/stateAlert-slice";
+import {
+  changeAlertSound,
+  changeIsAlert,
+} from "@src/components/Utils/Redux/features/stateAlert-slice";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
-import { setAudioModeAsync } from "expo-audio";
+import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
+import { changeAudioPlayerState } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 export default function Components() {
-  const { stateMusic, stateHistory } = useAppSelector(
-    ({ stateMusic, stateHistory }) => {
-      return { stateMusic, stateHistory };
-    }
-  );
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
+  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const { dataTheme } = useTheme();
 
@@ -43,6 +45,12 @@ export default function Components() {
   async function BootData() {
     notifee.onBackgroundEvent(eventNotifee);
     notifee.onForegroundEvent(eventNotifee);
+
+    dispatch(changeAudioPlayerState(useAudioPlayer()));
+
+    dispatch(
+      changeAlertSound(useAudioPlayer(require("@assets/sounds/timer.mp3")))
+    );
 
     await setAudioModeAsync({
       shouldPlayInBackground: true,

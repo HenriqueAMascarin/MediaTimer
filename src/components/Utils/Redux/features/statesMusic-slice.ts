@@ -12,9 +12,9 @@ export type statesMusicType = {
     audioFile: boolean;
   };
   music: {
-    musicLink: AudioSource | string | null,
-    audioPlayerState: AudioPlayer,
-  }
+    musicLink: AudioSource | string | null;
+    audioPlayerState: AudioPlayer | null;
+  };
 };
 
 const initialState: statesMusicType = {
@@ -28,8 +28,8 @@ const initialState: statesMusicType = {
   },
   music: {
     musicLink: null,
-    audioPlayerState: useAudioPlayer(),
-  }
+    audioPlayerState: null,
+  },
 };
 
 export const stateMusicSlice = createSlice({
@@ -51,9 +51,19 @@ export const stateMusicSlice = createSlice({
     ) => {
       state.music.musicLink = action.payload;
     },
+    changeAudioPlayerState: (
+      state,
+      action: PayloadAction<typeof initialState.music.audioPlayerState>
+    ) => {
+      state.music.audioPlayerState = action.payload;
+    },
   },
 });
 
-export const { changeIsSelection, changePressBtn, changeMusicLink } =
-  stateMusicSlice.actions;
+export const {
+  changeIsSelection,
+  changePressBtn,
+  changeMusicLink,
+  changeAudioPlayerState,
+} = stateMusicSlice.actions;
 export const stateMusicReducer = stateMusicSlice.reducer;

@@ -9,15 +9,13 @@ import { useAppSelector } from "@src/components/Utils/Redux/reduxHookCustom";
 export default function ResumeButton() {
   const { translateText } = useTextTranslation();
 
-  const { timerValues, stateMusic } = useAppSelector(
-    ({ timerValues, stateMusic }) => {
-      return { timerValues, stateMusic };
-    }
-  );
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
+  const timerRunningValues = useAppSelector(({ timerRunningValues }) => timerRunningValues);
 
   function onResume() {
     resumeTimer({
-      runningValueTimestamp: timerValues.runningValueTimestamp,
+      runningValueTimestamp: timerRunningValues.runningValueTimestamp,
       audioPlayerState: stateMusic.music.audioPlayerState,
     });
   }

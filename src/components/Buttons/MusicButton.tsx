@@ -13,6 +13,7 @@ export default function MusicButton() {
   const { translateText } = useTextTranslation();
 
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+  
   const dispatch = useDispatch();
 
   function toggleTab() {

@@ -20,15 +20,19 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TimerAlert from "./TimerAlert";
 import TextAnimated from "../Texts/TextAnimated";
-import { changeListOneCurrentNumber, changeListThreeCurrentNumber, changeListTwoCurrentNumber } from '@src/components/Utils/Redux/features/listTimerCurrentValues-slice';
+import {
+  changeListOneCurrentNumber,
+  changeListThreeCurrentNumber,
+  changeListTwoCurrentNumber,
+} from "@src/components/Utils/Redux/features/listTimerCurrentValues-slice";
 
 export default function Timer() {
-  const { listTimerCurrentValues, timerValues } = useAppSelector(
-    ({ timerValues, listTimerCurrentValues }) => {
-      return { timerValues, listTimerCurrentValues };
-    }
+  const timerRunningValues = useAppSelector(({ timerRunningValues }) => timerRunningValues);
+
+  const listTimerCurrentValues = useAppSelector(
+    ({ listTimerCurrentValues }) => listTimerCurrentValues
   );
-  
+
   const { dataTheme } = useTheme();
 
   const listOne = useRef({
@@ -53,18 +57,18 @@ export default function Timer() {
   });
 
   const timerFormatedValues = useMemo(() => {
-    const newHours = Math.floor(timerValues.runningValueTimestamp / 3600)
+    const newHours = Math.floor(timerRunningValues.runningValueTimestamp / 3600)
       .toString()
       .padStart(2, "0");
 
     const newMinutes = Math.floor(
-      (timerValues.runningValueTimestamp % 3600) / 60
+      (timerRunningValues.runningValueTimestamp % 3600) / 60
     )
       .toString()
       .padStart(2, "0");
 
     const newSeconds = Math.floor(
-      (timerValues.runningValueTimestamp % 3600) % 60
+      (timerRunningValues.runningValueTimestamp % 3600) % 60
     )
       .toString()
       .padStart(2, "0");
@@ -74,7 +78,7 @@ export default function Timer() {
       newMinutes,
       newSeconds,
     };
-  }, [timerValues.runningValueTimestamp]);
+  }, [timerRunningValues.runningValueTimestamp]);
 
   return (
     <View>

@@ -1,6 +1,7 @@
 import {
   changeTimerInterval,
   changeTotalValue,
+  timerRunningValuesType,
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
 import BackgroundTimer from "react-native-background-timer";
@@ -12,12 +13,22 @@ import {
 import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
 import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
+import { stateAlertType } from "@src/components/Utils/Redux/features/stateAlert-slice";
+import { statesMusicType } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 const dispatch = store.dispatch;
 
-export function stopIntervalTimer() {
-  const { timerInterval } = store.getState().timerValues;
+type stopTimerType = {
+  isAlert: stateAlertType["isAlert"];
+  alertSound: stateAlertType["alertSound"];
+  audioPlayerState: statesMusicType["music"]["audioPlayerState"];
+};
 
+type stopIntervalTimerType = {
+  timerInterval: timerRunningValuesType["timerInterval"];
+};
+
+export function stopIntervalTimer({ timerInterval }: stopIntervalTimerType) {
   BackgroundTimer.stopBackgroundTimer();
 
   if (timerInterval) {
@@ -27,18 +38,21 @@ export function stopIntervalTimer() {
   dispatch(changeTimerInterval(null));
 }
 
-export function stopTimer() {
-  const { stateMusic, stateAlert } = store.getState();
+export function stopTimer({
+  isAlert,
+  alertSound
+  audioPlayerState,
+  timerInterval
+}: stopTimerType) {
+  audioPlayerState?.removeAllListeners("playbackStatusUpdate");
 
-  stateMusic.music.audioPlayerState?.removeAllListeners("playbackStatusUpdate");
+  audioPlayerState?.pause();
 
-  stateMusic.music.audioPlayerState?.pause();
-
-  stateMusic.music.audioPlayerState?.seekTo(0);
+  audioPlayerState?.seekTo(0);
 
   notifee.cancelAllNotifications();
 
-  stopIntervalTimer();
+  stopIntervalTimer({timerInterval: });
   removeStateAppListener();
 
   dispatch(changeIsPaused(false));
@@ -48,9 +62,9 @@ export function stopTimer() {
   timerPauseOrResume({ isGoingToPause: false });
   sequenceTimer(false);
 
-  if (stateAlert.isAlert) {
-    stateAlert.alertSound.seekTo(0);
+  if (isAlert && alertSound) {
+    alertSound?.seekTo(0);
 
-    stateAlert.alertSound.play();
+    alertSound?.play();
   }
 }

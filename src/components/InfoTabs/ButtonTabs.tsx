@@ -29,11 +29,9 @@ export default function ButtonTabs() {
 
   const dispatch = useDispatch();
 
-  const { stateMusic, stateHistory } = useAppSelector(
-    ({ stateMusic, stateHistory }) => {
-      return { stateMusic, stateHistory };
-    }
-  );
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
+  const stateHistory = useAppSelector(({ stateHistory }) => stateHistory);
 
   const { dataTheme } = useTheme();
 

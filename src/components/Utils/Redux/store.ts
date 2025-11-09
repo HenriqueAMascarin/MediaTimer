@@ -8,7 +8,7 @@ import { listTimerCurrentValuesReducer } from '@src/components/Utils/Redux/featu
 
 export const store = configureStore({
   reducer: {
-    timerValues: timerRunningValuesReducer,
+    timerRunningValues: timerRunningValuesReducer,
     listTimerCurrentValues: listTimerCurrentValuesReducer,
     stateTimer: stateTimerReducer,
     stateMusic: stateMusicReducer,

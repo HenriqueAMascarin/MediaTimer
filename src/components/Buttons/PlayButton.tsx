@@ -11,10 +11,10 @@ import { useAppSelector } from "@src/components/Utils/Redux/reduxHookCustom";
 export default function PlayButton() {
   const { translateText } = useTextTranslation();
 
-  const { listTimerCurrentValues, stateMusic } = useAppSelector(
-    ({ listTimerCurrentValues, stateMusic }) => {
-      return { listTimerCurrentValues, stateMusic };
-    }
+  const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
+  const listTimerCurrentValues = useAppSelector(
+    ({ listTimerCurrentValues }) => listTimerCurrentValues
   );
 
   function onPlay() {
