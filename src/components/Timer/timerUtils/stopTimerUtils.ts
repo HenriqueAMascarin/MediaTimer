@@ -58,13 +58,17 @@ export function stopTimer({
   notifee.cancelAllNotifications();
 
   stopIntervalTimer({ timerInterval: timerLogicStates.timerInterval });
+
   removeStateAppListener({ appStateListener: timerLogicStates.appStateListener });
 
   dispatch(changeIsPaused(false));
+
   dispatch(changeIsPlay(false));
+
   dispatch(changeTotalValue(0));
 
   timerPauseOrResume({ isGoingToPause: false });
+  
   sequenceTimer(false);
 
   if (alertValues.isAlert && alertValues.alertSoundPlayer) {

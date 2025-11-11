@@ -3,7 +3,10 @@ import {
   changeRunningValueTimestamp,
   changeTimerInterval,
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
-import { requestPermissionAndShowNotification } from "@src/components/Timer/timerUtils/notificationUtils";
+import {
+  displayTimerNotificationType,
+  requestPermissionAndShowNotification,
+} from "@src/components/Timer/timerUtils/notificationUtils";
 import { store } from "@src/components/Utils/Redux/store";
 import { AppState } from "react-native";
 import BackgroundTimer from "react-native-background-timer";
@@ -16,16 +19,20 @@ import { stopTimerType } from "@src/components/Timer/timerUtils/stopTimerUtils";
 
 const dispatch = store.dispatch;
 
-export type startNotificationAndTimerType = {
-  timerTimestamp: number;
+export interface startNotificationAndTimerInterface
+  extends Omit<displayTimerNotificationType, "isPaused"> {
   timerStates: stopTimerType;
-};
+}
 
 export async function startNotificationAndTimer({
   timerTimestamp,
   timerStates,
-}: startNotificationAndTimerType) {
-  await requestPermissionAndShowNotification({ timerTimestamp });
+  translateTextFunction,
+}: startNotificationAndTimerInterface) {
+  await requestPermissionAndShowNotification({
+    timerTimestamp,
+    translateTextFunction,
+  });
 
   const timeNow = () => {
     return Math.round(Date.now() / 1000);

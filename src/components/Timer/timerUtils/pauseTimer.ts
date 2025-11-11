@@ -1,4 +1,7 @@
-import { requestPermissionAndShowNotification } from "@src/components/Timer/timerUtils/notificationUtils";
+import {
+  displayTimerNotificationType,
+  requestPermissionAndShowNotification,
+} from "@src/components/Timer/timerUtils/notificationUtils";
 import { store } from "@src/components/Utils/Redux/store";
 import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
 import { stopIntervalTimer } from "@src/components/Timer/timerUtils/stopTimerUtils";
@@ -10,9 +13,12 @@ import { timerRunningValuesType } from "@src/components/Utils/Redux/features/tim
 const dispatch = store.dispatch;
 
 type pauseTimerType = {
-  audioPlayerState: statesMusicType["music"]["audioPlayerState"];
-  timerInterval: timerRunningValuesType["timerInterval"];
-  appStateListener: timerRunningValuesType["appStateListener"];
+  timerProperties: {
+    audioPlayerState: statesMusicType["music"]["audioPlayerState"];
+    timerInterval: timerRunningValuesType["timerInterval"];
+    appStateListener: timerRunningValuesType["appStateListener"];
+  };
+  translateTextFunction: displayTimerNotificationType['translateTextFunction']
 };
 
 export function pauseOrResumeTimerAnimation(isGoingToPause: boolean) {
@@ -20,23 +26,20 @@ export function pauseOrResumeTimerAnimation(isGoingToPause: boolean) {
 }
 
 export function pauseTimer({
-  audioPlayerState,
-  notificationProperties
-  timerInterval,
-  appStateListener,
+  timerProperties,
+  translateTextFunction,
 }: pauseTimerType) {
   dispatch(changeIsPaused(true));
 
   pauseOrResumeTimerAnimation(true);
 
-  audioPlayerState?.pause();
+  timerProperties.audioPlayerState?.pause();
 
-  stopIntervalTimer({ timerInterval });
+  stopIntervalTimer({ timerInterval: timerProperties.timerInterval });
 
-  removeStateAppListener({ appStateListener });
-
-  requestPermissionAndShowNotification({
-    timerTimestamp: 0,
-    isPaused: true,
+  removeStateAppListener({
+    appStateListener: timerProperties.appStateListener,
   });
+
+  requestPermissionAndShowNotification({timerTimestamp: 0, translateTextFunction});
 }

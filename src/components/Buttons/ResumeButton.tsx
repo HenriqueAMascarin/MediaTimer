@@ -28,6 +28,7 @@ export default function ResumeButton() {
           timerInterval: timerRunningValues.timerInterval,
         },
       },
+      translateTextFunction: translateText,
     });
   }
 

@@ -19,9 +19,12 @@ export default function PauseButton() {
 
   function onPause() {
     pauseTimer({
-      audioPlayerState,
-      timerInterval: timerRunningValues.timerInterval,
-      appStateListener: timerRunningValues.appStateListener,
+      timerProperties: {
+        audioPlayerState,
+        timerInterval: timerRunningValues.timerInterval,
+        appStateListener: timerRunningValues.appStateListener,
+      },
+      translateTextFunction: translateText,
     });
   }
 

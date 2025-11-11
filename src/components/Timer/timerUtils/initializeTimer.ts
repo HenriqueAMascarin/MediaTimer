@@ -10,7 +10,8 @@ import {
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
 import { startNotificationAndTimer } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
-import { stopTimerType } from "./stopTimerUtils";
+import { stopTimerType } from "@src/components/Timer/timerUtils/stopTimerUtils";
+import { displayTimerNotificationType } from "@src/components/Timer/timerUtils/notificationUtils";
 
 type playTimerType = {
   firstListValue: number;
@@ -20,11 +21,18 @@ type playTimerType = {
 
 type initializeTimerType = {
   timerValues: playTimerType;
-  musicLink: statesMusicType["music"]["musicLink"];
   timerStates: stopTimerType;
+  translateTextFunction: displayTimerNotificationType["translateTextFunction"];
+  musicLink: statesMusicType["music"]["musicLink"];
 };
 
 const dispatch = store.dispatch;
+
+function closeMenus() {
+  dispatch(changeIsSelection(false));
+
+  dispatch(changeIsHistory(false));
+}
 
 function formatTimestampTimer({
   firstListValue,
@@ -39,16 +47,11 @@ function formatTimestampTimer({
   return { totalTimerTimestamp };
 }
 
-function closeMenus() {
-  dispatch(changeIsSelection(false));
-
-  dispatch(changeIsHistory(false));
-}
-
 export async function initializeTimer({
   timerValues,
-  musicLink,
   timerStates,
+  translateTextFunction,
+  musicLink,
 }: initializeTimerType) {
   if (
     timerValues.firstListValue != 0 ||
@@ -92,6 +95,7 @@ export async function initializeTimer({
     await startNotificationAndTimer({
       timerTimestamp: totalTimerTimestamp,
       timerStates,
+      translateTextFunction,
     });
   }
 }

@@ -30,7 +30,6 @@ export default function PlayButton() {
         secondListValue: listTimerCurrentValues.listTwoCurrentNumber,
         thirdListValue: listTimerCurrentValues.listThreeCurrentNumber,
       },
-      musicLink: stateMusic.music.musicLink,
       timerStates: {
         alertValues: stateAlert,
         audioPlayerState: stateMusic.music.audioPlayerState,
@@ -39,6 +38,8 @@ export default function PlayButton() {
           timerInterval: timerRunningValues.timerInterval,
         },
       },
+      translateTextFunction: translateText,
+      musicLink: stateMusic.music.musicLink,
     });
   }
 

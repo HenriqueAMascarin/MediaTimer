@@ -7,8 +7,8 @@ import { store } from "@src/components/Utils/Redux/store";
 import { TFunction } from "i18next";
 
 export type displayTimerNotificationType = {
-  translateTextFn: TFunction<"translation", undefined>;
   timerTimestamp: number;
+  translateTextFunction: TFunction<"translation", undefined>;
   isPaused?: boolean;
 };
 
@@ -28,15 +28,15 @@ async function returnChannelId() {
 }
 
 async function displayTimerNotification({
-  translateTextFn,
   timerTimestamp,
+  translateTextFunction,
   isPaused = false,
 }: displayTimerNotificationType) {
   const channelId = await returnChannelId();
 
   let newCustomTitle = isPaused
-    ? translateTextFn("notification.timerIsPaused")
-    : translateTextFn("notification.timerInProgress");
+    ? translateTextFunction("notification.timerIsPaused")
+    : translateTextFunction("notification.timerInProgress");
 
   await notifee
     .displayNotification({
@@ -59,22 +59,18 @@ async function displayTimerNotification({
         timestamp: isPaused ? undefined : Date.now() + timerTimestamp * 1000,
       },
     })
-    .catch((error) => {
-      if (error != null) {
-        dispatch(changeIsPlay(false));
-      }
-    });
+    .catch((error) => dispatch(changeIsPlay(false)));
 }
 
 export async function requestPermissionAndShowNotification({
-  translateTextFn,
   timerTimestamp,
+  translateTextFunction,
   isPaused,
 }: displayTimerNotificationType) {
   await notifee.requestPermission();
 
   await displayTimerNotification({
-    translateTextFn,
+    translateTextFunction,
     timerTimestamp,
     isPaused,
   });
