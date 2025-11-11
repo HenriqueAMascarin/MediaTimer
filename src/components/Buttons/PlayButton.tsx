@@ -17,18 +17,29 @@ export default function PlayButton() {
     ({ listTimerCurrentValues }) => listTimerCurrentValues
   );
 
+  const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
+
+  const timerRunningValues = useAppSelector(
+    ({ timerRunningValues }) => timerRunningValues
+  );
+
   function onPlay() {
-    initializeTimer(
-      {
+    initializeTimer({
+      timerValues: {
         firstListValue: listTimerCurrentValues.listOneCurrentNumber,
         secondListValue: listTimerCurrentValues.listTwoCurrentNumber,
         thirdListValue: listTimerCurrentValues.listThreeCurrentNumber,
       },
-      {
+      musicLink: stateMusic.music.musicLink,
+      timerStates: {
+        alertValues: stateAlert,
         audioPlayerState: stateMusic.music.audioPlayerState,
-        musicLink: stateMusic.music.musicLink,
-      }
-    );
+        timerLogicStates: {
+          appStateListener: timerRunningValues.appStateListener,
+          timerInterval: timerRunningValues.timerInterval,
+        },
+      },
+    });
   }
 
   return (

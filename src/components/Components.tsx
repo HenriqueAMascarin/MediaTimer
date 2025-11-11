@@ -15,7 +15,7 @@ import HamburguerMenu from "./Theme/HamburguerMenu";
 import { useTheme } from "./Utils/Context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  changeAlertSound,
+  changeAlertSoundPlayer,
   changeIsAlert,
 } from "@src/components/Utils/Redux/features/stateAlert-slice";
 import { StatusBar } from "expo-status-bar";
@@ -49,7 +49,7 @@ export default function Components() {
     dispatch(changeAudioPlayerState(useAudioPlayer()));
 
     dispatch(
-      changeAlertSound(useAudioPlayer(require("@assets/sounds/timer.mp3")))
+      changeAlertSoundPlayer(useAudioPlayer(require("@assets/sounds/timer.mp3")))
     );
 
     await setAudioModeAsync({

@@ -3,12 +3,12 @@ import { AudioPlayer } from 'expo-audio';
 
 export type stateAlertType = {
   isAlert: boolean,
-  alertSound: AudioPlayer | null;
+  alertSoundPlayer: AudioPlayer | null;
 }
 
 const initialState: stateAlertType = {
   isAlert: true,
-  alertSound: null,
+  alertSoundPlayer: null,
 };
 
 export const stateAlertSlice = createSlice({
@@ -18,14 +18,14 @@ export const stateAlertSlice = createSlice({
     changeIsAlert: (state, action: PayloadAction<boolean>) => {
       state.isAlert = action.payload;
     },
-    changeAlertSound: (
+    changeAlertSoundPlayer: (
       state,
-      action: PayloadAction<typeof initialState.alertSound>
+      action: PayloadAction<typeof initialState.alertSoundPlayer>
     ) => {
-      state.alertSound = action.payload;
+      state.alertSoundPlayer = action.payload;
     },
   },
 });
 
-export const { changeIsAlert, changeAlertSound } = stateAlertSlice.actions;
+export const { changeIsAlert, changeAlertSoundPlayer } = stateAlertSlice.actions;
 export const stateAlertReducer = stateAlertSlice.reducer;

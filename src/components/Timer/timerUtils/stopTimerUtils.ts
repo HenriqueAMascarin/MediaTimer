@@ -18,10 +18,16 @@ import { statesMusicType } from "@src/components/Utils/Redux/features/statesMusi
 
 const dispatch = store.dispatch;
 
-type stopTimerType = {
-  isAlert: stateAlertType["isAlert"];
-  alertSound: stateAlertType["alertSound"];
+export type stopTimerType = {
+  alertValues: {
+    isAlert: stateAlertType["isAlert"];
+    alertSoundPlayer: stateAlertType["alertSoundPlayer"];
+  };
   audioPlayerState: statesMusicType["music"]["audioPlayerState"];
+  timerLogicStates: {
+    timerInterval: timerRunningValuesType["timerInterval"];
+    appStateListener: timerRunningValuesType["appStateListener"];
+  };
 };
 
 type stopIntervalTimerType = {
@@ -39,10 +45,9 @@ export function stopIntervalTimer({ timerInterval }: stopIntervalTimerType) {
 }
 
 export function stopTimer({
-  isAlert,
-  alertSound
+  alertValues,
   audioPlayerState,
-  timerInterval
+  timerLogicStates,
 }: stopTimerType) {
   audioPlayerState?.removeAllListeners("playbackStatusUpdate");
 
@@ -52,8 +57,8 @@ export function stopTimer({
 
   notifee.cancelAllNotifications();
 
-  stopIntervalTimer({timerInterval: });
-  removeStateAppListener();
+  stopIntervalTimer({ timerInterval: timerLogicStates.timerInterval });
+  removeStateAppListener({ appStateListener: timerLogicStates.appStateListener });
 
   dispatch(changeIsPaused(false));
   dispatch(changeIsPlay(false));
@@ -62,9 +67,9 @@ export function stopTimer({
   timerPauseOrResume({ isGoingToPause: false });
   sequenceTimer(false);
 
-  if (isAlert && alertSound) {
-    alertSound?.seekTo(0);
+  if (alertValues.isAlert && alertValues.alertSoundPlayer) {
+    alertValues.alertSoundPlayer?.seekTo(0);
 
-    alertSound?.play();
+    alertValues.alertSoundPlayer?.play();
   }
 }

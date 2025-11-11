@@ -11,18 +11,18 @@ const dispatch = store.dispatch;
 
 type resumeTimerType = {
   runningValueTimestamp: number;
-  audioPlayerState: statesMusicType["music"]["audioPlayerState"];
+  timerStates: startNotificationAndTimerType['timerStates'];
 };
 
 export default async function resumeTimer({
   runningValueTimestamp,
-  audioPlayerState,
+  timerStates,
 }: resumeTimerType) {
   dispatch(changeIsPaused(false));
 
   timerPauseOrResume({ isGoingToPause: false });
 
-  audioPlayerState?.play();
+  timerStates.audioPlayerState?.play();
 
-  await startNotificationAndTimer({ timerTimestamp: runningValueTimestamp });
+  await startNotificationAndTimer({ timerTimestamp: runningValueTimestamp, timerStates });
 }

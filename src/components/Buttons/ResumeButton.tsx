@@ -11,12 +11,23 @@ export default function ResumeButton() {
 
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
 
-  const timerRunningValues = useAppSelector(({ timerRunningValues }) => timerRunningValues);
+  const stateAlert = useAppSelector(({ stateAlert }) => stateAlert);
+
+  const timerRunningValues = useAppSelector(
+    ({ timerRunningValues }) => timerRunningValues
+  );
 
   function onResume() {
     resumeTimer({
       runningValueTimestamp: timerRunningValues.runningValueTimestamp,
-      audioPlayerState: stateMusic.music.audioPlayerState,
+      timerStates: {
+        alertValues: stateAlert,
+        audioPlayerState: stateMusic.music.audioPlayerState,
+        timerLogicStates: {
+          appStateListener: timerRunningValues.appStateListener,
+          timerInterval: timerRunningValues.timerInterval,
+        },
+      },
     });
   }
 

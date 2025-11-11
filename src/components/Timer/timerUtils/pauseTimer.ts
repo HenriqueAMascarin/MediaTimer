@@ -4,25 +4,36 @@ import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerP
 import { stopIntervalTimer } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
 import { changeIsPaused } from "@src/components/Utils/Redux/features/stateTimer-slice";
+import { statesMusicType } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { timerRunningValuesType } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 
 const dispatch = store.dispatch;
 
+type pauseTimerType = {
+  audioPlayerState: statesMusicType["music"]["audioPlayerState"];
+  timerInterval: timerRunningValuesType["timerInterval"];
+  appStateListener: timerRunningValuesType["appStateListener"];
+};
+
 export function pauseOrResumeTimerAnimation(isGoingToPause: boolean) {
-  timerPauseOrResume({ isGoingToPause: true });
+  timerPauseOrResume({ isGoingToPause });
 }
 
-export function pauseTimer() {
-  const { audioPlayerState } = store.getState().stateMusic.music;
-
+export function pauseTimer({
+  audioPlayerState,
+  notificationProperties
+  timerInterval,
+  appStateListener,
+}: pauseTimerType) {
   dispatch(changeIsPaused(true));
 
   pauseOrResumeTimerAnimation(true);
 
   audioPlayerState?.pause();
 
-  stopIntervalTimer();
+  stopIntervalTimer({ timerInterval });
 
-  removeStateAppListener();
+  removeStateAppListener({ appStateListener });
 
   requestPermissionAndShowNotification({
     timerTimestamp: 0,

@@ -12,15 +12,18 @@ import {
   stopTimer,
 } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
+import { stopTimerType } from "@src/components/Timer/timerUtils/stopTimerUtils";
 
 const dispatch = store.dispatch;
 
 export type startNotificationAndTimerType = {
   timerTimestamp: number;
+  timerStates: stopTimerType;
 };
 
 export async function startNotificationAndTimer({
   timerTimestamp,
+  timerStates,
 }: startNotificationAndTimerType) {
   await requestPermissionAndShowNotification({ timerTimestamp });
 
@@ -43,7 +46,7 @@ export async function startNotificationAndTimer({
           const newTimeLeftToAlert = timeLeftToAlert();
 
           if (newTimeLeftToAlert <= 0) {
-            stopTimer();
+            stopTimer(timerStates);
           } else {
             dispatch(changeRunningValueTimestamp(newTimeLeftToAlert));
           }
@@ -60,14 +63,16 @@ export async function startNotificationAndTimer({
         const { isPlay } = store.getState().stateTimer;
 
         if (isPlay) {
-          stopIntervalTimer();
+          stopIntervalTimer({
+            timerInterval: timerStates.timerLogicStates.timerInterval,
+          });
 
           if (state == "background") {
             // * 1000 to transform to ms
             const timestampToAlert = timeLeftToAlert() * 1000;
 
             BackgroundTimer.runBackgroundTimer(async () => {
-              stopTimer();
+              stopTimer(timerStates);
             }, timestampToAlert);
           } else if (state == "active") {
             playTimerInternal();

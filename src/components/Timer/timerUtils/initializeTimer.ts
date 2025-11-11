@@ -10,11 +10,18 @@ import {
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
 import { startNotificationAndTimer } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
+import { stopTimerType } from "./stopTimerUtils";
 
 type playTimerType = {
   firstListValue: number;
   secondListValue: number;
   thirdListValue: number;
+};
+
+type initializeTimerType = {
+  timerValues: playTimerType;
+  musicLink: statesMusicType["music"]["musicLink"];
+  timerStates: stopTimerType;
 };
 
 const dispatch = store.dispatch;
@@ -38,15 +45,18 @@ function closeMenus() {
   dispatch(changeIsHistory(false));
 }
 
-export async function initializeTimer(
-  { firstListValue, secondListValue, thirdListValue }: playTimerType,
-  { audioPlayerState, musicLink }: statesMusicType["music"]
-) {
-  if (firstListValue != 0 || secondListValue != 0 || thirdListValue != 0) {
+export async function initializeTimer({
+  timerValues,
+  musicLink,
+  timerStates,
+}: initializeTimerType) {
+  if (
+    timerValues.firstListValue != 0 ||
+    timerValues.secondListValue != 0 ||
+    timerValues.thirdListValue != 0
+  ) {
     const { totalTimerTimestamp } = formatTimestampTimer({
-      firstListValue,
-      secondListValue,
-      thirdListValue,
+      ...timerValues,
     });
 
     closeMenus();
@@ -55,22 +65,22 @@ export async function initializeTimer(
       const sound =
         typeof musicLink == "string" ? { uri: musicLink } : musicLink;
 
-      audioPlayerState?.replace(sound);
+      timerStates.audioPlayerState?.replace(sound);
 
       // Loop for audio on finish
-      audioPlayerState?.addListener(
+      timerStates.audioPlayerState?.addListener(
         "playbackStatusUpdate",
         ({ didJustFinish }) => {
           if (didJustFinish == true) {
-            audioPlayerState?.seekTo(0);
+            timerStates.audioPlayerState?.seekTo(0);
           }
         }
       );
 
-      audioPlayerState?.play();
+      timerStates.audioPlayerState?.play();
     } else {
       // set no audio for audioPlayerState
-      audioPlayerState?.replace("");
+      timerStates.audioPlayerState?.replace("");
     }
 
     dispatch(changeTotalValue(totalTimerTimestamp));
@@ -79,6 +89,9 @@ export async function initializeTimer(
 
     sequenceTimer(true);
 
-    await startNotificationAndTimer({ timerTimestamp: totalTimerTimestamp });
+    await startNotificationAndTimer({
+      timerTimestamp: totalTimerTimestamp,
+      timerStates,
+    });
   }
 }

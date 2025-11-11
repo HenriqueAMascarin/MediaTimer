@@ -2,17 +2,15 @@ import notifee, {
   AndroidImportance,
   AndroidVisibility,
 } from "@notifee/react-native";
-import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
 import { store } from "@src/components/Utils/Redux/store";
+import { TFunction } from "i18next";
 
-type displayTimerNotificationType = {
+export type displayTimerNotificationType = {
+  translateTextFn: TFunction<"translation", undefined>;
   timerTimestamp: number;
   isPaused?: boolean;
-  customTitle?: string;
 };
-
-// const { translateText } = useTextTranslation();
 
 const dispatch = store.dispatch;
 
@@ -30,17 +28,15 @@ async function returnChannelId() {
 }
 
 async function displayTimerNotification({
+  translateTextFn,
   timerTimestamp,
   isPaused = false,
-  customTitle,
 }: displayTimerNotificationType) {
   const channelId = await returnChannelId();
 
-  let newCustomTitle = customTitle
-    ? customTitle
-    : isPaused
-    ? 'translateText("notification.timerIsPaused")'
-    : 'translateText("notification.timerInProgress");'
+  let newCustomTitle = isPaused
+    ? translateTextFn("notification.timerIsPaused")
+    : translateTextFn("notification.timerInProgress");
 
   await notifee
     .displayNotification({
@@ -60,9 +56,7 @@ async function displayTimerNotification({
         showChronometer: !isPaused && true,
         chronometerDirection: "down",
         // timestamp * 1000 convertion to utc
-        timestamp: isPaused
-          ? undefined
-          : Date.now() + timerTimestamp * 1000,
+        timestamp: isPaused ? undefined : Date.now() + timerTimestamp * 1000,
       },
     })
     .catch((error) => {
@@ -73,15 +67,15 @@ async function displayTimerNotification({
 }
 
 export async function requestPermissionAndShowNotification({
+  translateTextFn,
   timerTimestamp,
   isPaused,
-  customTitle,
 }: displayTimerNotificationType) {
   await notifee.requestPermission();
 
   await displayTimerNotification({
+    translateTextFn,
     timerTimestamp,
     isPaused,
-    customTitle,
   });
 }
