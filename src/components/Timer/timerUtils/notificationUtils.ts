@@ -41,7 +41,7 @@ async function displayTimerNotification({
   await notifee
     .displayNotification({
       title: newCustomTitle,
-      body: 'translateText("notification.dragToCancel")',
+      body: translateTextFunction("notification.dragToCancel"),
       id: "MediaTimer",
       android: {
         channelId,
@@ -59,7 +59,7 @@ async function displayTimerNotification({
         timestamp: isPaused ? undefined : Date.now() + timerTimestamp * 1000,
       },
     })
-    .catch((error) => dispatch(changeIsPlay(false)));
+    .catch(() => dispatch(changeIsPlay(false)));
 }
 
 export async function requestPermissionAndShowNotification({

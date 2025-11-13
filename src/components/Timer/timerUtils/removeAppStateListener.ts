@@ -3,11 +3,11 @@ import { store } from "@src/components/Utils/Redux/store";
 
 const dispatch = store.dispatch;
 
-type stopTimerType = {
+type removeStateAppListenerType = {
   appStateListener: timerRunningValuesType['appStateListener']
 };
 
-export function removeStateAppListener({appStateListener}: stopTimerType) {
+export function removeStateAppListener({appStateListener}: removeStateAppListenerType) {
   appStateListener?.remove();
 
   dispatch(changeAppStateListener(null));

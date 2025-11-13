@@ -4,26 +4,12 @@ import { colorsStyle } from "../Utils/colorsStyle";
 import PauseSvg from "../../../assets/images/pause.svg";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 import { pauseTimer } from "@src/components/Timer/timerUtils/pauseTimer";
-import { useAppSelector } from "@src/components/Utils/Redux/reduxHookCustom";
 
 export default function PauseButton() {
   const { translateText } = useTextTranslation();
 
-  const audioPlayerState = useAppSelector(
-    ({ stateMusic }) => stateMusic.music.audioPlayerState
-  );
-
-  const timerRunningValues = useAppSelector(
-    ({ timerRunningValues }) => timerRunningValues
-  );
-
   function onPause() {
     pauseTimer({
-      timerProperties: {
-        audioPlayerState,
-        timerInterval: timerRunningValues.timerInterval,
-        appStateListener: timerRunningValues.appStateListener,
-      },
       translateTextFunction: translateText,
     });
   }

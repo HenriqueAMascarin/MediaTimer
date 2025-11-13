@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
 import { themesType, useTheme } from "../Utils/Context/ThemeContext";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
-import { CloseButton } from "../InfoTabs/Alerts/Components";
+import { CloseButton } from "../InfoTabs/Alerts/AlertComponents";
 import TextAnimated from "../Texts/TextAnimated";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 

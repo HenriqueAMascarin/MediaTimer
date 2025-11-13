@@ -4,9 +4,13 @@ import { timerRunningValuesReducer } from "./features/timerRunningValues-slice";
 import { stateMusicReducer } from "./features/statesMusic-slice";
 import { stateHistoryReducer } from "./features/stateHistory-slice";
 import { stateAlertReducer } from "./features/stateAlert-slice";
-import { listTimerCurrentValuesReducer } from '@src/components/Utils/Redux/features/listTimerCurrentValues-slice';
+import { listTimerCurrentValuesReducer } from "@src/components/Utils/Redux/features/listTimerCurrentValues-slice";
 
 export const store = configureStore({
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
   reducer: {
     timerRunningValues: timerRunningValuesReducer,
     listTimerCurrentValues: listTimerCurrentValuesReducer,

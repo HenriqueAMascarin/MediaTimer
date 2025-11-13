@@ -6,6 +6,8 @@ const initialState = {
   listThreeCurrentNumber: 0,
 };
 
+export type listTimerCurrentValuesType = typeof initialState;
+
 export const listTimerCurrentValuesSlice = createSlice({
   name: "listTimerCurrentValues",
   initialState,

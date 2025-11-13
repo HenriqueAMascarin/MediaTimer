@@ -10,23 +10,20 @@ const dispatch = store.dispatch;
 
 interface resumeTimerInterface
   extends Omit<startNotificationAndTimerInterface, "timerTimestamp"> {
-  runningValueTimestamp: number;
 }
 
 export default async function resumeTimer({
-  runningValueTimestamp,
-  timerStates,
   translateTextFunction,
 }: resumeTimerInterface) {
+  const { stateMusic, timerRunningValues } = store.getState();
   dispatch(changeIsPaused(false));
 
   timerPauseOrResume({ isGoingToPause: false });
 
-  timerStates.audioPlayerState?.play();
+  stateMusic.music.audioPlayerState?.play();
 
   await startNotificationAndTimer({
     translateTextFunction,
-    timerTimestamp: runningValueTimestamp,
-    timerStates,
+    timerTimestamp: timerRunningValues.runningValueTimestamp,
   });
 }

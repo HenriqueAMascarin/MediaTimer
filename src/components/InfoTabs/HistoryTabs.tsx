@@ -17,7 +17,7 @@ import {
   SuccessAlert,
   LoadingAlert,
   ErrorAlert,
-} from "@src/components/InfoTabs/Alerts/Components";
+} from "@src/components/InfoTabs/Alerts/AlertComponents";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeMusic } from "../Utils/buttons";

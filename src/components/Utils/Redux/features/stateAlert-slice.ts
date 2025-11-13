@@ -12,7 +12,7 @@ const initialState: stateAlertType = {
 };
 
 export const stateAlertSlice = createSlice({
-  name: "stateMusic",
+  name: "stateAlert",
   initialState,
   reducers: {
     changeIsAlert: (state, action: PayloadAction<boolean>) => {

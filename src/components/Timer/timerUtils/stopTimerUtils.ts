@@ -13,22 +13,8 @@ import {
 import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
 import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
-import { stateAlertType } from "@src/components/Utils/Redux/features/stateAlert-slice";
-import { statesMusicType } from "@src/components/Utils/Redux/features/statesMusic-slice";
 
 const dispatch = store.dispatch;
-
-export type stopTimerType = {
-  alertValues: {
-    isAlert: stateAlertType["isAlert"];
-    alertSoundPlayer: stateAlertType["alertSoundPlayer"];
-  };
-  audioPlayerState: statesMusicType["music"]["audioPlayerState"];
-  timerLogicStates: {
-    timerInterval: timerRunningValuesType["timerInterval"];
-    appStateListener: timerRunningValuesType["appStateListener"];
-  };
-};
 
 type stopIntervalTimerType = {
   timerInterval: timerRunningValuesType["timerInterval"];
@@ -44,22 +30,20 @@ export function stopIntervalTimer({ timerInterval }: stopIntervalTimerType) {
   dispatch(changeTimerInterval(null));
 }
 
-export function stopTimer({
-  alertValues,
-  audioPlayerState,
-  timerLogicStates,
-}: stopTimerType) {
-  audioPlayerState?.removeAllListeners("playbackStatusUpdate");
+export function stopTimer() {
+  const { timerRunningValues, stateMusic, stateAlert } = store.getState();
 
-  audioPlayerState?.pause();
+  removeStateAppListener({
+    appStateListener: timerRunningValues.appStateListener,
+  });
 
-  audioPlayerState?.seekTo(0);
+  stateMusic.music.audioPlayerState?.removeAllListeners("playbackStatusUpdate");
 
-  notifee.cancelAllNotifications();
+  stateMusic.music.audioPlayerState?.pause();
 
-  stopIntervalTimer({ timerInterval: timerLogicStates.timerInterval });
+  stateMusic.music.audioPlayerState?.seekTo(0);
 
-  removeStateAppListener({ appStateListener: timerLogicStates.appStateListener });
+  stopIntervalTimer({ timerInterval: timerRunningValues.timerInterval });
 
   dispatch(changeIsPaused(false));
 
@@ -68,12 +52,14 @@ export function stopTimer({
   dispatch(changeTotalValue(0));
 
   timerPauseOrResume({ isGoingToPause: false });
-  
+
   sequenceTimer(false);
 
-  if (alertValues.isAlert && alertValues.alertSoundPlayer) {
-    alertValues.alertSoundPlayer?.seekTo(0);
+  if (stateAlert.isAlert) {
+    stateAlert.alertSoundPlayer?.seekTo(0);
 
-    alertValues.alertSoundPlayer?.play();
+    stateAlert.alertSoundPlayer?.play();
   }
+
+  notifee.cancelAllNotifications();
 }

@@ -7,7 +7,6 @@ import { useAppSelector } from "./Utils/Redux/reduxHookCustom";
 import { alertLocalKey } from "./Utils/globalVars";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
 import notifee, { Event, EventType } from "@notifee/react-native";
 import HistoryTabs from "./InfoTabs/HistoryTabs";
 import { changeLocalHistoryArray } from "./Utils/historyArrayFunctions";
@@ -22,6 +21,14 @@ import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import { changeAudioPlayerState } from "@src/components/Utils/Redux/features/statesMusic-slice";
+import * as SplashScreen from "expo-splash-screen";
+import { stopTimer } from "@src/components/Timer/timerUtils/stopTimerUtils";
+
+const eventNotifee = async ({ type }: Event) => {
+  if (type === EventType.DISMISSED) {
+    stopTimer();
+  }
+};
 
 export default function Components() {
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
@@ -32,25 +39,20 @@ export default function Components() {
 
   const dispatch = useDispatch();
 
-  const eventNotifee = async ({ type, detail }: Event) => {
-    const { notification } = detail;
-    if (type === EventType.DISMISSED) {
-      if (notification?.id) {
-        await notifee.cancelNotification(notification.id);
-        dispatch(changeIsPlay(false));
-      }
-    }
-  };
+  const initialAudioPlayerState = useAudioPlayer();
+
+  const initialAlertAudioPlayer = useAudioPlayer(
+    require("@assets/sounds/timer.mp3")
+  );
 
   async function BootData() {
     notifee.onBackgroundEvent(eventNotifee);
+
     notifee.onForegroundEvent(eventNotifee);
 
-    dispatch(changeAudioPlayerState(useAudioPlayer()));
+    dispatch(changeAudioPlayerState(initialAudioPlayerState));
 
-    dispatch(
-      changeAlertSoundPlayer(useAudioPlayer(require("@assets/sounds/timer.mp3")))
-    );
+    dispatch(changeAlertSoundPlayer(initialAlertAudioPlayer));
 
     await setAudioModeAsync({
       shouldPlayInBackground: true,
@@ -74,13 +76,13 @@ export default function Components() {
         }
       }
     })();
+
+    SplashScreen.hideAsync();
   }
 
   useEffect(() => {
-    if (dataTheme != null) {
-      BootData();
-    }
-  }, [dataTheme]);
+    BootData();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, position: "relative" }}>

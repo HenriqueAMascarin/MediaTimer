@@ -1,29 +1,17 @@
 import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
-import {
-  changeIsSelection,
-  statesMusicType,
-} from "@src/components/Utils/Redux/features/statesMusic-slice";
+import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 import {
   changeRunningValueTimestamp,
   changeTotalValue,
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
 import { startNotificationAndTimer } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
-import { stopTimerType } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { displayTimerNotificationType } from "@src/components/Timer/timerUtils/notificationUtils";
-
-type playTimerType = {
-  firstListValue: number;
-  secondListValue: number;
-  thirdListValue: number;
-};
+import { listTimerCurrentValuesType } from '@src/components/Utils/Redux/features/listTimerCurrentValues-slice';
 
 type initializeTimerType = {
-  timerValues: playTimerType;
-  timerStates: stopTimerType;
   translateTextFunction: displayTimerNotificationType["translateTextFunction"];
-  musicLink: statesMusicType["music"]["musicLink"];
 };
 
 const dispatch = store.dispatch;
@@ -35,31 +23,32 @@ function closeMenus() {
 }
 
 function formatTimestampTimer({
-  firstListValue,
-  secondListValue,
-  thirdListValue,
-}: playTimerType) {
-  const numberHours = firstListValue * 3600;
-  const numberMinutes = secondListValue * 60;
-  const numberSeconds = thirdListValue;
+  listOneCurrentNumber,
+  listTwoCurrentNumber,
+  listThreeCurrentNumber,
+}: listTimerCurrentValuesType) {
+  const numberHours = listOneCurrentNumber * 3600;
+  const numberMinutes = listTwoCurrentNumber * 60;
+  const numberSeconds = listThreeCurrentNumber;
   const totalTimerTimestamp = numberHours + numberMinutes + numberSeconds;
 
   return { totalTimerTimestamp };
 }
 
 export async function initializeTimer({
-  timerValues,
-  timerStates,
   translateTextFunction,
-  musicLink,
 }: initializeTimerType) {
+  const { stateMusic, listTimerCurrentValues } = store.getState();
+
   if (
-    timerValues.firstListValue != 0 ||
-    timerValues.secondListValue != 0 ||
-    timerValues.thirdListValue != 0
+    listTimerCurrentValues.listOneCurrentNumber != 0 ||
+    listTimerCurrentValues.listTwoCurrentNumber != 0 ||
+    listTimerCurrentValues.listThreeCurrentNumber != 0
   ) {
+    const musicLink = stateMusic.music.musicLink;
+
     const { totalTimerTimestamp } = formatTimestampTimer({
-      ...timerValues,
+      ...listTimerCurrentValues,
     });
 
     closeMenus();
@@ -68,22 +57,22 @@ export async function initializeTimer({
       const sound =
         typeof musicLink == "string" ? { uri: musicLink } : musicLink;
 
-      timerStates.audioPlayerState?.replace(sound);
+      stateMusic.music.audioPlayerState?.replace(sound);
 
       // Loop for audio on finish
-      timerStates.audioPlayerState?.addListener(
+      stateMusic.music.audioPlayerState?.addListener(
         "playbackStatusUpdate",
         ({ didJustFinish }) => {
           if (didJustFinish == true) {
-            timerStates.audioPlayerState?.seekTo(0);
+            stateMusic.music.audioPlayerState?.seekTo(0);
           }
         }
       );
 
-      timerStates.audioPlayerState?.play();
+      stateMusic.music.audioPlayerState?.play();
     } else {
       // set no audio for audioPlayerState
-      timerStates.audioPlayerState?.replace("");
+      stateMusic.music.audioPlayerState?.replace("");
     }
 
     dispatch(changeTotalValue(totalTimerTimestamp));
@@ -94,7 +83,6 @@ export async function initializeTimer({
 
     await startNotificationAndTimer({
       timerTimestamp: totalTimerTimestamp,
-      timerStates,
       translateTextFunction,
     });
   }
