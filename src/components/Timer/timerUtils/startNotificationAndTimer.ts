@@ -1,7 +1,8 @@
 import {
   changeAppStateListener,
+  changeBackgroundTimerTimeout,
+  changeInternalTimerInterval,
   changeRunningValueTimestamp,
-  changeTimerInterval,
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import {
   displayTimerNotificationType,
@@ -11,16 +12,15 @@ import { store } from "@src/components/Utils/Redux/store";
 import { AppState } from "react-native";
 import BackgroundTimer from "react-native-background-timer";
 import {
-  stopIntervalTimer,
   stopTimer,
+  removeClocks,
 } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
 
 const dispatch = store.dispatch;
 
 export interface startNotificationAndTimerInterface
-  extends Omit<displayTimerNotificationType, "isPaused"> {
-}
+  extends Omit<displayTimerNotificationType, "isPaused"> {}
 
 export async function startNotificationAndTimer({
   timerTimestamp,
@@ -45,7 +45,7 @@ export async function startNotificationAndTimer({
 
   function playTimerInternal() {
     dispatch(
-      changeTimerInterval(
+      changeInternalTimerInterval(
         setInterval(() => {
           const newTimeLeftToAlert = timeLeftToAlert();
 
@@ -64,20 +64,24 @@ export async function startNotificationAndTimer({
   dispatch(
     changeAppStateListener(
       AppState.addEventListener("change", (state) => {
-        const { stateTimer, timerRunningValues} = store.getState();
+        const { stateTimer, timerRunningValues } = store.getState();
 
         if (stateTimer.isPlay) {
-          stopIntervalTimer({
-            timerInterval: timerRunningValues.timerInterval,
+          removeClocks({
+            timers: timerRunningValues.timers,
           });
 
           if (state == "background") {
             // * 1000 to transform to ms
             const timestampToAlert = timeLeftToAlert() * 1000;
 
-            BackgroundTimer.runBackgroundTimer(async () => {
-              stopTimer();
-            }, timestampToAlert);
+            dispatch(
+              changeBackgroundTimerTimeout(
+                BackgroundTimer.setTimeout(async () => {
+                  stopTimer();
+                }, timestampToAlert)
+              )
+            );
           } else if (state == "active") {
             playTimerInternal();
           }

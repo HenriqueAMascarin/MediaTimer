@@ -24,11 +24,11 @@ import { changeAudioPlayerState } from "@src/components/Utils/Redux/features/sta
 import * as SplashScreen from "expo-splash-screen";
 import { stopTimer } from "@src/components/Timer/timerUtils/stopTimerUtils";
 
-const eventNotifee = async ({ type }: Event) => {
+async function eventNotifee({ type }: Event) {
   if (type === EventType.DISMISSED) {
     stopTimer();
   }
-};
+}
 
 export default function Components() {
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);

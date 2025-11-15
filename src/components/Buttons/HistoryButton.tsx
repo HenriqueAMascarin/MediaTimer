@@ -20,6 +20,7 @@ export default function HistoryButton() {
 
   function changeHistory() {
     dispatch(changeIsSelection(false));
+    
     dispatch(changeIsHistory(!stateHistory.isHistory));
   }
 

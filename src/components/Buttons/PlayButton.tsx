@@ -10,7 +10,6 @@ import { initializeTimer } from "@src/components/Timer/timerUtils/initializeTime
 export default function PlayButton() {
   const { translateText } = useTextTranslation();
 
-
   function onPlay() {
     initializeTimer({
       translateTextFunction: translateText,

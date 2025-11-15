@@ -16,6 +16,7 @@ export default async function resumeTimer({
   translateTextFunction,
 }: resumeTimerInterface) {
   const { stateMusic, timerRunningValues } = store.getState();
+  
   dispatch(changeIsPaused(false));
 
   timerPauseOrResume({ isGoingToPause: false });

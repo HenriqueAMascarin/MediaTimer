@@ -1,5 +1,6 @@
 import {
-  changeTimerInterval,
+  changeBackgroundTimerTimeout,
+  changeInternalTimerInterval,
   changeTotalValue,
   timerRunningValuesType,
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
@@ -17,33 +18,35 @@ import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeA
 const dispatch = store.dispatch;
 
 type stopIntervalTimerType = {
-  timerInterval: timerRunningValuesType["timerInterval"];
+  timers: timerRunningValuesType["timers"];
 };
 
-export function stopIntervalTimer({ timerInterval }: stopIntervalTimerType) {
-  BackgroundTimer.stopBackgroundTimer();
+export function removeClocks({ timers }: stopIntervalTimerType) {
+  if (timers.internalTimerInterval) {
+    clearInterval(timers.internalTimerInterval);
 
-  if (timerInterval) {
-    clearInterval(timerInterval);
+    dispatch(changeInternalTimerInterval(null));
   }
 
-  dispatch(changeTimerInterval(null));
+  if (timers.backgroundTimerTimeout) {
+    BackgroundTimer.clearTimeout(timers.backgroundTimerTimeout);
+    
+    dispatch(changeBackgroundTimerTimeout(null));
+  }
 }
 
 export function stopTimer() {
   const { timerRunningValues, stateMusic, stateAlert } = store.getState();
 
+  removeClocks({ timers: timerRunningValues.timers });
+
   removeStateAppListener({
     appStateListener: timerRunningValues.appStateListener,
   });
 
-  stateMusic.music.audioPlayerState?.removeAllListeners("playbackStatusUpdate");
-
   stateMusic.music.audioPlayerState?.pause();
 
   stateMusic.music.audioPlayerState?.seekTo(0);
-
-  stopIntervalTimer({ timerInterval: timerRunningValues.timerInterval });
 
   dispatch(changeIsPaused(false));
 

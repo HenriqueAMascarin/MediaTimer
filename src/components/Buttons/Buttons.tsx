@@ -8,7 +8,7 @@ import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 
 import { buttonsStyle } from "./styles/buttonsStyle";
-import appersButtons, {
+import appearsButtons, {
   opacityInitialButtons,
   opacityOtherButtons,
 } from "./ButtonsAnimations/ButtonsAnimations";
@@ -20,7 +20,7 @@ export default function Buttons() {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
   useEffect(() => {
-    appersButtons(stateTimer.isPlay);
+    appearsButtons(stateTimer.isPlay);
   }, [stateTimer.isPlay]);
 
   return (

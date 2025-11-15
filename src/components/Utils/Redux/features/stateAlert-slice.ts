@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AudioPlayer } from 'expo-audio';
+import { AudioPlayer } from "expo-audio";
+import { store } from "@src/components/Utils/Redux/store";
 
 export type stateAlertType = {
-  isAlert: boolean,
+  isAlert: boolean;
   alertSoundPlayer: AudioPlayer | null;
-}
-
+};
 const initialState: stateAlertType = {
   isAlert: true,
   alertSoundPlayer: null,
@@ -27,5 +27,6 @@ export const stateAlertSlice = createSlice({
   },
 });
 
-export const { changeIsAlert, changeAlertSoundPlayer } = stateAlertSlice.actions;
+export const { changeIsAlert, changeAlertSoundPlayer } =
+  stateAlertSlice.actions;
 export const stateAlertReducer = stateAlertSlice.reducer;

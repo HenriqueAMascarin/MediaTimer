@@ -8,7 +8,7 @@ import {
 import { store } from "@src/components/Utils/Redux/store";
 import { startNotificationAndTimer } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
 import { displayTimerNotificationType } from "@src/components/Timer/timerUtils/notificationUtils";
-import { listTimerCurrentValuesType } from '@src/components/Utils/Redux/features/listTimerCurrentValues-slice';
+import { listTimerCurrentValuesType } from "@src/components/Utils/Redux/features/listTimerCurrentValues-slice";
 
 type initializeTimerType = {
   translateTextFunction: displayTimerNotificationType["translateTextFunction"];
@@ -53,26 +53,35 @@ export async function initializeTimer({
 
     closeMenus();
 
-    if (musicLink != null) {
-      const sound =
-        typeof musicLink == "string" ? { uri: musicLink } : musicLink;
+    if (stateMusic.music.audioPlayerState) {
+      if (musicLink != null) {
+        const sound =
+          typeof musicLink == "string" ? { uri: musicLink } : musicLink;
 
-      stateMusic.music.audioPlayerState?.replace(sound);
+        stateMusic.music.audioPlayerState.replace(sound);
 
-      // Loop for audio on finish
-      stateMusic.music.audioPlayerState?.addListener(
-        "playbackStatusUpdate",
-        ({ didJustFinish }) => {
-          if (didJustFinish == true) {
-            stateMusic.music.audioPlayerState?.seekTo(0);
-          }
+        const notHasListenerPlaybackStatusUpdate =
+          stateMusic.music.audioPlayerState.listenerCount(
+            "playbackStatusUpdate"
+          ) <= 0;
+
+        if (notHasListenerPlaybackStatusUpdate) {
+          // Loop for audio on finish
+          stateMusic.music.audioPlayerState?.addListener(
+            "playbackStatusUpdate",
+            ({ didJustFinish }) => {
+              if (didJustFinish == true) {
+                stateMusic.music.audioPlayerState?.seekTo(0);
+              }
+            }
+          );
         }
-      );
 
-      stateMusic.music.audioPlayerState?.play();
-    } else {
-      // set no audio for audioPlayerState
-      stateMusic.music.audioPlayerState?.replace("");
+        stateMusic.music.audioPlayerState.play();
+      } else {
+        // set no audio for audioPlayerState
+        stateMusic.music.audioPlayerState?.replace("");
+      }
     }
 
     dispatch(changeTotalValue(totalTimerTimestamp));

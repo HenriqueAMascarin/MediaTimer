@@ -1,18 +1,25 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { NativeEventSubscription } from "react-native";
+import { TimeoutId } from "react-native-background-timer";
 
 export type timerRunningValuesType = {
   totalValue: number;
   runningValueTimestamp: number;
-  timerInterval: NodeJS.Timeout | null;
   appStateListener: NativeEventSubscription | null;
+  timers: {
+    internalTimerInterval: NodeJS.Timeout | null;
+    backgroundTimerTimeout: TimeoutId | null;
+  };
 };
 
 const initialState: timerRunningValuesType = {
   totalValue: 0,
   runningValueTimestamp: 0,
-  timerInterval: null,
   appStateListener: null,
+  timers: {
+    internalTimerInterval: null,
+    backgroundTimerTimeout: null,
+  },
 };
 
 export const timerRunningValuesSlice = createSlice({
@@ -28,11 +35,21 @@ export const timerRunningValuesSlice = createSlice({
     ) => {
       state.runningValueTimestamp = action.payload;
     },
-    changeTimerInterval: (
+    changeInternalTimerInterval: (
       state,
-      action: PayloadAction<timerRunningValuesType["timerInterval"]>
+      action: PayloadAction<
+        timerRunningValuesType["timers"]["internalTimerInterval"]
+      >
     ) => {
-      state.timerInterval = action.payload;
+      state.timers.internalTimerInterval = action.payload;
+    },
+    changeBackgroundTimerTimeout: (
+      state,
+      action: PayloadAction<
+        timerRunningValuesType["timers"]["backgroundTimerTimeout"]
+      >
+    ) => {
+      state.timers.backgroundTimerTimeout = action.payload;
     },
     changeAppStateListener: (
       state,
@@ -46,7 +63,9 @@ export const timerRunningValuesSlice = createSlice({
 export const {
   changeTotalValue,
   changeRunningValueTimestamp,
-  changeTimerInterval,
   changeAppStateListener,
+  changeInternalTimerInterval,
+  changeBackgroundTimerTimeout,
 } = timerRunningValuesSlice.actions;
+
 export const timerRunningValuesReducer = timerRunningValuesSlice.reducer;

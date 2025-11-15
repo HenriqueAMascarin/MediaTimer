@@ -4,7 +4,7 @@ import {
 } from "@src/components/Timer/timerUtils/notificationUtils";
 import { store } from "@src/components/Utils/Redux/store";
 import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
-import { stopIntervalTimer } from "@src/components/Timer/timerUtils/stopTimerUtils";
+import { removeClocks } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
 import { changeIsPaused } from "@src/components/Utils/Redux/features/stateTimer-slice";
 
@@ -18,9 +18,7 @@ export function pauseOrResumeTimerAnimation(isGoingToPause: boolean) {
   timerPauseOrResume({ isGoingToPause });
 }
 
-export function pauseTimer({
-  translateTextFunction,
-}: pauseTimerType) {
+export function pauseTimer({ translateTextFunction }: pauseTimerType) {
   const { stateMusic, timerRunningValues } = store.getState();
 
   dispatch(changeIsPaused(true));
@@ -29,7 +27,7 @@ export function pauseTimer({
 
   stateMusic.music.audioPlayerState?.pause();
 
-  stopIntervalTimer({ timerInterval: timerRunningValues.timerInterval });
+  removeClocks({ timers: timerRunningValues.timers });
 
   removeStateAppListener({
     appStateListener: timerRunningValues.appStateListener,

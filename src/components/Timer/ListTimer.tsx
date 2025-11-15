@@ -75,7 +75,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
               ) + 1
             ];
 
-          if (middleNumber != timerData.currentNumber && middleNumber != null) {
+          if ( middleNumber != null) {
             dispatch(timerData.dispatchFunction(middleNumber));
           }
 
