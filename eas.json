@@ -5,7 +5,7 @@
   "build": {
     "production": {
       "env": {
-        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android-Coisas/AndroidSdk"
+        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android/AndroidSdk"
       }
     },
     "development": {
@@ -15,7 +15,7 @@
         "buildType": "apk"
       },
       "env": {
-        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android-Coisas/AndroidSdk"
+        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android/AndroidSdk"
       }
     },
     "preview": {
@@ -24,7 +24,7 @@
         "buildType": "apk"
       },
       "env": {
-        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android-Coisas/AndroidSdk"
+        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android/AndroidSdk"
       }
     }
   },
