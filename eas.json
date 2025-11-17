@@ -3,30 +3,29 @@
     "version": ">= 3.13.0"
   },
   "build": {
-    "production": {},
+    "production": {
+      "env": {
+        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android-Coisas/AndroidSdk"
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android-Coisas/AndroidSdk"
       }
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "ANDROID_SDK_ROOT": "E:/Programas/Programador/Android-Coisas/AndroidSdk"
       }
-    },
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "developmentClient": true
-    },
-    "preview4": {
-      "distribution": "internal"
     }
   },
   "submit": {
