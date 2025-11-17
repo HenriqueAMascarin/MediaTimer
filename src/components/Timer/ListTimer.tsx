@@ -11,22 +11,22 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { listOpacity } from '@src/components/Timer/TimerAnimations/timerSequence';
+
 interface ListTimer {
   timerData: {
     maxNumber: number;
     currentNumber: number;
     dispatchFunction: ActionCreatorWithPayload<number>;
-    animated: {
-      scrollY: Animated.Value;
-    };
   };
-  opacityAnimated: Animated.Value;
 }
 
-export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
+export default function ListTimer({ timerData }: ListTimer) {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
   const dispatch = useDispatch();
+
+  const listScrollY = useRef(new Animated.Value(0));
 
   let maxLengthOneArray = timerData.maxNumber + 1;
 
@@ -60,7 +60,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
     [
       {
         nativeEvent: {
-          contentOffset: { y: timerData.animated.scrollY },
+          contentOffset: { y: listScrollY.current },
         },
       },
     ],
@@ -132,7 +132,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
     <View>
       <Animated.ScrollView
         ref={reflist}
-        style={{ opacity: opacityAnimated }}
+        style={{ opacity: listOpacity }}
         onScroll={handleScroll}
         decelerationRate={"fast"}
         snapToOffsets={arrayOffsets}
@@ -148,7 +148,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
             <AnimatedNumber
               itemIndex={index}
               itemNumber={number}
-              scrollY={timerData.animated.scrollY}
+              scrollY={listScrollY.current}
               key={index}
               transitionNewScroll={newScrollTransition}
             />
