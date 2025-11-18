@@ -3,28 +3,18 @@
     "version": ">= 3.13.0"
   },
   "build": {
-    "production": {
-      "env": {
-        "ANDROID_SDK_ROOT": "E:\Programas\Programador\Android\AndroidSdk"
-      }
-    },
+    "production": {},
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      },
-      "env": {
-        "ANDROID_SDK_ROOT": "E:\Programas\Programador\Android\AndroidSdk"
       }
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      },
-      "env": {
-        "ANDROID_SDK_ROOT": "E:\Programas\Programador\Android\AndroidSdk"
       }
     }
   },

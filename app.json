@@ -36,7 +36,9 @@
           "imageWidth": 240
         }
       ],
-      "expo-audio"
+      "expo-audio",
+      "expo-font",
+      "expo-asset"
     ]
   }
 }
