@@ -38,7 +38,16 @@
       ],
       "expo-audio",
       "expo-font",
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "useLegacyPackaging": true
+          },
+          "ios": {}
+        }
+      ]
     ]
   }
 }
