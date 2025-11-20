@@ -95,18 +95,21 @@ export default function HistoryTabs() {
 
   async function changeItemSelected(item: historyItem) {
     if (!item.isSelected) {
+      let newArr = structuredClone(stateHistory.historyItems);
+
+      let success = false;
+
       changeErrorText(null);
 
       changeStatus({ searching: true, success: false, error: false });
 
-      let newArr = [...stateHistory.historyItems];
+      newArr.forEach((item) => {
+        if (item.isSelected) {
+          item.isSelected = false;
+        }
+      });
 
-      for (let key = 0; key < newArr.length; key++) {
-        newArr[key].isSelected = false;
-      }
-
-      let success = false;
-
+      // setTimeout is to let the modal show a little before the request of fetch blob that is going do a stuck to the app
       setTimeout(async () => {
         if (item.uri) {
           await PermissionsAndroid.requestMultiple([

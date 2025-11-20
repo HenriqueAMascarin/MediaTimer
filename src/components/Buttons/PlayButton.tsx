@@ -1,9 +1,7 @@
-import { TouchableOpacity } from "react-native/";
+import { TouchableOpacity } from "react-native";
 import PlaySvg from "../../../assets/images/play.svg";
-
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
-
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
 import { initializeTimer } from "@src/components/Timer/timerUtils/initializeTimer";
 

@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Animated } from "react-native";
+import { View, Animated } from "react-native";
 import Buttons from "./Buttons/Buttons";
 import ComponentTimer from "./Timer/ComponentTimer";
 import { buttonsStyle } from "./Buttons/styles/buttonsStyle";
@@ -85,7 +85,7 @@ export default function Components() {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, position: "relative" }}>
+    <View style={{ flex: 1, position: "relative" }}>
       <StatusBar />
 
       <Animated.View
@@ -114,6 +114,6 @@ export default function Components() {
           <Buttons />
         </View>
       </Animated.View>
-    </SafeAreaView>
+    </View>
   );
 }

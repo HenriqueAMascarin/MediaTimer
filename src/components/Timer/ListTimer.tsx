@@ -6,7 +6,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import { heightItem } from "./styles/timerStyle";
+import { sizeItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -50,7 +50,7 @@ export default function ListTimer({ timerData }: ListTimer) {
     let array: number[] = [];
 
     for (let i = 0; i < arrayNumbers.length - 1; i++) {
-      array.push(i * heightItem);
+      array.push(i * sizeItem);
     }
 
     return array;
@@ -81,10 +81,10 @@ export default function ListTimer({ timerData }: ListTimer) {
 
           const lastItemsBeforeUpdate = 10;
 
-          const lowPosToAdd = heightItem * lastItemsBeforeUpdate;
+          const lowPosToAdd = sizeItem * lastItemsBeforeUpdate;
 
           const highPosToAdd =
-            heightItem * (arrayNumbers.length - lastItemsBeforeUpdate);
+            sizeItem * (arrayNumbers.length - lastItemsBeforeUpdate);
 
           const isTopInfinite =
             event.nativeEvent.contentOffset.y <= lowPosToAdd;
@@ -95,7 +95,7 @@ export default function ListTimer({ timerData }: ListTimer) {
             if (isTopInfinite) {
               const newBottomY =
                 event.nativeEvent.contentOffset.y +
-                heightItem * maxLengthOneArray;
+                sizeItem * maxLengthOneArray;
 
               changeNewScrollTransition(newBottomY);
 
@@ -108,7 +108,7 @@ export default function ListTimer({ timerData }: ListTimer) {
             if (isBottomInfinite) {
               const newTopY =
                 event.nativeEvent.contentOffset.y -
-                heightItem * maxLengthOneArray;
+                sizeItem * maxLengthOneArray;
 
               changeNewScrollTransition(newTopY);
 
@@ -141,7 +141,7 @@ export default function ListTimer({ timerData }: ListTimer) {
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
         scrollEnabled={stateTimer.isPlay ? false : true}
-        contentOffset={{ y: heightItem * timerData.maxNumber, x: 0 }}
+        contentOffset={{ y: sizeItem * timerData.maxNumber, x: 0 }}
       >
         {arrayNumbers.map((number, index: number) => {
           return (

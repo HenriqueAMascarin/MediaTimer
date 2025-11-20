@@ -1,9 +1,9 @@
 import { timerStyle } from "./styles/timerStyle";
 import { Animated, View } from "react-native";
-import { heightItem } from "./styles/timerStyle";
+import { sizeItem } from "./styles/timerStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface AnimatedNumber {
   itemIndex: number;
@@ -20,40 +20,30 @@ export default function AnimatedNumber({
 }: AnimatedNumber) {
   const { dataTheme } = useTheme();
 
-  let numberOpacity: Animated.AnimatedInterpolation<string | number> | number =
-    useRef(new Animated.Value(0.5)).current;
-  let numberTransform:
-    | Animated.AnimatedInterpolation<string | number>
-    | number = useRef(new Animated.Value(0.8)).current;
-
   const inputRange = [
-    (itemIndex - 2) * heightItem,
-    (itemIndex - 1) * heightItem,
-    itemIndex * heightItem,
+    (itemIndex - 2) * sizeItem,
+    (itemIndex - 1) * sizeItem,
+    itemIndex * sizeItem,
   ];
 
-  numberOpacity = scrollY.interpolate({
+  let numberOpacity = scrollY.interpolate({
     inputRange,
     outputRange: [0.5, 1, 0.5],
     extrapolate: "clamp",
   });
 
-  numberTransform = scrollY.interpolate({
+  let numberTransform = scrollY.interpolate({
     inputRange,
     outputRange: [0.85, 1, 0.85],
     extrapolate: "clamp",
   });
 
-  const [isSameIndexTransition, changeIsSameIndexTransition] = useState(false);
-
-  useEffect(() => {
+  const isSameIndexTransition = useMemo(() => {
     let status = transitionNewScroll
       ? transitionNewScroll == inputRange[1]
       : false;
 
-    if (status != isSameIndexTransition) {
-      changeIsSameIndexTransition(status);
-    }
+    return status;
   }, [transitionNewScroll]);
 
   return (
