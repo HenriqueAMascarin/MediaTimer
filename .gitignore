@@ -56,7 +56,4 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# pnpm lock
-pnpm-lock.yaml
-
 # @end expo-cli
