@@ -23,12 +23,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
-      - name: 📦 Install dependencies
-        run: pnpm install
       - name: 🚚 Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+      - name: 📦 Install dependencies
+        run: pnpm install
       - name: 🚀 Create eas local build to test all app state
         run: pnpm eas build --platform android --profile production --local
