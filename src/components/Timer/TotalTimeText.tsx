@@ -1,5 +1,5 @@
 import { timerStyle } from "./styles/timerStyle";
-import { totalTimeOpacity } from "./TimerAnimations/timerSequence";
+import { totalTimeOpacity } from "@src/components/Timer/TimerAnimations/timerSequence";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
