@@ -1,23 +1,23 @@
-import { TouchableOpacity } from "react-native/";
+import { TouchableOpacity } from "react-native";
 import PlaySvg from "../../../assets/images/play.svg";
-
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
-
-import { useDispatch } from "react-redux";
-import { changeIsPickingValue } from "../Utils/Redux/features/stateTimer-slice";
-
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import { initializeTimer } from "@src/components/Timer/timerUtils/initializeTimer";
 
 export default function PlayButton() {
   const { translateText } = useTextTranslation();
 
-  const dispatch = useDispatch();
+  function onPlay() {
+    initializeTimer({
+      translateTextFunction: translateText,
+    });
+  }
 
   return (
     <TouchableOpacity
       style={[buttonsStyle.buttons, buttonsStyle.principalButton]}
-      onPress={() => dispatch(changeIsPickingValue(true))}
+      onPress={onPlay}
       aria-label={translateText("buttonArias.play")}
     >
       <PlaySvg

@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native/";
+import { TouchableOpacity } from "react-native";
 import MusicSvg from "../../../assets/images/music.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -13,6 +13,7 @@ export default function MusicButton() {
   const { translateText } = useTextTranslation();
 
   const stateMusic = useAppSelector(({ stateMusic }) => stateMusic);
+
   const dispatch = useDispatch();
 
   function toggleTab() {

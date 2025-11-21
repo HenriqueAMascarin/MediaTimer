@@ -1,5 +1,5 @@
 import { Animated, View } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import PauseButton from "./PauseButton";
 import MusicButton from "./MusicButton";
@@ -8,18 +8,40 @@ import PlayButton from "./PlayButton";
 import StopButton from "./StopButton";
 
 import { buttonsStyle } from "./styles/buttonsStyle";
-import appersButtons, {
-  opacityInitialButtons,
-  opacityOtherButtons,
-} from "./ButtonsAnimations/ButtonsAnimations";
-
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
+import ResumeButton from "@src/components/Buttons/ResumeButton";
 
 export default function Buttons() {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
+  let opacityInitialButtons = useRef(new Animated.Value(1));
+
+  let opacityOtherButtons = useRef(new Animated.Value(0));
+
+  function appearsButtonsOnPlayState() {
+    // Without setTimeout, the buttons will not appear
+    setTimeout(() => {
+      const isPlay = stateTimer.isPlay;
+
+      Animated.parallel([
+        Animated.timing(opacityInitialButtons.current, {
+          toValue: isPlay ? 0 : 1,
+          duration: 300,
+          delay: isPlay ? 1 : 220,
+          useNativeDriver: false,
+        }),
+        Animated.timing(opacityOtherButtons.current, {
+          toValue: isPlay ? 1 : 0,
+          duration: 300,
+          delay: isPlay ? 220 : 1,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    }, 10);
+  }
+
   useEffect(() => {
-    appersButtons(stateTimer.isPlay);
+    appearsButtonsOnPlayState();
   }, [stateTimer.isPlay]);
 
   return (
@@ -28,7 +50,7 @@ export default function Buttons() {
         <Animated.View
           style={[
             buttonsStyle.containerInitialButtons,
-            { opacity: opacityInitialButtons },
+            { opacity: opacityInitialButtons.current },
           ]}
         >
           <MusicButton />
@@ -41,12 +63,12 @@ export default function Buttons() {
         <Animated.View
           style={[
             buttonsStyle.containerPlayStateButtons,
-            { opacity: opacityOtherButtons },
+            { opacity: opacityOtherButtons.current },
           ]}
         >
           <StopButton />
-          
-          <PauseButton />
+
+          {stateTimer.isPaused ? <ResumeButton /> : <PauseButton />}
         </Animated.View>
       )}
     </View>

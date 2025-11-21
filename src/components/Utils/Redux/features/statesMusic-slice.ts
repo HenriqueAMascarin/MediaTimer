@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AudioSource } from "expo-audio";
+import { AudioPlayer, AudioSource, useAudioPlayer } from "expo-audio";
 
 export type statesMusicType = {
   isSelection: boolean;
@@ -11,7 +11,10 @@ export type statesMusicType = {
     fire: boolean;
     audioFile: boolean;
   };
-  musicLink: AudioSource | string | null;
+  music: {
+    musicLink: AudioSource | string | null;
+    audioPlayerState: AudioPlayer | null;
+  };
 };
 
 const initialState: statesMusicType = {
@@ -23,7 +26,10 @@ const initialState: statesMusicType = {
     fire: false,
     audioFile: false,
   },
-  musicLink: null,
+  music: {
+    musicLink: null,
+    audioPlayerState: null,
+  },
 };
 
 export const stateMusicSlice = createSlice({
@@ -41,13 +47,23 @@ export const stateMusicSlice = createSlice({
     },
     changeMusicLink: (
       state,
-      action: PayloadAction<typeof initialState.musicLink>
+      action: PayloadAction<typeof initialState.music.musicLink>
     ) => {
-      state.musicLink = action.payload;
+      state.music.musicLink = action.payload;
+    },
+    changeAudioPlayerState: (
+      state,
+      action: PayloadAction<typeof initialState.music.audioPlayerState>
+    ) => {
+      state.music.audioPlayerState = action.payload;
     },
   },
 });
 
-export const { changeIsSelection, changePressBtn, changeMusicLink } =
-  stateMusicSlice.actions;
+export const {
+  changeIsSelection,
+  changePressBtn,
+  changeMusicLink,
+  changeAudioPlayerState,
+} = stateMusicSlice.actions;
 export const stateMusicReducer = stateMusicSlice.reducer;

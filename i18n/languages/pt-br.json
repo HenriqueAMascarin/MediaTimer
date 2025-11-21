@@ -30,9 +30,10 @@
     "buttonArias": {
       "history": "Botão para ver o histórico",
       "audio": "Botão para ver os áudios",
-      "pause": "Botão de pausar o timer", 
-      "play": "Botão de acionar o timer",
-      "stop": "Botão de parar o timer"
+      "pause": "Botão de pausar o cronômetro", 
+      "play": "Botão de acionar o cronômetro",
+      "stop": "Botão de parar o cronômetro",
+      "resume": "Botão para retomar o cronômetro"
     },
     "history":{
       "aboutSaved": "sobre o áudio salvo no histórico",

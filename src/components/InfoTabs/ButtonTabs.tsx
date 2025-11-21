@@ -18,7 +18,11 @@ import {
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { newHistoryArray } from "../Utils/historyArrayFunctions";
 import { historyItem } from "../Utils/Redux/features/stateHistory-slice";
-import { ErrorAlert, LoadingAlert, SuccessAlert } from "./Alerts/Components";
+import {
+  ErrorAlert,
+  LoadingAlert,
+  SuccessAlert,
+} from "./Alerts/AlertComponents";
 import * as DocumentPicker from "expo-document-picker";
 import TextAnimated from "../Texts/TextAnimated";
 import { fileRegex } from "../Utils/globalVars";
@@ -73,7 +77,7 @@ export default function ButtonTabs() {
   }
 
   function resetAll() {
-    changeMusic(stateMusic.pressBtn, );
+    changeMusic(stateMusic.pressBtn);
 
     changeErrorText(null);
   }

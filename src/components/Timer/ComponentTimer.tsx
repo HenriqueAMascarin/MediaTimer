@@ -7,9 +7,8 @@ import {
   lineAnimated,
   linePointsOpacity,
   numberCountOpacity,
-  listOpacity,
   gapList,
-} from "./TimerAnimations/TimerSequence";
+} from "./TimerAnimations/timerSequence";
 
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
@@ -17,69 +16,79 @@ import PauseText from "./PauseText";
 import TotalTimeText from "./TotalTimeText";
 
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import StateManagement from "./timerUtils/StateManagement";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TimerAlert from "./TimerAlert";
 import TextAnimated from "../Texts/TextAnimated";
+import {
+  changeListOneCurrentNumber,
+  changeListThreeCurrentNumber,
+  changeListTwoCurrentNumber,
+} from "@src/components/Utils/Redux/features/listTimerCurrentValues-slice";
 
 export default function Timer() {
-  const timerValues = useAppSelector(({ timerValues }) => timerValues);
+  const timerRunningValues = useAppSelector(
+    ({ timerRunningValues }) => timerRunningValues
+  );
+
+  const listTimerCurrentValues = useAppSelector(
+    ({ listTimerCurrentValues }) => listTimerCurrentValues
+  );
+
   const { dataTheme } = useTheme();
 
   const listOne = useRef({
     maxNumber: 29,
-    currentNumber: useRef(0),
-    animated: { scrollY: new Animated.Value(0) },
+    currentNumber: listTimerCurrentValues.listOneCurrentNumber,
+    dispatchFunction: changeListOneCurrentNumber,
   });
+
   const listTwo = useRef({
     maxNumber: 59,
-    currentNumber: useRef(0),
-    animated: { scrollY: new Animated.Value(0) },
+    currentNumber: listTimerCurrentValues.listTwoCurrentNumber,
+    dispatchFunction: changeListTwoCurrentNumber,
   });
+
   const listThree = useRef({
     maxNumber: 59,
-    currentNumber: useRef(0),
-    animated: { scrollY: new Animated.Value(0) },
+    currentNumber: listTimerCurrentValues.listThreeCurrentNumber,
+    dispatchFunction: changeListThreeCurrentNumber,
   });
 
-  const newHours = useMemo(() => {
-    return Math.floor(timerValues.runningValueTimestamp / 3600)
+  const timerFormatedValues = useMemo(() => {
+    const newHours = Math.floor(timerRunningValues.runningValueTimestamp / 3600)
       .toString()
       .padStart(2, "0");
-  }, [timerValues.runningValueTimestamp]);
 
-  const newMinutes = useMemo(() => {
-    return Math.floor((timerValues.runningValueTimestamp % 3600) / 60)
+    const newMinutes = Math.floor(
+      (timerRunningValues.runningValueTimestamp % 3600) / 60
+    )
       .toString()
       .padStart(2, "0");
-  }, [timerValues.runningValueTimestamp]);
 
-  const newSeconds = useMemo(() => {
-    return Math.floor((timerValues.runningValueTimestamp % 3600) % 60)
+    const newSeconds = Math.floor(
+      (timerRunningValues.runningValueTimestamp % 3600) % 60
+    )
       .toString()
       .padStart(2, "0");
-  }, [timerValues.runningValueTimestamp]);
+
+    return {
+      newHours,
+      newMinutes,
+      newSeconds,
+    };
+  }, [timerRunningValues.runningValueTimestamp]);
 
   return (
     <View>
-      <StateManagement
-        listOneValue={listOne.current.currentNumber}
-        listTwoValue={listTwo.current.currentNumber}
-        listThreeValue={listThree.current.currentNumber}
-      />
-
       <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
         <PauseText />
 
         <View style={timerStyle.listContainer}>
-          <ListTimer
-            timerData={listOne.current}
-            opacityAnimated={listOpacity}
-          />
+          <ListTimer timerData={listOne.current} />
 
           <TimerNumber
             numberCountOpacity={numberCountOpacity}
-            number={newHours}
+            number={timerFormatedValues.newHours}
           />
         </View>
 
@@ -109,14 +118,11 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listContainer}>
-          <ListTimer
-            timerData={listTwo.current}
-            opacityAnimated={listOpacity}
-          />
+          <ListTimer timerData={listTwo.current} />
 
           <TimerNumber
             numberCountOpacity={numberCountOpacity}
-            number={newMinutes}
+            number={timerFormatedValues.newMinutes}
           />
         </View>
 
@@ -145,14 +151,11 @@ export default function Timer() {
         </View>
 
         <View style={timerStyle.listContainer}>
-          <ListTimer
-            timerData={listThree.current}
-            opacityAnimated={listOpacity}
-          />
+          <ListTimer timerData={listThree.current} />
 
           <TimerNumber
             numberCountOpacity={numberCountOpacity}
-            number={newSeconds}
+            number={timerFormatedValues.newSeconds}
           />
         </View>
 

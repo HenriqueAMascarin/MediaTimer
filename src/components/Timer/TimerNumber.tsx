@@ -15,6 +15,7 @@ export default function TimerNumber({
   number,
 }: TimerNumber) {
   const { dataTheme } = useTheme();
+  
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
   return (

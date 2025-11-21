@@ -38,8 +38,6 @@ export default function App() {
               async (element) => await notifee.deleteChannel(element.id)
             )
           );
-
-        SplashScreen.hideAsync();
       })();
     }
   }, [loaded, error]);

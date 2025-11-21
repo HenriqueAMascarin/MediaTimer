@@ -6,22 +6,27 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import { heightItem } from "./styles/timerStyle";
+import { sizeItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { listOpacity } from '@src/components/Timer/TimerAnimations/timerSequence';
+
 interface ListTimer {
   timerData: {
     maxNumber: number;
-    currentNumber: React.MutableRefObject<number>;
-    animated: {
-      scrollY: Animated.Value;
-    };
+    currentNumber: number;
+    dispatchFunction: ActionCreatorWithPayload<number>;
   };
-  opacityAnimated: Animated.Value;
 }
 
-export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
+export default function ListTimer({ timerData }: ListTimer) {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
+
+  const dispatch = useDispatch();
+
+  const listScrollY = useRef(new Animated.Value(0));
 
   let maxLengthOneArray = timerData.maxNumber + 1;
 
@@ -45,7 +50,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
     let array: number[] = [];
 
     for (let i = 0; i < arrayNumbers.length - 1; i++) {
-      array.push(i * heightItem);
+      array.push(i * sizeItem);
     }
 
     return array;
@@ -55,7 +60,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
     [
       {
         nativeEvent: {
-          contentOffset: { y: timerData.animated.scrollY },
+          contentOffset: { y: listScrollY.current },
         },
       },
     ],
@@ -70,19 +75,16 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
               ) + 1
             ];
 
-          if (
-            middleNumber != timerData.currentNumber.current &&
-            middleNumber != null
-          ) {
-            timerData.currentNumber.current = middleNumber;
+          if ( middleNumber != null) {
+            dispatch(timerData.dispatchFunction(middleNumber));
           }
 
           const lastItemsBeforeUpdate = 10;
 
-          const lowPosToAdd = heightItem * lastItemsBeforeUpdate;
+          const lowPosToAdd = sizeItem * lastItemsBeforeUpdate;
 
           const highPosToAdd =
-            heightItem * (arrayNumbers.length - lastItemsBeforeUpdate);
+            sizeItem * (arrayNumbers.length - lastItemsBeforeUpdate);
 
           const isTopInfinite =
             event.nativeEvent.contentOffset.y <= lowPosToAdd;
@@ -93,7 +95,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
             if (isTopInfinite) {
               const newBottomY =
                 event.nativeEvent.contentOffset.y +
-                heightItem * maxLengthOneArray;
+                sizeItem * maxLengthOneArray;
 
               changeNewScrollTransition(newBottomY);
 
@@ -106,7 +108,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
             if (isBottomInfinite) {
               const newTopY =
                 event.nativeEvent.contentOffset.y -
-                heightItem * maxLengthOneArray;
+                sizeItem * maxLengthOneArray;
 
               changeNewScrollTransition(newTopY);
 
@@ -130,7 +132,7 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
     <View>
       <Animated.ScrollView
         ref={reflist}
-        style={{ opacity: opacityAnimated }}
+        style={{ opacity: listOpacity }}
         onScroll={handleScroll}
         decelerationRate={"fast"}
         snapToOffsets={arrayOffsets}
@@ -139,14 +141,14 @@ export default function ListTimer({ timerData, opacityAnimated }: ListTimer) {
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
         scrollEnabled={stateTimer.isPlay ? false : true}
-        contentOffset={{ y: heightItem * timerData.maxNumber, x: 0 }}
+        contentOffset={{ y: sizeItem * timerData.maxNumber, x: 0 }}
       >
         {arrayNumbers.map((number, index: number) => {
           return (
             <AnimatedNumber
               itemIndex={index}
               itemNumber={number}
-              scrollY={timerData.animated.scrollY}
+              scrollY={listScrollY.current}
               key={index}
               transitionNewScroll={newScrollTransition}
             />

@@ -1,15 +1,17 @@
 import { TouchableOpacity } from "react-native";
-import StopSvg from "../../../assets/images/stop.svg";
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
+import PlaySvg from "../../../assets/images/play.svg";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
-import { stopTimer } from "@src/components/Timer/timerUtils/stopTimerUtils";
+import resumeTimer from "@src/components/Timer/timerUtils/resumeTimer";
 
-export default function StopButton() {
+export default function ResumeButton() {
   const { translateText } = useTextTranslation();
 
-  function onStop() {
-    stopTimer();
+  function onResume() {
+    resumeTimer({
+      translateTextFunction: translateText,
+    });
   }
 
   return (
@@ -19,10 +21,10 @@ export default function StopButton() {
         buttonsStyle.principalButton,
         buttonsStyle.playStateButtons,
       ]}
-      onPress={onStop}
-      aria-label={translateText("buttonArias.stop")}
+      onPress={onResume}
+      aria-label={translateText("buttonArias.resume")}
     >
-      <StopSvg
+      <PlaySvg
         width={"35px"}
         height={"35px"}
         fill={colorsStyle.principal.white}

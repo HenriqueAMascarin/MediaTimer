@@ -1,9 +1,7 @@
-import { TouchableOpacity } from "react-native/";
+import { TouchableOpacity } from "react-native";
 import HistorySvg from "@assets/images/history.svg";
-
 import { buttonsStyle } from "./styles/buttonsStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
-
 import { useDispatch } from "react-redux";
 import { changeIsHistory } from "../Utils/Redux/features/stateHistory-slice";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
@@ -20,6 +18,7 @@ export default function HistoryButton() {
 
   function changeHistory() {
     dispatch(changeIsSelection(false));
+
     dispatch(changeIsHistory(!stateHistory.isHistory));
   }
 

@@ -4,8 +4,8 @@
     "slug": "media-timer",
     "description": "This is an timer music app",
     "icon": "./assets/icon.png",
-    "version": "1.0.7",
-    "runtimeVersion": "1.0.7",
+    "version": "1.0.8",
+    "runtimeVersion": "1.0.8",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "android": {
@@ -27,7 +27,15 @@
       "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
     },
     "plugins": [
-      "expo-localization",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "useLegacyPackaging": true
+          },
+          "ios": {}
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -36,7 +44,10 @@
           "imageWidth": 240
         }
       ],
-      "expo-audio"
+      "expo-localization",
+      "expo-audio",
+      "expo-font",
+      "expo-asset"
     ]
   }
 }

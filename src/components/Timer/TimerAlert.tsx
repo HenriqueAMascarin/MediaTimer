@@ -1,7 +1,7 @@
 import { Animated, TouchableOpacity } from "react-native";
 import { CustomAnimatedSvg, alertSvgXml } from "../Utils/svgsXml";
 import { useTheme } from "../Utils/Context/ThemeContext";
-import { timerAlertOpacity } from "./TimerAnimations/TimerSequence";
+import { timerAlertOpacity } from "./TimerAnimations/timerSequence";
 import { timerStyle } from "./styles/timerStyle";
 import { colorsStyle } from "../Utils/colorsStyle";
 import { alertLocalKey } from "../Utils/globalVars";
