@@ -27,18 +27,6 @@
       "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
     },
     "plugins": [
-      "expo-localization",
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#149CFF",
-          "image": "./assets/icon.png",
-          "imageWidth": 240
-        }
-      ],
-      "expo-audio",
-      "expo-font",
-      "expo-asset",
       [
         "expo-build-properties",
         {
@@ -47,7 +35,19 @@
           },
           "ios": {}
         }
-      ]
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#149CFF",
+          "image": "./assets/icon.png",
+          "imageWidth": 240
+        }
+      ],
+      "expo-localization",
+      "expo-audio",
+      "expo-font",
+      "expo-asset"
     ]
   }
 }
