@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
-      - name: 🔨 Install pnpm
+      - name: 🔨 Setup PNPM
         uses: pnpm/action-setup@v4
         with:
           version: 10
@@ -29,6 +29,6 @@ jobs:
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }} 
+          token: ${{ secrets.EXPO_TOKEN }}
       - name: 🚀 Create eas local build to test all app state
-        run: eas build --platform android --profile production --local
+        run: pnpm eas build --platform android --profile production --local
