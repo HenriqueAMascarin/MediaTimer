@@ -32,4 +32,4 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
       - name: 🚀 Create eas production build and submit to play store
-        run: pnpm eas build --platform android --profile production
+        run: pnpm eas build --platform android --profile production --clear-cache
