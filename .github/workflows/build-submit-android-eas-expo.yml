@@ -28,4 +28,4 @@ jobs:
         run: pnpm install
 
       - name: 🚀 Create eas production build and submit to play store
-        run: eas build --platform android --profile production --auto-submit
+        run: pnpm eas build --platform android --profile production --auto-submit

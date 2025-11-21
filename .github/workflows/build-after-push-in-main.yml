@@ -31,4 +31,4 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
       - name: 🚀 Create eas local build to test all app state
-        run: eas build --platform android --profile production --local
+        run: pnpm eas build --platform android --profile production --local
