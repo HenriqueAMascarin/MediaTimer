@@ -1,4 +1,4 @@
-import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
+import { sequenceTimer } from "@src/components/Timer/animations/timerSequence";
 import { changeIsHistory } from "@src/components/Utils/Redux/features/stateHistory-slice";
 import { changeIsSelection } from "@src/components/Utils/Redux/features/statesMusic-slice";
 import {

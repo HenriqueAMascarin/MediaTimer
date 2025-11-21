@@ -2,7 +2,7 @@ import {
   startNotificationAndTimer,
   startNotificationAndTimerInterface,
 } from "@src/components/Timer/timerUtils/startNotificationAndTimer";
-import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
+import { timerPauseOrResume } from "@src/components/Timer/animations/timerPauseOrResume";
 import { store } from "@src/components/Utils/Redux/store";
 import { changeIsPaused } from "@src/components/Utils/Redux/features/stateTimer-slice";
 

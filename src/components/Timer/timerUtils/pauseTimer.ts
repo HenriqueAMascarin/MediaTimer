@@ -3,7 +3,7 @@ import {
   requestPermissionAndShowNotification,
 } from "@src/components/Timer/timerUtils/notificationUtils";
 import { store } from "@src/components/Utils/Redux/store";
-import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
+import { timerPauseOrResume } from "@src/components/Timer/animations/timerPauseOrResume";
 import { removeClocks } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
 import { changeIsPaused } from "@src/components/Utils/Redux/features/stateTimer-slice";

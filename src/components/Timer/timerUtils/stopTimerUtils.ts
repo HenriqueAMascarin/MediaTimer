@@ -11,8 +11,8 @@ import {
   changeIsPaused,
   changeIsPlay,
 } from "@src/components/Utils/Redux/features/stateTimer-slice";
-import { timerPauseOrResume } from "@src/components/Timer/TimerAnimations/timerPauseOrResume";
-import { sequenceTimer } from "@src/components/Timer/TimerAnimations/timerSequence";
+import { timerPauseOrResume } from "@src/components/Timer/animations/timerPauseOrResume";
+import { sequenceTimer } from "@src/components/Timer/animations/timerSequence";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
 
 const dispatch = store.dispatch;
