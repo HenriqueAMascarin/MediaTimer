@@ -11,7 +11,7 @@ import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { listOpacity } from '@src/components/Timer/TimerAnimations/timerSequence';
+import { listOpacity } from '@src/components/Timer/animations/timerSequence';
 
 interface ListTimer {
   timerData: {

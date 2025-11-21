@@ -8,7 +8,7 @@ import {
   linePointsOpacity,
   numberCountOpacity,
   gapList,
-} from "@src/components/Timer/TimerAnimations/timerSequence";
+} from "@src/components/Timer/animations/timerSequence";
 
 import ListTimer from "./ListTimer";
 import TimerNumber from "./TimerNumber";
