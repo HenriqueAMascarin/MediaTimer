@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import { sizeItem } from "./styles/timerStyle";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
-import { useRef, useState } from "react";
+import { memo, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { listOpacity } from '@src/components/Timer/animations/timerSequence';
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { listOpacity } from "@src/components/Timer/animations/timerSequence";
 
 interface ListTimer {
   timerData: {
@@ -21,14 +21,17 @@ interface ListTimer {
   };
 }
 
-export default function ListTimer({ timerData }: ListTimer) {
+function ListTimer({ timerData }: ListTimer) {
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
   const dispatch = useDispatch();
 
   const listScrollY = useRef(new Animated.Value(0));
 
-  let maxLengthOneArray = timerData.maxNumber + 1;
+  let maxLengthOneArray = useMemo(
+    () => timerData.maxNumber + 1,
+    [timerData.maxNumber]
+  );
 
   const reflist = useRef<ScrollView>(null);
 
@@ -36,7 +39,7 @@ export default function ListTimer({ timerData }: ListTimer) {
     null | number
   >(null);
 
-  const arrayNumbers = (() => {
+  const arrayNumbers = useMemo(() => {
     let array: number[] = [];
 
     for (let i = 0; i <= timerData.maxNumber; i++) {
@@ -44,9 +47,9 @@ export default function ListTimer({ timerData }: ListTimer) {
     }
 
     return [...array, ...array, ...array];
-  })();
+  }, [timerData.maxNumber]);
 
-  const arrayOffsets = (() => {
+  const arrayOffsets = useMemo(() => {
     let array: number[] = [];
 
     for (let i = 0; i < arrayNumbers.length - 1; i++) {
@@ -54,7 +57,7 @@ export default function ListTimer({ timerData }: ListTimer) {
     }
 
     return array;
-  })();
+  }, [arrayNumbers]);
 
   const handleScroll = Animated.event(
     [
@@ -75,7 +78,7 @@ export default function ListTimer({ timerData }: ListTimer) {
               ) + 1
             ];
 
-          if ( middleNumber != null) {
+          if (middleNumber != null) {
             dispatch(timerData.dispatchFunction(middleNumber));
           }
 
@@ -128,11 +131,14 @@ export default function ListTimer({ timerData }: ListTimer) {
     }
   );
 
+  const listContentOffset = useMemo(() => {
+    return { y: sizeItem * timerData.maxNumber, x: 0 };
+  }, [timerData.maxNumber]);
+
   return (
-    <View>
+    <Animated.View style={{ opacity: listOpacity }}>
       <Animated.ScrollView
         ref={reflist}
-        style={{ opacity: listOpacity }}
         onScroll={handleScroll}
         decelerationRate={"fast"}
         snapToOffsets={arrayOffsets}
@@ -141,7 +147,7 @@ export default function ListTimer({ timerData }: ListTimer) {
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
         scrollEnabled={stateTimer.isPlay ? false : true}
-        contentOffset={{ y: sizeItem * timerData.maxNumber, x: 0 }}
+        contentOffset={listContentOffset}
       >
         {arrayNumbers.map((number, index: number) => {
           return (
@@ -155,6 +161,8 @@ export default function ListTimer({ timerData }: ListTimer) {
           );
         })}
       </Animated.ScrollView>
-    </View>
+    </Animated.View>
   );
 }
+
+export default memo(ListTimer);

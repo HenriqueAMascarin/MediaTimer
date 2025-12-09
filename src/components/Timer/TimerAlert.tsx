@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { changeIsAlert } from "../Utils/Redux/features/stateAlert-slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import { useMemo } from "react";
 
 export default function TimerAlert() {
   const { translateText } = useTextTranslation();
@@ -28,16 +29,16 @@ export default function TimerAlert() {
     dispatch(changeIsAlert(!stateAlert.isAlert));
   }
 
+  const ariaLabel = useMemo(
+    () => translateText(stateAlert.isAlert ? "alert.disable" : "alert.enable"),
+    [stateAlert.isAlert]
+  );
+
   return (
     <Animated.View
       style={[timerStyle.timerAlertSvg, { opacity: timerAlertOpacity }]}
     >
-      <TouchableOpacity
-        onPress={() => changeTimerAlert()}
-        aria-label={translateText(
-          stateAlert.isAlert ? "alert.disable" : "alert.enable"
-        )}
-      >
+      <TouchableOpacity onPress={changeTimerAlert} aria-label={ariaLabel}>
         <CustomAnimatedSvg
           width={"24px"}
           height={"24px"}

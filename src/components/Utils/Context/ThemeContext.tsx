@@ -3,6 +3,7 @@ import React, {
   ReactElement,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -74,11 +75,14 @@ export default function ThemeProvider({ children }: items) {
 
   async function currentTheme() {
     let localTheme = await AsyncStorage.getItem(themeLocalKey);
+
     let theme = colorScheme || "light";
+
     let newThemeOption: typeof themeOption = null;
 
     if (localTheme == "dark" || localTheme == "light") {
       theme = localTheme;
+
       newThemeOption = localTheme;
     }
 
@@ -143,18 +147,18 @@ export default function ThemeProvider({ children }: items) {
     }),
   });
 
+  const dataTheme = useMemo(() => {
+    return {
+      dataTheme: {
+        animatedValues: themes.current,
+        selectedOption: themeOption,
+      },
+      changeTheme: changeThemeType,
+    };
+  }, [themes.current, themeOption, changeThemeType]);
+
   return (
-    <ThemeContext.Provider
-      value={{
-        dataTheme: {
-          animatedValues: themes.current,
-          selectedOption: themeOption,
-        },
-        changeTheme: changeThemeType,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={dataTheme}>{children}</ThemeContext.Provider>
   );
 }
 

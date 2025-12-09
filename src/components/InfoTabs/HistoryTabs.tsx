@@ -18,7 +18,7 @@ import {
   LoadingAlert,
   ErrorAlert,
 } from "@src/components/InfoTabs/Alerts/AlertComponents";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
@@ -93,7 +93,7 @@ export default function HistoryTabs() {
     changeErrorText(translateText("statusMessages.dontHavePermissions"));
   }
 
-  async function changeItemSelected(item: historyItem) {
+  const changeItemSelected = useCallback((item: historyItem) => {
     if (!item.isSelected) {
       let newArr = structuredClone(stateHistory.historyItems);
 
@@ -164,10 +164,11 @@ export default function HistoryTabs() {
         }
       }, 400);
     }
-  }
+  }, []);
 
   function onClose() {
     changeStatus({ searching: false, success: false, error: false });
+
     dispatch(changeIsHistory(false));
   }
 
@@ -197,6 +198,7 @@ export default function HistoryTabs() {
                   >
                     <View style={{ width: 150 }}>
                       <TextDefault>{musicName(item.nameMusic)}</TextDefault>
+                      
                       <TextDefault>{authorName(item)}</TextDefault>
                     </View>
                     <TouchableOpacity

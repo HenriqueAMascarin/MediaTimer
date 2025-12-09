@@ -27,28 +27,32 @@ export default function HistoryButton() {
     [stateHistory.historyItems]
   );
 
+  const backgroundColorMemo = useMemo(
+    () =>
+      hasItemSelected ? colorsStyle.principal.blue : colorsStyle.principal.gray,
+    [hasItemSelected]
+  );
+
+  const fillColorMemo = useMemo(
+    () =>
+      hasItemSelected
+        ? colorsStyle.principal.white
+        : colorsStyle.principal.black,
+    [hasItemSelected]
+  );
+
   return (
     <TouchableOpacity
       style={[
         buttonsStyle.buttons,
         {
-          backgroundColor: hasItemSelected
-            ? colorsStyle.principal.blue
-            : colorsStyle.principal.gray,
+          backgroundColor: backgroundColorMemo,
         },
       ]}
       onPress={() => changeHistory()}
       aria-label={translateText("buttonArias.history")}
     >
-      <HistorySvg
-        width={"35px"}
-        height={"35px"}
-        fill={
-          hasItemSelected
-            ? colorsStyle.principal.white
-            : colorsStyle.principal.black
-        }
-      />
+      <HistorySvg width={"35px"} height={"35px"} fill={fillColorMemo} />
     </TouchableOpacity>
   );
 }

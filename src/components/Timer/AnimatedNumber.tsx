@@ -3,7 +3,7 @@ import { Animated, View } from "react-native";
 import { sizeItem } from "./styles/timerStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 interface AnimatedNumber {
   itemIndex: number;
@@ -12,7 +12,7 @@ interface AnimatedNumber {
   transitionNewScroll: number | null;
 }
 
-export default function AnimatedNumber({
+function AnimatedNumber({
   itemIndex,
   itemNumber,
   scrollY,
@@ -20,11 +20,14 @@ export default function AnimatedNumber({
 }: AnimatedNumber) {
   const { dataTheme } = useTheme();
 
-  const inputRange = [
-    (itemIndex - 2) * sizeItem,
-    (itemIndex - 1) * sizeItem,
-    itemIndex * sizeItem,
-  ];
+  const inputRange = useMemo(
+    () => [
+      (itemIndex - 2) * sizeItem,
+      (itemIndex - 1) * sizeItem,
+      itemIndex * sizeItem,
+    ],
+    [itemIndex]
+  );
 
   let numberOpacity = scrollY.interpolate({
     inputRange,
@@ -46,6 +49,16 @@ export default function AnimatedNumber({
     return status;
   }, [transitionNewScroll]);
 
+  const scaleValue = useMemo(
+    () => (isSameIndexTransition ? 1 : numberTransform),
+    [isSameIndexTransition]
+  );
+
+  const numberValue = useMemo(
+    () => (itemNumber < 10 ? "0" + itemNumber : itemNumber),
+    [itemNumber]
+  );
+
   return (
     <View>
       <TextAnimated
@@ -53,13 +66,15 @@ export default function AnimatedNumber({
           timerStyle.listItem,
           {
             opacity: isSameIndexTransition ? 1 : numberOpacity,
-            transform: [{ scale: isSameIndexTransition ? 1 : numberTransform }],
+            transform: [{ scale: scaleValue }],
             color: dataTheme.animatedValues.principalColor,
           },
         ]}
       >
-        {itemNumber < 10 ? "0" + itemNumber : itemNumber}
+        {numberValue}
       </TextAnimated>
     </View>
   );
 }
+
+export default memo(AnimatedNumber);

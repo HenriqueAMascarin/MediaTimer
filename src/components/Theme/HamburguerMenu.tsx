@@ -6,7 +6,7 @@ import {
   useColorScheme,
 } from "react-native";
 import { hamburguerStyles } from "./styles/hamburguerStyles";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { colorsStyle } from "../Utils/colorsStyle";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { themeLocalKey } from "../Utils/globalVars";
@@ -22,7 +22,7 @@ type typeItemTheme = {
   isActive: boolean;
 };
 
-export default function HamburguerMenu({
+function HamburguerMenu({
   initialOption,
 }: {
   initialOption: themesType | null;
@@ -35,12 +35,12 @@ export default function HamburguerMenu({
 
   const [configModal, changeConfigModal] = useState(false);
 
-  let opacityModal = useRef(new Animated.Value(0)).current;
+  let opacityModal = useRef(new Animated.Value(0));
 
   useEffect(() => {
     animatedModalsOpacity({
       isOpen: configModal,
-      animatedOpacity: opacityModal,
+      animatedOpacity: opacityModal.current,
     });
   }, [configModal]);
 
@@ -104,7 +104,7 @@ export default function HamburguerMenu({
     <View style={hamburguerStyles.container}>
       <TouchableOpacity
         style={hamburguerStyles.hamburguerContainer}
-        onPress={() => toggleModal()}
+        onPress={toggleModal}
         aria-label={translateText("theme.btnConfigAria")}
       >
         <Animated.View
@@ -113,12 +113,14 @@ export default function HamburguerMenu({
             { backgroundColor: dataTheme.animatedValues.principalColor },
           ]}
         />
+
         <Animated.View
           style={[
             hamburguerStyles.hamburguerPads,
             { backgroundColor: dataTheme.animatedValues.principalColor },
           ]}
         />
+
         <Animated.View
           style={[
             hamburguerStyles.hamburguerPads,
@@ -126,9 +128,15 @@ export default function HamburguerMenu({
           ]}
         />
       </TouchableOpacity>
+
       {configModal && (
         <Animated.View
-          style={{ flex: 1, flexGrow: 1, zIndex: 10, opacity: opacityModal }}
+          style={{
+            flex: 1,
+            flexGrow: 1,
+            zIndex: 10,
+            opacity: opacityModal.current,
+          }}
         >
           <Animated.View
             style={[
@@ -141,6 +149,7 @@ export default function HamburguerMenu({
               color={dataTheme.animatedValues.principalColor}
               customPos={{ top: 12, right: 12 }}
             />
+
             <TextAnimated
               style={{
                 fontSize: 24,
@@ -151,6 +160,7 @@ export default function HamburguerMenu({
             >
               {translateText("theme.selectTheme")}
             </TextAnimated>
+
             {typesTheme.map((theme, keyTheme) => {
               return (
                 <TouchableOpacity
@@ -190,6 +200,7 @@ export default function HamburguerMenu({
                       />
                     )}
                   </Animated.View>
+
                   <TextAnimated
                     style={{
                       fontSize: 18,
@@ -203,7 +214,7 @@ export default function HamburguerMenu({
             })}
           </Animated.View>
 
-          <TouchableWithoutFeedback onPress={() => toggleModal()}>
+          <TouchableWithoutFeedback onPress={toggleModal}>
             <View
               style={[
                 {
@@ -212,10 +223,12 @@ export default function HamburguerMenu({
                   backgroundColor: "rgba(0, 0, 0, 0.58)",
                 },
               ]}
-            ></View>
+            />
           </TouchableWithoutFeedback>
         </Animated.View>
       )}
     </View>
   );
 }
+
+export default memo(HamburguerMenu);

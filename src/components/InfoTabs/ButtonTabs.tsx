@@ -44,6 +44,7 @@ export default function ButtonTabs() {
     success: false,
     error: false,
   });
+
   const [errorText, changeErrorText] = useState<null | string>(null);
 
   let opacityModal = useRef(new Animated.Value(0)).current;

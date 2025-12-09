@@ -45,6 +45,18 @@ export default function Components() {
     require("@assets/sounds/timer.mp3")
   );
 
+  async function initialAlertConfig() {
+    const jsonValue = await AsyncStorage.getItem(alertLocalKey);
+
+    if (!jsonValue) {
+      AsyncStorage.setItem(alertLocalKey, "true");
+    } else {
+      if (jsonValue == "false") {
+        dispatch(changeIsAlert(false));
+      }
+    }
+  }
+
   async function BootData() {
     notifee.onBackgroundEvent(eventNotifee);
 
@@ -65,17 +77,7 @@ export default function Components() {
 
     await changeLocalHistoryArray();
 
-    await (async function initialAlertConfig() {
-      const jsonValue = await AsyncStorage.getItem(alertLocalKey);
-
-      if (!jsonValue) {
-        AsyncStorage.setItem(alertLocalKey, "true");
-      } else {
-        if (jsonValue == "false") {
-          dispatch(changeIsAlert(false));
-        }
-      }
-    })();
+    await initialAlertConfig();
 
     SplashScreen.hideAsync();
   }
