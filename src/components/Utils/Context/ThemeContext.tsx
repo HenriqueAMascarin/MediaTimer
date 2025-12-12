@@ -30,6 +30,7 @@ const ThemeContext = createContext<{
       secondaryColor: Animated.AnimatedInterpolation<string | number>;
     };
     selectedOption: null | themesType;
+    isInitialThemeAnimationFinished: boolean;
   };
   changeTheme: React.Dispatch<React.SetStateAction<themesType>>;
 }>({
@@ -58,6 +59,7 @@ const ThemeContext = createContext<{
       }),
     },
     selectedOption: null,
+    isInitialThemeAnimationFinished: false,
   },
   changeTheme: useState,
 });
@@ -72,6 +74,11 @@ export default function ThemeProvider({ children }: items) {
   const colorScheme = useColorScheme();
 
   const [themeOption, changeThemeOption] = useState<themesType | null>(null);
+
+  const [
+    isInitialThemeAnimationFinished,
+    changeIsInitialThemeAnimationFinished,
+  ] = useState(false);
 
   async function currentTheme() {
     let localTheme = await AsyncStorage.getItem(themeLocalKey);
@@ -117,7 +124,11 @@ export default function ThemeProvider({ children }: items) {
         duration: 300,
         useNativeDriver: false,
       }),
-    ]).start();
+    ]).start(({ finished }) => {
+      if (finished && !isInitialThemeAnimationFinished) {
+        changeIsInitialThemeAnimationFinished(true);
+      }
+    });
   }, [themeType]);
 
   const themes = useRef({
@@ -152,10 +163,16 @@ export default function ThemeProvider({ children }: items) {
       dataTheme: {
         animatedValues: themes.current,
         selectedOption: themeOption,
+        isInitialThemeAnimationFinished,
       },
       changeTheme: changeThemeType,
     };
-  }, [themes.current, themeOption, changeThemeType]);
+  }, [
+    themes.current,
+    themeOption,
+    changeThemeType,
+    isInitialThemeAnimationFinished,
+  ]);
 
   return (
     <ThemeContext.Provider value={dataTheme}>{children}</ThemeContext.Provider>

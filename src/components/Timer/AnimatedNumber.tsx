@@ -3,20 +3,20 @@ import { Animated, View } from "react-native";
 import { sizeItem } from "./styles/timerStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import TextAnimated from "../Texts/TextAnimated";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useMemo } from "react";
 
 interface AnimatedNumber {
   itemIndex: number;
   itemNumber: number;
   scrollY: Animated.Value;
-  transitionNewScroll: number | null;
+  numberIndexToTransition: number | null;
 }
 
 function AnimatedNumber({
   itemIndex,
   itemNumber,
   scrollY,
-  transitionNewScroll,
+  numberIndexToTransition,
 }: AnimatedNumber) {
   const { dataTheme } = useTheme();
 
@@ -41,13 +41,10 @@ function AnimatedNumber({
     extrapolate: "clamp",
   });
 
-  const isSameIndexTransition = useMemo(() => {
-    let status = transitionNewScroll
-      ? transitionNewScroll == inputRange[1]
-      : false;
-
-    return status;
-  }, [transitionNewScroll]);
+  const isSameIndexTransition = useMemo(
+    () => numberIndexToTransition == itemIndex,
+    [numberIndexToTransition]
+  );
 
   const scaleValue = useMemo(
     () => (isSameIndexTransition ? 1 : numberTransform),
@@ -59,13 +56,18 @@ function AnimatedNumber({
     [itemNumber]
   );
 
+  const opacityNumber = useMemo(
+    () => (isSameIndexTransition ? 1 : numberOpacity),
+    [isSameIndexTransition]
+  );
+
   return (
     <View>
       <TextAnimated
         style={[
           timerStyle.listItem,
           {
-            opacity: isSameIndexTransition ? 1 : numberOpacity,
+            opacity: opacityNumber,
             transform: [{ scale: scaleValue }],
             color: dataTheme.animatedValues.principalColor,
           },

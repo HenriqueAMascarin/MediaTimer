@@ -3,6 +3,7 @@ import React, {
   createContext,
   ReactElement,
   useContext,
+  useMemo,
 } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -15,8 +16,14 @@ type items = {
 export default function TranslationProvider({ children }: items) {
   const { t: translateText } = useTranslation();
 
+  const translateObject = useMemo(() => {
+    return {
+      translateText,
+    };
+  }, [translateText]);
+
   return (
-    <TranslationContext.Provider value={{ translateText }}>
+    <TranslationContext.Provider value={translateObject}>
       {children}
     </TranslationContext.Provider>
   );

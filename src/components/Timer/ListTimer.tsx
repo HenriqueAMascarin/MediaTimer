@@ -3,7 +3,6 @@ import {
   Animated,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  View,
   ScrollView,
 } from "react-native";
 import { sizeItem } from "./styles/timerStyle";
@@ -35,7 +34,7 @@ function ListTimer({ timerData }: ListTimer) {
 
   const reflist = useRef<ScrollView>(null);
 
-  const [newScrollTransition, changeNewScrollTransition] = useState<
+  const [newNumberIndexToTransition, changeNewNumberIndexToTransition] = useState<
     null | number
   >(null);
 
@@ -46,7 +45,13 @@ function ListTimer({ timerData }: ListTimer) {
       array.push(i);
     }
 
-    return [...array, ...array, ...array];
+    const itensBefore = [array[array.length - 2], array[array.length - 1]];
+
+    const itensAfter = [array[0], array[1]];
+
+    const newArray = [...itensBefore, ...array, ...itensAfter];
+
+    return newArray;
   }, [timerData.maxNumber]);
 
   const arrayOffsets = useMemo(() => {
@@ -82,15 +87,13 @@ function ListTimer({ timerData }: ListTimer) {
             dispatch(timerData.dispatchFunction(middleNumber));
           }
 
-          const lastItemsBeforeUpdate = 10;
+          const lowPosToAdd = 0;
 
-          const lowPosToAdd = sizeItem * lastItemsBeforeUpdate;
-
-          const highPosToAdd =
-            sizeItem * (arrayNumbers.length - lastItemsBeforeUpdate);
+          const highPosToAdd = arrayOffsets?.[arrayOffsets.length - 2] - 5;
 
           const isTopInfinite =
             event.nativeEvent.contentOffset.y <= lowPosToAdd;
+
           const isBottomInfinite =
             event.nativeEvent.contentOffset.y >= highPosToAdd;
 
@@ -100,7 +103,12 @@ function ListTimer({ timerData }: ListTimer) {
                 event.nativeEvent.contentOffset.y +
                 sizeItem * maxLengthOneArray;
 
-              changeNewScrollTransition(newBottomY);
+              const numberIndexToGoBottom =
+                arrayOffsets.findIndex(
+                  (offset) => offset == Math.round(newBottomY)
+                ) + 1;
+
+              changeNewNumberIndexToTransition(numberIndexToGoBottom);
 
               reflist.current?.scrollTo({
                 y: newBottomY,
@@ -113,7 +121,12 @@ function ListTimer({ timerData }: ListTimer) {
                 event.nativeEvent.contentOffset.y -
                 sizeItem * maxLengthOneArray;
 
-              changeNewScrollTransition(newTopY);
+              const numberIndexToGoTop =
+                arrayOffsets.findIndex(
+                  (offset) => offset == Math.round(newTopY)
+                ) + 1;
+
+              changeNewNumberIndexToTransition(numberIndexToGoTop);
 
               reflist.current?.scrollTo({
                 y: newTopY,
@@ -122,18 +135,14 @@ function ListTimer({ timerData }: ListTimer) {
             }
 
             setTimeout(() => {
-              changeNewScrollTransition(null);
-            }, 600);
+              changeNewNumberIndexToTransition(null);
+            }, 400);
           }
         }
       },
       useNativeDriver: false,
     }
   );
-
-  const listContentOffset = useMemo(() => {
-    return { y: sizeItem * timerData.maxNumber, x: 0 };
-  }, [timerData.maxNumber]);
 
   return (
     <Animated.View style={{ opacity: listOpacity }}>
@@ -147,7 +156,7 @@ function ListTimer({ timerData }: ListTimer) {
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
         scrollEnabled={stateTimer.isPlay ? false : true}
-        contentOffset={listContentOffset}
+        contentOffset={{ y: sizeItem, x: 0 }}
       >
         {arrayNumbers.map((number, index: number) => {
           return (
@@ -156,7 +165,7 @@ function ListTimer({ timerData }: ListTimer) {
               itemNumber={number}
               scrollY={listScrollY.current}
               key={index}
-              transitionNewScroll={newScrollTransition}
+              numberIndexToTransition={newNumberIndexToTransition}
             />
           );
         })}

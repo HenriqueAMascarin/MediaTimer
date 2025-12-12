@@ -83,8 +83,10 @@ export default function Components() {
   }
 
   useEffect(() => {
-    BootData();
-  }, []);
+    if (dataTheme.isInitialThemeAnimationFinished) {
+      BootData();
+    }
+  }, [dataTheme.isInitialThemeAnimationFinished]);
 
   return (
     <View style={{ flex: 1, position: "relative" }}>
