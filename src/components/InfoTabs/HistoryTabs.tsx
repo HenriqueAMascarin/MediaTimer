@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { historyStyle } from "./styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
+import TrashSvg from "@assets/images/trash.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
 import {
   changeHistoryArray,
@@ -25,8 +26,9 @@ import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from "html-entities";
 import RNFetchBlob from "rn-fetch-blob";
 import TextDefault from "../Texts/TextDefault";
-import { fileRegex } from "../Utils/globalVars";
+import { fileRegex, historyLocalKey } from "@src/components/Utils/globalVars";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HistoryTabs() {
   const { translateText } = useTextTranslation();
@@ -178,6 +180,20 @@ export default function HistoryTabs() {
     animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
   }, []);
 
+  async function removeItemFromHistory(item: historyItem) {
+    let newArrayHistory = structuredClone(stateHistory.historyItems);
+
+    newArrayHistory = newArrayHistory.filter(
+      (historyItem) => historyItem != item
+    );
+
+    const jsonHistoryArray = JSON.stringify(newArrayHistory);
+
+    await AsyncStorage.setItem(historyLocalKey, jsonHistoryArray);
+
+    dispatch(changeHistoryArray(newArrayHistory));
+  }
+
   return (
     <View>
       {!status.searching ? (
@@ -198,9 +214,20 @@ export default function HistoryTabs() {
                   >
                     <View style={{ width: 150 }}>
                       <TextDefault>{musicName(item.nameMusic)}</TextDefault>
-                      
+
                       <TextDefault>{authorName(item)}</TextDefault>
+
+                      <TouchableOpacity
+                        onPress={() => removeItemFromHistory(item)}
+                      >
+                        <TrashSvg width={"10px"} height={"11px"} />
+
+                        <TextDefault>
+                          {translateText("history.removeFromHistory")}
+                        </TextDefault>
+                      </TouchableOpacity>
                     </View>
+
                     <TouchableOpacity
                       onPress={() => changeItemSelected(item)}
                       aria-label={translateText("history.btnSelectAudio")}

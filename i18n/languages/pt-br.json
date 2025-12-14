@@ -5,7 +5,7 @@
     "totalText": "Total",
     "unknownMusic": "Música desconhecida",
     "card": "Cartão",
-    "alert":{
+    "alert": {
       "enable": "Clique para ativar o alerta quando o temporizador finaliza",
       "disable": "Clique para desativar o alerta quando o temporizador finaliza"
     },
@@ -30,15 +30,16 @@
     "buttonArias": {
       "history": "Botão para ver o histórico",
       "audio": "Botão para ver os áudios",
-      "pause": "Botão de pausar o cronômetro", 
+      "pause": "Botão de pausar o cronômetro",
       "play": "Botão de acionar o cronômetro",
       "stop": "Botão de parar o cronômetro",
       "resume": "Botão para retomar o cronômetro"
     },
-    "history":{
+    "history": {
       "aboutSaved": "sobre o áudio salvo no histórico",
       "dontHaveArchive": "Histórico sem arquivo",
-      "btnSelectAudio": "Botão para selecionar o áudio"
+      "btnSelectAudio": "Botão para selecionar o áudio",
+      "removeFromHistory": "Remover do histórico"
     },
     "theme": {
       "text": "Tema",
