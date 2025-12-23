@@ -5,6 +5,7 @@ export const colorsStyle = {
     gray: "#E6E6E6",
     white: "#ffffff",
     blue: "#149CFF",
+    red: "#FF1418"
   },
   lightTheme: {
     background: "#FFFFFF",

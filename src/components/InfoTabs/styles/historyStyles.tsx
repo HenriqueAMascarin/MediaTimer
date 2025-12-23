@@ -21,9 +21,24 @@ export const historyStyle = StyleSheet.create({
     elevation: 5,
     borderRadius: 14,
     paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     width: 220,
     height: 70,
     gap: 2,
   },
+  removeHistoryBtn: {
+    backgroundColor: colorsStyle.principal.red,
+    borderRadius: 7,
+    gap: 5,
+    marginTop: 'auto',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 5,
+    alignSelf: 'flex-start'
+  },
+  textRemoveHistory:{
+    color: colorsStyle.principal.white
+  }
 });

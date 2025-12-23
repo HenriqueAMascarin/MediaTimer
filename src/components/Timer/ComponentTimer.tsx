@@ -89,19 +89,16 @@ export default function Timer() {
   return (
     <View>
       <Animated.View style={[timerStyle.listsContainer, { gap: gapList }]}>
-        {stateTimer.isPaused && <PauseText />}
+        <PauseText />
 
         <View style={timerStyle.listContainer}>
-          {!stateTimer.isPlay ? (
-            <ListTimer timerData={listOne} />
-          ) : (
-            <TimerNumber
-              numberCountOpacity={numberCountOpacity}
-              number={timerFormatedValues.newHours}
-            />
-          )}
-        </View>
+          <ListTimer timerData={listOne} />
 
+          <TimerNumber
+            numberCountOpacity={numberCountOpacity}
+            number={timerFormatedValues.newHours}
+          />
+        </View>
         <View style={timerStyle.listLineContainer}>
           <Animated.View
             style={[
@@ -126,18 +123,14 @@ export default function Timer() {
             :
           </TextAnimated>
         </View>
-
         <View style={timerStyle.listContainer}>
-          {!stateTimer.isPlay ? (
-            <ListTimer timerData={listTwo} />
-          ) : (
-            <TimerNumber
-              numberCountOpacity={numberCountOpacity}
-              number={timerFormatedValues.newMinutes}
-            />
-          )}
-        </View>
+          <ListTimer timerData={listTwo} />
 
+          <TimerNumber
+            numberCountOpacity={numberCountOpacity}
+            number={timerFormatedValues.newMinutes}
+          />
+        </View>
         <View style={timerStyle.listLineContainer}>
           <Animated.View
             style={[
@@ -161,19 +154,18 @@ export default function Timer() {
             :
           </TextAnimated>
         </View>
-
         <View style={timerStyle.listContainer}>
-          {!stateTimer.isPlay ? (
-            <ListTimer timerData={listThree} />
-          ) : (
-            <TimerNumber
-              numberCountOpacity={numberCountOpacity}
-              number={timerFormatedValues.newSeconds}
-            />
-          )}
+          <ListTimer timerData={listThree} />
+
+          <TimerNumber
+            numberCountOpacity={numberCountOpacity}
+            number={timerFormatedValues.newSeconds}
+          />
         </View>
 
-        {stateTimer.isPlay && <TotalTimeText /> && <TimerAlert />}
+        <TotalTimeText />
+
+        <TimerAlert />
       </Animated.View>
     </View>
   );

@@ -180,11 +180,11 @@ export default function HistoryTabs() {
     animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
   }, []);
 
-  async function removeItemFromHistory(item: historyItem) {
+  async function removeItemFromHistory(indexItem: number) {
     let newArrayHistory = structuredClone(stateHistory.historyItems);
 
     newArrayHistory = newArrayHistory.filter(
-      (historyItem) => historyItem != item
+      (_, index) => index != indexItem
     );
 
     const jsonHistoryArray = JSON.stringify(newArrayHistory);
@@ -218,11 +218,12 @@ export default function HistoryTabs() {
                       <TextDefault>{authorName(item)}</TextDefault>
 
                       <TouchableOpacity
-                        onPress={() => removeItemFromHistory(item)}
+                        onPress={() => removeItemFromHistory(keyItem)}
+                        style={historyStyle.removeHistoryBtn}
                       >
                         <TrashSvg width={"10px"} height={"11px"} />
 
-                        <TextDefault>
+                        <TextDefault style={historyStyle.textRemoveHistory}>
                           {translateText("history.removeFromHistory")}
                         </TextDefault>
                       </TouchableOpacity>

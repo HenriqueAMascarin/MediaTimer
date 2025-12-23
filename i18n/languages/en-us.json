@@ -39,7 +39,7 @@
       "aboutSaved": "about the audio saved in history",
       "dontHaveArchive": "Don't have archive",
       "btnSelectAudio": "Button to select the audio",
-      "removeFromHistory": "Remove from history"
+      "removeFromHistory": "Delete history"
     },
     "theme": {
       "text": "Theme",
