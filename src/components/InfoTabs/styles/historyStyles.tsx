@@ -1,6 +1,8 @@
 import { colorsStyle } from "@src/components/Utils/colorsStyle";
 import { StyleSheet } from "react-native";
 
+export const widthHistoryItem = 220;
+
 export const historyStyle = StyleSheet.create({
   container: {
     alignSelf: "stretch",
@@ -22,7 +24,7 @@ export const historyStyle = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 6,
     paddingHorizontal: 8,
-    width: 220,
+    width: widthHistoryItem,
     height: 70,
     gap: 2,
   },
@@ -30,13 +32,13 @@ export const historyStyle = StyleSheet.create({
     backgroundColor: colorsStyle.principal.red,
     borderRadius: 7,
     gap: 5,
-    marginTop: 'auto',
+    marginTop: 3,
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 5,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   textRemoveHistory:{
     color: colorsStyle.principal.white

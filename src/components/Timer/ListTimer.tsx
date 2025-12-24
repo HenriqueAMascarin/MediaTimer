@@ -32,7 +32,7 @@ function ListTimer({ timerData }: ListTimer) {
     [timerData.maxNumber]
   );
 
-  const reflist = useRef<ScrollView>(null);
+  const refList = useRef<ScrollView>(null);
 
   const [newNumberIndexToTransition, changeNewNumberIndexToTransition] = useState<
     null | number
@@ -110,7 +110,7 @@ function ListTimer({ timerData }: ListTimer) {
 
               changeNewNumberIndexToTransition(numberIndexToGoBottom);
 
-              reflist.current?.scrollTo({
+              refList.current?.scrollTo({
                 y: newBottomY,
                 animated: false,
               });
@@ -128,7 +128,7 @@ function ListTimer({ timerData }: ListTimer) {
 
               changeNewNumberIndexToTransition(numberIndexToGoTop);
 
-              reflist.current?.scrollTo({
+              refList.current?.scrollTo({
                 y: newTopY,
                 animated: false,
               });
@@ -147,7 +147,7 @@ function ListTimer({ timerData }: ListTimer) {
   return (
     <Animated.View style={{ opacity: listOpacity }}>
       <Animated.ScrollView
-        ref={reflist}
+        ref={refList}
         onScroll={handleScroll}
         decelerationRate={"fast"}
         snapToOffsets={arrayOffsets}

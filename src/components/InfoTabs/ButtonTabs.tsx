@@ -78,7 +78,7 @@ export default function ButtonTabs() {
   }
 
   function resetAll() {
-    changeMusic(stateMusic.pressBtn);
+    changeMusic(stateMusic.pressBtn, { reset: true });
 
     changeErrorText(null);
   }

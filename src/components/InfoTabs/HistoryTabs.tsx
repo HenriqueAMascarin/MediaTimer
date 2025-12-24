@@ -4,8 +4,14 @@ import {
   TouchableOpacity,
   Animated,
   PermissionsAndroid,
+  ScrollView,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
-import { historyStyle } from "./styles/historyStyles";
+import {
+  historyStyle,
+  widthHistoryItem,
+} from "@src/components/InfoTabs/styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
 import TrashSvg from "@assets/images/trash.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
@@ -44,6 +50,10 @@ export default function HistoryTabs() {
   });
 
   const [errorText, changeErrorText] = useState<null | string>(null);
+
+  const scrollListRef = useRef<null | ScrollView>(null);
+
+  const lastScrollValueOfScrollList = useRef(0);
 
   const dispatch = useDispatch();
 
@@ -183,15 +193,29 @@ export default function HistoryTabs() {
   async function removeItemFromHistory(indexItem: number) {
     let newArrayHistory = structuredClone(stateHistory.historyItems);
 
-    newArrayHistory = newArrayHistory.filter(
-      (_, index) => index != indexItem
-    );
+    newArrayHistory = newArrayHistory.filter((_, index) => index != indexItem);
 
     const jsonHistoryArray = JSON.stringify(newArrayHistory);
 
     await AsyncStorage.setItem(historyLocalKey, jsonHistoryArray);
 
     dispatch(changeHistoryArray(newArrayHistory));
+
+    // Responsible for not bug the scroll when deleting a history card
+    if (scrollListRef.current) {
+      // 20 is for not stuck the scroll
+      const newScrollXValue =
+        lastScrollValueOfScrollList.current - widthHistoryItem - 20;
+
+      scrollListRef.current?.scrollTo({ x: newScrollXValue, animated: false });
+    }
+  }
+
+  function onScrollViewFinish(
+    eventScroll: NativeSyntheticEvent<NativeScrollEvent>
+  ) {
+    lastScrollValueOfScrollList.current =
+      eventScroll.nativeEvent.contentOffset.x;
   }
 
   return (
@@ -199,8 +223,10 @@ export default function HistoryTabs() {
       {!status.searching ? (
         stateHistory.historyItems.length > 0 ? (
           <Animated.ScrollView
+            ref={scrollListRef}
             horizontal
             style={[{ maxHeight: 90, opacity: opacityModal }]}
+            onMomentumScrollEnd={onScrollViewFinish}
           >
             <View style={[historyStyle.container]}>
               {stateHistory.historyItems.map((item, keyItem) => {
