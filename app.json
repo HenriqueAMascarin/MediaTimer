@@ -33,7 +33,9 @@
           "android": {
             "useLegacyPackaging": true
           },
-          "ios": {}
+          "ios": {
+            "useLegacyPackaging": true
+          }
         }
       ],
       [
