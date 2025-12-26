@@ -31,10 +31,14 @@
         "expo-build-properties",
         {
           "android": {
-            "useLegacyPackaging": true
+            "useLegacyPackaging": true,
+            "agpVersion": "8.3.0",
+            "gradleVersion": "8.3"
           },
           "ios": {
-            "useLegacyPackaging": true
+            "useLegacyPackaging": true,
+            "agpVersion": "8.3.0",
+            "gradleVersion": "8.3"
           }
         }
       ],
