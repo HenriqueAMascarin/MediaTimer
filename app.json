@@ -4,8 +4,8 @@
     "slug": "media-timer",
     "description": "This is an timer music app",
     "icon": "./assets/icon.png",
-    "version": "1.0.8",
-    "runtimeVersion": "1.0.8",
+    "version": "1.0.9",
+    "runtimeVersion": "1.0.9",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "android": {
