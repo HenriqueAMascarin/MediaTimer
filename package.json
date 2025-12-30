@@ -45,7 +45,7 @@
     "react-native": "0.81.5",
     "react-native-background-timer": "github:HenriqueAMascarin/react-native-background-timer",
     "react-native-dotenv": "^3.4.11",
-    "react-native-svg": "15.12.1",
+    "react-native-svg": "15.15.1",
     "react-native-svg-transformer": "^1.5.2",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1",
