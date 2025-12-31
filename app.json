@@ -28,17 +28,6 @@
     },
     "plugins": [
       [
-        "expo-build-properties",
-        {
-          "android": {
-            "useLegacyPackaging": true
-          },
-          "ios": {
-            "useLegacyPackaging": true
-          }
-        }
-      ],
-      [
         "expo-splash-screen",
         {
           "backgroundColor": "#149CFF",
