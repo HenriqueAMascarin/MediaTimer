@@ -14,9 +14,6 @@ buildscript {
 
 allprojects {
   repositories {
-    maven { 
-      url "$rootDir/../node_modules/@notifee/react-native/android/libs" 
-    } 
     google()
     mavenCentral()
     maven { url 'https://www.jitpack.io' }
