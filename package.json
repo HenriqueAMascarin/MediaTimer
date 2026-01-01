@@ -11,7 +11,7 @@
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@expo-google-fonts/roboto": "^0.2.3",
-    "@notifee/react-native": "^9.0.2",
+    "@notifee/react-native": "^9.1.8",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@types/react": "~19.1.17",
