@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { NativeEventSubscription } from "react-native";
-import { TimeoutId } from "react-native-background-timer";
+import { BackgroundTimer } from 'react-native-nitro-bg-timer'
 
 export type timerRunningValuesType = {
   totalValue: number;
@@ -8,7 +8,7 @@ export type timerRunningValuesType = {
   appStateListener: NativeEventSubscription | null;
   timers: {
     internalTimerInterval: NodeJS.Timeout | null;
-    backgroundTimerTimeout: TimeoutId | null;
+    backgroundTimerTimeout: ReturnType<typeof BackgroundTimer.setTimeout> | null;
   };
 };
 

@@ -10,12 +10,12 @@ import {
 } from "@src/components/Timer/timerUtils/notificationUtils";
 import { store } from "@src/components/Utils/Redux/store";
 import { AppState } from "react-native";
-import BackgroundTimer from "react-native-background-timer";
 import {
   stopTimer,
   removeClocks,
 } from "@src/components/Timer/timerUtils/stopTimerUtils";
 import { changeIsPlay } from "@src/components/Utils/Redux/features/stateTimer-slice";
+import { BackgroundTimer } from 'react-native-nitro-bg-timer'
 
 const dispatch = store.dispatch;
 
@@ -74,7 +74,7 @@ export async function startNotificationAndTimer({
           if (state == "background") {
             // * 1000 to transform to ms
             const timestampToAlert = timeLeftToAlert() * 1000;
-
+            
             dispatch(
               changeBackgroundTimerTimeout(
                 BackgroundTimer.setTimeout(async () => {
