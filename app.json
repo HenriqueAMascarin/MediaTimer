@@ -10,7 +10,6 @@
     "userInterfaceStyle": "automatic",
     "android": {
       "userInterfaceStyle": "automatic",
-      "targetSdkVersion": 35,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptativeIcon.png",
         "backgroundColor": "#ffffff"

@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from "html-entities";
-import RNFetchBlob from "rn-fetch-blob";
+import ReactNativeBlobUtil from 'react-native-blob-util'
 import TextDefault from "../Texts/TextDefault";
 import { fileRegex, historyLocalKey } from "@src/components/Utils/globalVars";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
@@ -121,7 +121,7 @@ export default function HistoryTabs() {
         }
       });
 
-      // setTimeout is to let the modal show a little before the request of fetch blob that is going do a stuck to the app
+      // setTimeout is to let the modal show a little before the request of blob that is going do a stuck to the app
       setTimeout(async () => {
         if (item.uri) {
           await PermissionsAndroid.requestMultiple([
@@ -135,7 +135,7 @@ export default function HistoryTabs() {
                 status["android.permission.WRITE_EXTERNAL_STORAGE"] == "granted"
               ) {
                 if (item.uri) {
-                  await RNFetchBlob.fs
+                  await ReactNativeBlobUtil.fs
                     .stat(item.uri)
                     .then((data) => {
                       changeMusic(
