@@ -6,15 +6,14 @@
     "production": {},
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
       "android": {
         "buildType": "apk"
       }
     },
     "preview": {
-      "distribution": "internal",
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease --info"
       }
     }
   },
