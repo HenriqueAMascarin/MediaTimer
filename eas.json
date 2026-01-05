@@ -3,21 +3,24 @@
     "version": ">= 3.13.0"
   },
   "build": {
-    "production": {},
-    "development": {
-      "developmentClient": true,
+    "production": {
       "android": {
-        "buildType": "apk"
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c"
       }
     },
     "preview": {
       "android": {
         "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease --info"
+
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c"
       }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "image": "ubuntu-18.04-jdk-11-ndk-r19c"
+      }
+    }
   }
 }
