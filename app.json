@@ -37,13 +37,6 @@
         }
       ],
       [
-        "@evennit/notifee-expo-plugin",
-        {
-          "iosDeploymentTarget": "13.4",
-          "apsEnvMode": "development"
-        }
-      ],
-      [
         "expo-splash-screen",
         {
           "backgroundColor": "#149CFF",
