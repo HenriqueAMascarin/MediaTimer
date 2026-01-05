@@ -3,10 +3,15 @@
     "version": ">= 3.13.0"
   },
   "build": {
-    "production": {},
+    "production": {
+      "android": {
+        "image": "ubuntu-20.04-jdk-11-ndk-r19c"
+      }
+    },
     "preview": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "image": "ubuntu-20.04-jdk-11-ndk-r19c"
       }
     }
   },
