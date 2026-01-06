@@ -5,23 +5,19 @@
     "description": "This is an timer music app",
     "icon": "./assets/icon.png",
     "version": "1.0.9",
-    "runtimeVersion": "1.0.9",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "android": {
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptativeIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.henriqueamascarin.mediatimer"
+      "package": "com.henriqueamascarin.mediatimer",
+      "edgeToEdgeEnabled": true
     },
     "web": {},
-    "extra": {
-      "eas": {
-        "projectId": "e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
-      }
-    },
     "plugins": [
       [
         "expo-build-properties",
@@ -45,6 +41,10 @@
       "expo-audio",
       "expo-font",
       "expo-asset"
-    ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
   }
 }
