@@ -22,9 +22,6 @@
         "projectId": "e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
       }
     },
-    "updates": {
-      "url": "https://u.expo.dev/e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
-    },
     "plugins": [
       [
         "expo-build-properties",

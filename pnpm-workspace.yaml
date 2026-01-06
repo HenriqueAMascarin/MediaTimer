@@ -1,4 +1,0 @@
-nodeLinker: hoisted
-
-onlyBuiltDependencies:
-  - react-native-nitro-bg-timer

@@ -23,7 +23,6 @@ expo-env.d.ts
 
 # dependencies
 node_modules/
-pnpm-lock.yaml
 
 # Expo
 .expo/
