@@ -55,6 +55,11 @@
       "eas": {
         "projectId": "e4ff13a1-3a36-48da-9a38-ff413ad7e8af"
       }
+    },
+    "sdkVersion": "54.0.0",
+    "platforms": ["android"],
+    "androidStatusBar": {
+      "backgroundColor": "#149CFF"
     }
   }
 }

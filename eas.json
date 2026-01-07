@@ -5,10 +5,9 @@
   },
   "build": {
     "preview": {
+      "credentialsSource": "remote",
       "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      }
+      "buildType": "apk"
     },
     "production": {
       "autoIncrement": true
