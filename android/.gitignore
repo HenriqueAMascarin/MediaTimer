@@ -8,6 +8,7 @@ build/
 .idea
 .gradle
 local.properties
+gradle.properties
 *.iml
 *.hprof
 .cxx/
