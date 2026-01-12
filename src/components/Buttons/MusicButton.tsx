@@ -18,6 +18,7 @@ export default function MusicButton() {
 
   function toggleTab() {
     dispatch(changeIsHistory(false));
+
     dispatch(changeIsSelection(!stateMusic.isSelection));
   }
 
@@ -32,28 +33,30 @@ export default function MusicButton() {
     return status;
   }, [stateMusic.pressBtn]);
 
+  const backgroundColorMemo = useMemo(
+    () =>
+      activeStatus ? colorsStyle.principal.blue : colorsStyle.principal.gray,
+    [activeStatus]
+  );
+
+  const fillColorMemo = useMemo(
+    () =>
+      activeStatus ? colorsStyle.principal.white : colorsStyle.principal.black,
+    [activeStatus]
+  );
+
   return (
     <TouchableOpacity
       style={[
         buttonsStyle.buttons,
         {
-          backgroundColor: activeStatus
-            ? colorsStyle.principal.blue
-            : colorsStyle.principal.gray,
+          backgroundColor: backgroundColorMemo,
         },
       ]}
-      onPress={() => toggleTab()}
+      onPress={toggleTab}
       aria-label={translateText("buttonArias.audio")}
     >
-      <MusicSvg
-        width={"35px"}
-        height={"35px"}
-        fill={
-          activeStatus
-            ? colorsStyle.principal.white
-            : colorsStyle.principal.black
-        }
-      />
+      <MusicSvg width={"35px"} height={"35px"} fill={fillColorMemo} />
     </TouchableOpacity>
   );
 }

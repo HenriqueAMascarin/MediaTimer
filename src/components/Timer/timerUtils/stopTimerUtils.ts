@@ -5,7 +5,6 @@ import {
   timerRunningValuesType,
 } from "@src/components/Utils/Redux/features/timerRunningValues-slice";
 import { store } from "@src/components/Utils/Redux/store";
-import BackgroundTimer from "react-native-background-timer";
 import notifee from "@notifee/react-native";
 import {
   changeIsPaused,
@@ -14,6 +13,7 @@ import {
 import { timerPauseOrResume } from "@src/components/Timer/animations/timerPauseOrResume";
 import { sequenceTimer } from "@src/components/Timer/animations/timerSequence";
 import { removeStateAppListener } from "@src/components/Timer/timerUtils/removeAppStateListener";
+import { BackgroundTimer } from 'react-native-nitro-bg-timer'
 
 const dispatch = store.dispatch;
 

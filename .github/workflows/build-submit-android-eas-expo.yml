@@ -14,22 +14,17 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
-
-      - name: 🔨 Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - name: 🔧 Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          node-version: ${{ matrix.node-version }}.x
+          cache: npm
       - name: 🚚 Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: npm install
       - name: 🚀 Create eas production build and submit to play store
-        run: pnpm eas build --platform android --profile production --clear-cache
+        run: eas build --platform android --profile production --clear-cache

@@ -4,18 +4,16 @@ import { colorsStyle } from "../Utils/colorsStyle";
 import { useTheme } from "../Utils/Context/ThemeContext";
 import { useAppSelector } from "../Utils/Redux/reduxHookCustom";
 import TextAnimated from "../Texts/TextAnimated";
+import { memo } from "react";
 
 interface TimerNumber {
   numberCountOpacity: Animated.Value;
   number: string;
 }
 
-export default function TimerNumber({
-  numberCountOpacity,
-  number,
-}: TimerNumber) {
+function TimerNumber({ numberCountOpacity, number }: TimerNumber) {
   const { dataTheme } = useTheme();
-  
+
   const stateTimer = useAppSelector(({ stateTimer }) => stateTimer);
 
   return (
@@ -35,3 +33,5 @@ export default function TimerNumber({
     </TextAnimated>
   );
 }
+
+export default memo(TimerNumber);

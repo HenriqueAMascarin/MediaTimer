@@ -4,9 +4,16 @@ import {
   TouchableOpacity,
   Animated,
   PermissionsAndroid,
+  ScrollView,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
-import { historyStyle } from "./styles/historyStyles";
+import {
+  historyStyle,
+  widthHistoryItem,
+} from "@src/components/InfoTabs/styles/historyStyles";
 import PlaySvg from "@assets/images/play.svg";
+import TrashSvg from "@assets/images/trash.svg";
 import { colorsStyle } from "../Utils/colorsStyle";
 import {
   changeHistoryArray,
@@ -18,15 +25,16 @@ import {
   LoadingAlert,
   ErrorAlert,
 } from "@src/components/InfoTabs/Alerts/AlertComponents";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeMusic } from "../Utils/buttons";
 import { animatedModalsOpacity } from "../Utils/animatedModalsOpacity";
 import { decode } from "html-entities";
-import RNFetchBlob from "rn-fetch-blob";
+import ReactNativeBlobUtil from 'react-native-blob-util'
 import TextDefault from "../Texts/TextDefault";
-import { fileRegex } from "../Utils/globalVars";
+import { fileRegex, historyLocalKey } from "@src/components/Utils/globalVars";
 import { useTextTranslation } from "@src/components/Utils/Context/TranslationContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HistoryTabs() {
   const { translateText } = useTextTranslation();
@@ -42,6 +50,10 @@ export default function HistoryTabs() {
   });
 
   const [errorText, changeErrorText] = useState<null | string>(null);
+
+  const scrollListRef = useRef<null | ScrollView>(null);
+
+  const lastScrollValueOfScrollList = useRef(0);
 
   const dispatch = useDispatch();
 
@@ -93,7 +105,7 @@ export default function HistoryTabs() {
     changeErrorText(translateText("statusMessages.dontHavePermissions"));
   }
 
-  async function changeItemSelected(item: historyItem) {
+  const changeItemSelected = useCallback((item: historyItem) => {
     if (!item.isSelected) {
       let newArr = structuredClone(stateHistory.historyItems);
 
@@ -109,7 +121,7 @@ export default function HistoryTabs() {
         }
       });
 
-      // setTimeout is to let the modal show a little before the request of fetch blob that is going do a stuck to the app
+      // setTimeout is to let the modal show a little before the request of blob that is going do a stuck to the app
       setTimeout(async () => {
         if (item.uri) {
           await PermissionsAndroid.requestMultiple([
@@ -123,7 +135,7 @@ export default function HistoryTabs() {
                 status["android.permission.WRITE_EXTERNAL_STORAGE"] == "granted"
               ) {
                 if (item.uri) {
-                  await RNFetchBlob.fs
+                  await ReactNativeBlobUtil.fs
                     .stat(item.uri)
                     .then((data) => {
                       changeMusic(
@@ -164,10 +176,11 @@ export default function HistoryTabs() {
         }
       }, 400);
     }
-  }
+  }, []);
 
   function onClose() {
     changeStatus({ searching: false, success: false, error: false });
+
     dispatch(changeIsHistory(false));
   }
 
@@ -177,13 +190,43 @@ export default function HistoryTabs() {
     animatedModalsOpacity({ isOpen: true, animatedOpacity: opacityModal });
   }, []);
 
+  async function removeItemFromHistory(indexItem: number) {
+    let newArrayHistory = structuredClone(stateHistory.historyItems);
+
+    newArrayHistory = newArrayHistory.filter((_, index) => index != indexItem);
+
+    const jsonHistoryArray = JSON.stringify(newArrayHistory);
+
+    await AsyncStorage.setItem(historyLocalKey, jsonHistoryArray);
+
+    dispatch(changeHistoryArray(newArrayHistory));
+
+    // Responsible for not bug the scroll when deleting a history card
+    if (scrollListRef.current) {
+      // 20 is for not stuck the scroll
+      const newScrollXValue =
+        lastScrollValueOfScrollList.current - widthHistoryItem - 20;
+
+      scrollListRef.current?.scrollTo({ x: newScrollXValue, animated: false });
+    }
+  }
+
+  function onScrollViewFinish(
+    eventScroll: NativeSyntheticEvent<NativeScrollEvent>
+  ) {
+    lastScrollValueOfScrollList.current =
+      eventScroll.nativeEvent.contentOffset.x;
+  }
+
   return (
     <View>
       {!status.searching ? (
         stateHistory.historyItems.length > 0 ? (
           <Animated.ScrollView
+            ref={scrollListRef}
             horizontal
             style={[{ maxHeight: 90, opacity: opacityModal }]}
+            onMomentumScrollEnd={onScrollViewFinish}
           >
             <View style={[historyStyle.container]}>
               {stateHistory.historyItems.map((item, keyItem) => {
@@ -197,8 +240,21 @@ export default function HistoryTabs() {
                   >
                     <View style={{ width: 150 }}>
                       <TextDefault>{musicName(item.nameMusic)}</TextDefault>
+
                       <TextDefault>{authorName(item)}</TextDefault>
+
+                      <TouchableOpacity
+                        onPress={() => removeItemFromHistory(keyItem)}
+                        style={historyStyle.removeHistoryBtn}
+                      >
+                        <TrashSvg width={"10px"} height={"11px"} />
+
+                        <TextDefault style={historyStyle.textRemoveHistory}>
+                          {translateText("history.removeFromHistory")}
+                        </TextDefault>
+                      </TouchableOpacity>
                     </View>
+
                     <TouchableOpacity
                       onPress={() => changeItemSelected(item)}
                       aria-label={translateText("history.btnSelectAudio")}
