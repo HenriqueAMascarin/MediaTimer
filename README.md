@@ -42,7 +42,9 @@ Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucio
 
 - React Native
 - React Native Async Storage
-- React Native Background Timer
+- React Native Nitro BG Timer
+- React Native Nitro Modules
+- React Native Blob Util
 - React Native Animated
 - React SVG + SVG Transformer
 - React Native Dotenv
