@@ -6,8 +6,6 @@ Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucio
 
 - [Sobre](#Sobre)
   - [Screenshot](#screenshot)
-  - [Aprendizado](#Aprendizado)
-  - [Futuro](#Futuro)
   - [Demonstração](#demonstração)
   - [Links](#links)
   - [Tecnologias usadas](#Tecnologias-usadas)
@@ -17,14 +15,6 @@ Aplicativo de timer com sons e diversas funcionalidades, com objetivo de solucio
 ### Screenshot
 
 ![](./assets/screenshot.jpg)
-
-### Aprendizado
-
-Aperfeiçoei minha lógica de programação e melhorei em tais tecnologias, passando por diversos desafios. Assim, Aprendendo a usar o React Native no dia a dia.
-
-### Futuro
-
-Viso adquirir novos conhecimentos, me aperfeiçoar e aprofundar no React Native. Para no futuro estar trabalhando com essa tecnologia.
 
 ### Demonstração
 
