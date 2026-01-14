@@ -18,8 +18,6 @@ Timer with the possibility of selecting external sounds from your device and oth
 
 ### Download the app
 
-![](./assets/reviewImage.jpg)
-
 📙 Step by step 📙
 - Download the app at Google Play: [click here](https://play.google.com/store/apps/details?id=com.henriqueamascarin.mediatimer).
 - Open the download link on your phone.
