@@ -1,23 +1,24 @@
-## Media Timer: Política de Privacidade
+## Media Timer: Privacy Policy
 
-Bem vindo ao Media Timer, aplicativo para android!
+Welcome to Media Timer, an app for android!
 
-Esse é um aplicativo temporizador desenvolvido por Henrique de Albuquerque Mascarin e visa resolver um problema pessoal.
+This is a timer app developed by the company Henrique Mascarin.
 
-### Dados coletados pelo aplicativo 
+### Data collected by the app
 
-Nenhum dado é coletado. Tudo fornecido como dados de arquivos, histórico de áudios e configurações de tema são todos mantidos no aplicativo.
+No data is collected. Everything provided like file data, audio history, and theme settings are all kept inside the app.
 
-A lista de permissões listadas a baixo são encontradas aqui no [AndroidManifest.xml](https://github.com/HenriqueAMascarin/MediaTimer/blob/main/android/app/src/main/AndroidManifest.xml#L2-L7).
+The list of permissions listed below are found here on the [AndroidManifest.xml](https://github.com/HenriqueAMascarin/MediaTimer/blob/main/android/app/src/main/AndroidManifest.xml).
 
 <br/>
 
-| Permissão | Porque é necessária |
+| Permission | Why is it necessary |
 | :---: | --- |
-| `android.permission.INTERNET` `com.google.android.gms.permission.AD_ID` | Utilizados para mostrar o anúncio de baixo na tela principal. |
-| `android.permission.READ_EXTERNAL_STORAGE` `android.permission.WRITE_EXTERNAL_STORAGE` `android.permission.READ_MEDIA_AUDIO`| Utilizados para ler áudios que a pessoa seleciona do seu dispositivo ou que estão salvos no histórico. |
-| `android.permission.SYSTEM_ALERT_WINDOW` | Utilizado para mostrar as notificações do aplicativo, quando está executando o temporizador. |
-| `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION` | Utilizado para encontrar o local do arquivo selecionado na aba de histórico. |
-| `android.permission.MODIFY_AUDIO_SETTINGS` | Utilizado com a tecnologia EXPO Audio, para configurar os áudios usados no aplicativo. |
+| `android.permission.READ_EXTERNAL_STORAGE` `android.permission.WRITE_EXTERNAL_STORAGE` `android.permission.READ_MEDIA_AUDIO`| Used to read audios that the person selects from their device or that are saved in the history. |
+| `android.permission.SYSTEM_ALERT_WINDOW` | Used to show application notifications when the timer is running. |
+| `android.permission.DOWNLOAD_WITHOUT_NOTIFICATION` | Used to find the location of the file selected in the tab of history. |
+| `android.permission.MODIFY_AUDIO_SETTINGS` | Used with EXPO AUDIO technology, to configure the audios used in the app. |
+| `android.permission.FOREGROUND_SERVICE` `android.permission.WAKE_LOCK` | Used to run the app’s timer in the background. |
+| `android.permission.INTERNET` `android.permission.VIBRATE` `android.permission.RECORD_AUDIO` | They will be removed in the next update. |
 
-Caso tenha visto alguma permissão que não esteja listada aqui ou sobre qualquer dúvida de segurança, se sinta livre em mandar uma mensagem ao e-mail: henriqueamascarin@gmail.com
+If you see some permissions that are not listed here or have any security questions, feel free to send a message to the email: henriqueamascarin@gmail.com
