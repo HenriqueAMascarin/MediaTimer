@@ -1,4 +1,4 @@
-## Media Timer: Privacy Policy
+## Media Timer: Privacy policy
 
 Welcome to Media Timer, an app for android!
 
